@@ -12,6 +12,7 @@ import UserSummaryCard from "@/components/quiz/UserSummaryCard"
 import RoutineBuilder from "@/components/routine/RoutineBuilder"
 import ProductCard from "@/components/routine/ProductCard"
 import { Product } from "@/types"
+import { ExpandingSearchDock } from "@/components/ui/expanding-search-dock-shadcnui"
 
 const stagger: Variants = {
   hidden: {},
@@ -30,6 +31,7 @@ export default function ResultsPage() {
 
   const [recommended, setRecommended] = useState<Product[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState("")
 
   useEffect(() => {
     async function loadProducts() {
@@ -45,7 +47,12 @@ export default function ResultsPage() {
     loadProducts()
   }, [skinType, concerns, budget])
 
-  const grouped = useMemo(() => getProductsByCategory(recommended), [recommended])
+  const filteredRecommended = useMemo(() => {
+    if (!searchQuery) return recommended;
+    return recommended.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.brand.toLowerCase().includes(searchQuery.toLowerCase()))
+  }, [recommended, searchQuery])
+
+  const grouped = useMemo(() => getProductsByCategory(filteredRecommended), [filteredRecommended])
   const hasData = !!skinType && !!budget
 
   const handleAdd = (product: Product) => {
@@ -122,10 +129,13 @@ export default function ResultsPage() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.15 }}
-                className="flex items-center justify-between"
+                className="flex items-center justify-between gap-4 flex-wrap"
               >
-                <h2 className="text-title font-semibold">Sản phẩm gợi ý</h2>
-                <span className="text-caption text-muted">{recommended.length} sản phẩm</span>
+                <div className="flex items-center gap-4">
+                  <h2 className="text-title font-semibold">Sản phẩm gợi ý</h2>
+                  <span className="text-caption text-muted">{filteredRecommended.length} sản phẩm</span>
+                </div>
+                <ExpandingSearchDock onSearch={setSearchQuery} placeholder="Tìm sản phẩm..." />
               </motion.div>
 
               <div className="space-y-6">
