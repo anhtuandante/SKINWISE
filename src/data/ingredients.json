@@ -1,0 +1,249 @@
+﻿{
+  "ingredients": [
+    {
+      "id": "niacinamide",
+      "name": "Niacinamide",
+      "nameVi": "Vitamin B3",
+      "category": "brightening",
+      "benefits": ["kiểm soát dầu", "se khít lỗ chân lông", "làm sáng da"],
+      "skinTypes": ["oily", "combination", "normal"],
+      "timeOfDay": "both",
+      "pregnancy": true
+    },
+    {
+      "id": "retinol",
+      "name": "Retinol",
+      "nameVi": "Vitamin A",
+      "category": "anti-aging",
+      "benefits": ["chống lão hóa", "giảm nếp nhăn", "tái tạo da"],
+      "skinTypes": ["normal", "oily", "combination"],
+      "timeOfDay": "PM",
+      "pregnancy": false,
+      "conflictsWith": ["vitamin-c", "aha", "bha"]
+    },
+    {
+      "id": "vitamin-c",
+      "name": "Vitamin C",
+      "nameVi": "Vitamin C",
+      "category": "brightening",
+      "benefits": ["làm sáng da", "chống oxy hóa", "giảm thâm"],
+      "skinTypes": ["all"],
+      "timeOfDay": "AM",
+      "pregnancy": true,
+      "conflictsWith": ["retinol", "niacinamide"]
+    },
+    {
+      "id": "hyaluronic-acid",
+      "name": "Hyaluronic Acid",
+      "nameVi": "Axit Hyaluronic",
+      "category": "hydrating",
+      "benefits": ["cấp ẩm sâu", "căng mọng da"],
+      "skinTypes": ["all"],
+      "timeOfDay": "both",
+      "pregnancy": true
+    },
+    {
+      "id": "aha",
+      "name": "AHA (Glycolic/Lactic Acid)",
+      "nameVi": "AHA",
+      "category": "exfoliant",
+      "benefits": ["tẩy tế bào chết", "làm sáng da", "mờ thâm"],
+      "skinTypes": ["normal", "oily", "combination"],
+      "timeOfDay": "PM",
+      "pregnancy": false,
+      "conflictsWith": ["retinol", "vitamin-c"]
+    },
+    {
+      "id": "bha",
+      "name": "BHA (Salicylic Acid)",
+      "nameVi": "BHA",
+      "category": "exfoliant",
+      "benefits": ["trị mụn", "thông thoáng lỗ chân lông"],
+      "skinTypes": ["oily", "combination", "acne-prone"],
+      "timeOfDay": "PM",
+      "pregnancy": false,
+      "conflictsWith": ["retinol"]
+    },
+    {
+      "id": "centella",
+      "name": "Centella Asiatica",
+      "nameVi": "Rau má",
+      "category": "soothing",
+      "benefits": ["làm dịu", "phục hồi da", "giảm mẩn đỏ"],
+      "skinTypes": ["sensitive", "all"],
+      "timeOfDay": "both",
+      "pregnancy": true
+    },
+    {
+      "id": "ceramide",
+      "name": "Ceramide",
+      "nameVi": "Ceramide",
+      "category": "barrier",
+      "benefits": ["phục hồi hàng rào da", "khóa ẩm"],
+      "skinTypes": ["dry", "sensitive", "all"],
+      "timeOfDay": "both",
+      "pregnancy": true
+    },
+    {
+      "id": "snail-mucin",
+      "name": "Snail Mucin",
+      "nameVi": "Dịch nhầy ốc sên",
+      "category": "hydrating",
+      "benefits": ["cấp ẩm", "phục hồi da", "làm dịu"],
+      "skinTypes": ["all"],
+      "timeOfDay": "both",
+      "pregnancy": true
+    },
+    {
+      "id": "tea-tree",
+      "name": "Tea Tree Oil",
+      "nameVi": "Tinh dầu tràm trà",
+      "category": "acne-fighting",
+      "benefits": ["kháng khuẩn", "giảm mụn"],
+      "skinTypes": ["oily", "acne-prone"],
+      "timeOfDay": "both",
+      "pregnancy": true
+    },
+    {
+      "id": "zinc",
+      "name": "Zinc",
+      "nameVi": "Kẽm",
+      "category": "acne-fighting",
+      "benefits": ["kiểm soát dầu", "kháng viêm"],
+      "skinTypes": ["oily", "acne-prone"],
+      "timeOfDay": "both",
+      "pregnancy": true
+    },
+    {
+      "id": "squalane",
+      "name": "Squalane",
+      "nameVi": "Squalane",
+      "category": "moisturizing",
+      "benefits": ["dưỡng ẩm", "không gây bít tắc"],
+      "skinTypes": ["all"],
+      "timeOfDay": "both",
+      "pregnancy": true
+    },
+    {
+      "id": "glycerin",
+      "name": "Glycerin",
+      "nameVi": "Glycerin",
+      "category": "hydrating",
+      "benefits": ["cấp ẩm", "giữ nước cho da", "làm mềm da"],
+      "skinTypes": ["all"],
+      "timeOfDay": "both",
+      "pregnancy": true
+    },
+    {
+      "id": "birch-sap",
+      "name": "Birch Sap",
+      "nameVi": "Nhựa cây bạch dương",
+      "category": "hydrating",
+      "benefits": ["cấp ẩm nhẹ", "kiểm soát dầu", "làm sáng da"],
+      "skinTypes": ["oily", "combination"],
+      "timeOfDay": "both",
+      "pregnancy": true
+    },
+    {
+      "id": "pha",
+      "name": "PHA (Polyhydroxy Acid)",
+      "nameVi": "PHA",
+      "category": "exfoliant",
+      "benefits": ["tẩy tế bào chết nhẹ nhàng", "cấp ẩm", "phù hợp da nhạy cảm"],
+      "skinTypes": ["all"],
+      "timeOfDay": "PM",
+      "pregnancy": true
+    },
+    {
+      "id": "turmeric",
+      "name": "Turmeric",
+      "nameVi": "Nghệ",
+      "category": "brightening",
+      "benefits": ["kháng viêm", "làm sáng da", "mờ thâm"],
+      "skinTypes": ["all"],
+      "timeOfDay": "both",
+      "pregnancy": true
+    },
+    {
+      "id": "zinc-oxide",
+      "name": "Zinc Oxide",
+      "nameVi": "Kẽm Oxit",
+      "category": "sunscreen",
+      "benefits": ["bảo vệ da khỏi UV", "kháng viêm", "kiểm soát dầu"],
+      "skinTypes": ["all", "sensitive"],
+      "timeOfDay": "AM",
+      "pregnancy": true
+    },
+    {
+      "id": "titanium-dioxide",
+      "name": "Titanium Dioxide",
+      "nameVi": "Titanium Dioxide",
+      "category": "sunscreen",
+      "benefits": ["chống tia UV", "làm sáng tông da tạm thời"],
+      "skinTypes": ["all"],
+      "timeOfDay": "AM",
+      "pregnancy": true
+    },
+    {
+      "id": "dimethicone",
+      "name": "Dimethicone",
+      "nameVi": "Silicon Dimethicone",
+      "category": "texture",
+      "benefits": ["làm mịn da", "khóa ẩm", "tạo lớp lót trang điểm"],
+      "skinTypes": ["all"],
+      "timeOfDay": "both",
+      "pregnancy": true
+    },
+    {
+      "id": "alcohol-denat",
+      "name": "Alcohol Denat",
+      "nameVi": "Cồn khô",
+      "category": "solvent",
+      "benefits": ["giúp sản phẩm thấm nhanh", "kháng khuẩn", "tạo cảm giác ráo"],
+      "skinTypes": ["oily", "combination"],
+      "timeOfDay": "both",
+      "pregnancy": true,
+      "conflictsWith": ["sensitive-skin"]
+    },
+    {
+      "id": "green-tea",
+      "name": "Green Tea Extract",
+      "nameVi": "Chiết xuất trà xanh",
+      "category": "soothing",
+      "benefits": ["chống oxy hóa", "kháng viêm", "giảm mẩn đỏ"],
+      "skinTypes": ["all"],
+      "timeOfDay": "both",
+      "pregnancy": true
+    },
+    {
+      "id": "white-truffle",
+      "name": "White Truffle Extract",
+      "nameVi": "Chiết xuất nấm Truffle trắng",
+      "category": "anti-aging",
+      "benefits": ["chống lão hóa", "làm sáng da", "phục hồi"],
+      "skinTypes": ["all"],
+      "timeOfDay": "both",
+      "pregnancy": true
+    },
+    {
+      "id": "vitamin-e",
+      "name": "Vitamin E (Tocopherol)",
+      "nameVi": "Vitamin E",
+      "category": "barrier",
+      "benefits": ["chống oxy hóa", "dưỡng ẩm", "phục hồi"],
+      "skinTypes": ["dry", "normal"],
+      "timeOfDay": "both",
+      "pregnancy": true
+    },
+    {
+      "id": "ferulic-acid",
+      "name": "Ferulic Acid",
+      "nameVi": "Axit Ferulic",
+      "category": "antioxidant",
+      "benefits": ["tăng cường hiệu quả Vitamin C", "chống lão hóa"],
+      "skinTypes": ["all"],
+      "timeOfDay": "AM",
+      "pregnancy": true
+    }
+  ]
+}

@@ -1,101 +1,250 @@
-import Image from "next/image";
+"use client"
 
-export default function Home() {
+import Link from "next/link"
+import { motion, type Variants } from "framer-motion"
+import Button from "@/components/ui/Button"
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.08, duration: 0.5, ease: "easeOut" },
+  }),
+}
+
+const stagger: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.06 } },
+}
+
+const item: Variants = {
+  hidden: { opacity: 0, y: 12 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+}
+
+export default function HomePage() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="min-h-screen bg-bg text-fg">
+      {/* Nav */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-bg/90 backdrop-blur-sm border-b border-line">
+        <div className="max-w-screen-lg mx-auto px-6 h-14 flex items-center justify-between">
+          <Link href="/" className="text-body font-semibold tracking-tight">
+            SkinWise
+          </Link>
+          <div className="flex items-center gap-4">
+            <Link href="/ingredients" className="text-caption text-muted hover:text-fg transition-colors">
+              Thành phần
+            </Link>
+            <Button href="/quiz" size="sm">
+              Bắt đầu
+            </Button>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      </nav>
+
+      {/* Hero */}
+      <section className="pt-32 pb-20 px-6">
+        <div className="max-w-screen-lg mx-auto">
+          <motion.p
+            initial="hidden"
+            animate="visible"
+            custom={0}
+            variants={fadeUp}
+            className="text-micro uppercase text-muted tracking-widest mb-6"
+          >
+            Skincare & Makeup — Cá nhân hóa
+          </motion.p>
+          <motion.h1
+            initial="hidden"
+            animate="visible"
+            custom={1}
+            variants={fadeUp}
+            className="text-display font-light text-fg mb-8 max-w-2xl"
+          >
+            Routine phù hợp
+            <br />
+            <span className="font-semibold">da và ngân sách</span> của bạn
+          </motion.h1>
+          <motion.p
+            initial="hidden"
+            animate="visible"
+            custom={2}
+            variants={fadeUp}
+            className="text-body text-muted max-w-md mb-12 leading-relaxed"
+          >
+            Trả lời vài câu hỏi. Nhận danh sách sản phẩm skincare và makeup được chọn lọc theo loại da, vấn đề và ngân
+            sách thực tế tại Việt Nam.
+          </motion.p>
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            custom={3}
+            variants={fadeUp}
+            className="flex items-center gap-3"
+          >
+            <Button href="/quiz" size="lg">
+              Làm quiz
+            </Button>
+            <Button href="/results" variant="outline">
+              Xem demo
+            </Button>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Line */}
+      <div className="max-w-screen-lg mx-auto px-6">
+        <div className="h-px bg-line" />
+      </div>
+
+      {/* Stats */}
+      <section className="py-16 px-6">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={stagger}
+          className="max-w-screen-lg mx-auto grid grid-cols-2 sm:grid-cols-4 gap-8"
         >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          {[
+            { n: "70+", label: "sản phẩm" },
+            { n: "15", label: "thành phần" },
+            { n: "5", label: "phân khúc giá" },
+            { n: "12", label: "quy tắc xung đột" },
+          ].map((s) => (
+            <motion.div key={s.label} variants={item}>
+              <div className="text-headline font-semibold text-fg">{s.n}</div>
+              <div className="text-caption text-muted mt-0.5">{s.label}</div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </section>
+
+      {/* Line */}
+      <div className="max-w-screen-lg mx-auto px-6">
+        <div className="h-px bg-line" />
+      </div>
+
+      {/* Features */}
+      <section className="py-20 px-6">
+        <div className="max-w-screen-lg mx-auto">
+          <motion.p
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            custom={0}
+            className="text-micro uppercase text-muted tracking-widest mb-4"
+          >
+            Tính năng
+          </motion.p>
+          <motion.h2
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            custom={1}
+            className="text-headline font-semibold mb-14 max-w-md"
+          >
+            Mọi thứ bạn cần cho một routine đúng chuẩn
+          </motion.h2>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={stagger}
+            className="grid sm:grid-cols-2 gap-x-16 gap-y-12"
+          >
+            {[
+              { title: "Phân tích da", text: "Quiz xác định loại da, vấn đề cần giải quyết và ngân sách phù hợp." },
+              { title: "Gợi ý sản phẩm", text: "So sánh từ drugstore Việt đến luxury quốc tế, lọc theo budget thực." },
+              { title: "Kiểm tra xung đột", text: "Cảnh báo khi phối hợp thành phần không tương thích như Retinol + AHA." },
+              { title: "Routine builder", text: "Kéo thả sắp xếp bước dưỡng sáng/tối, theo dõi tổng chi phí." },
+            ].map((f) => (
+              <motion.div key={f.title} variants={item}>
+                <h3 className="text-body font-semibold mb-2">{f.title}</h3>
+                <p className="text-body text-muted leading-relaxed">{f.text}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Dark section */}
+      <section className="bg-fg text-bg py-20 px-6">
+        <div className="max-w-screen-lg mx-auto grid sm:grid-cols-2 gap-16 items-start">
+          <div>
+            <p className="text-micro uppercase tracking-widest opacity-40 mb-4">Tại sao</p>
+            <h2 className="text-headline font-semibold mb-4">
+              Ngừng mò mẫm
+              <br />
+              với skincare
+            </h2>
+            <p className="text-body opacity-60 leading-relaxed">
+              Phối Retinol với Vitamin C, chồng acid, dùng kem chống nắng SPF quá thấp — những sai lầm phổ biến dễ tránh
+              khi có công cụ đúng.
+            </p>
+          </div>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={stagger}
+            className="space-y-4"
+          >
+            {[
+              "Routine sáng và tối riêng biệt",
+              "Cảnh báo xung đột theo mức độ nghiêm trọng",
+              "Gợi ý thứ tự thoa đúng chuẩn da liễu",
+              "Hỗ trợ từ Thorakao 50k đến La Mer 8.5tr",
+              "Bách khoa thành phần tra cứu nhanh",
+            ].map((text) => (
+              <motion.div key={text} variants={item} className="flex items-start gap-3">
+                <span className="text-caption opacity-30 mt-0.5">—</span>
+                <span className="text-body opacity-80">{text}</span>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-20 px-6 text-center">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={stagger}
+          className="max-w-screen-lg mx-auto"
         >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+          <motion.p variants={item} className="text-micro uppercase text-muted tracking-widest mb-4">
+            Miễn phí · Không cần đăng ký
+          </motion.p>
+          <motion.h2 variants={item} className="text-headline font-semibold mb-6">
+            Bắt đầu ngay
+          </motion.h2>
+          <motion.div variants={item}>
+            <Button href="/quiz" size="lg">
+              Làm quiz miễn phí
+            </Button>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-line py-8 px-6">
+        <div className="max-w-screen-lg mx-auto flex items-center justify-between">
+          <span className="text-caption font-medium">SkinWise</span>
+          <div className="flex items-center gap-6 text-caption text-muted">
+            <Link href="/ingredients" className="hover:text-fg transition-colors">
+              Thành phần
+            </Link>
+            <span>Demo · Giá tham khảo</span>
+          </div>
+        </div>
       </footer>
     </div>
-  );
+  )
 }

@@ -1,0 +1,75 @@
+﻿{
+  "ingredientConflicts": [
+    {
+      "pair": ["retinol", "vitamin-c"],
+      "severity": "high",
+      "reason": "Cả hai đều mạnh, dùng chung dễ kích ứng",
+      "solution": "Dùng Vitamin C buổi sáng, Retinol buổi tối"
+    },
+    {
+      "pair": ["retinol", "aha"],
+      "severity": "high",
+      "reason": "Quá nhiều active cùng lúc, gây bong tróc",
+      "solution": "Dùng xen kẽ ngày, không dùng cùng buổi"
+    },
+    {
+      "pair": ["retinol", "bha"],
+      "severity": "medium",
+      "reason": "Có thể gây khô da nếu da nhạy cảm",
+      "solution": "Dùng BHA trước, đợi 20 phút rồi Retinol"
+    },
+    {
+      "pair": ["vitamin-c", "niacinamide"],
+      "severity": "low",
+      "reason": "Tranh cãi, nhưng thực tế OK với da khỏe",
+      "solution": "Nếu da nhạy cảm, dùng cách nhau 10-15 phút"
+    },
+    {
+      "pair": ["vitamin-c", "aha"],
+      "severity": "medium",
+      "reason": "Cả hai đều có pH thấp, dùng chung giảm hiệu quả",
+      "solution": "Dùng AHA tối, Vitamin C sáng"
+    },
+    {
+      "pair": ["aha", "bha"],
+      "severity": "medium",
+      "reason": "Quá nhiều acid, có thể gây kích ứng",
+      "solution": "Chọn 1 loại hoặc dùng xen kẽ ngày"
+    }
+  ],
+  "textureConflicts": [
+    {
+      "pair": ["water-based", "silicone-based"],
+      "pillingRisk": "medium",
+      "reason": "Nước và silicone khó trộn, dễ vón",
+      "solution": "Thoa water-based trước, đợi khô rồi silicone"
+    },
+    {
+      "pair": ["water-based", "oil-based"],
+      "pillingRisk": "high",
+      "reason": "Dầu đẩy nước, gây vón cục",
+      "solution": "Luôn thoa water-based trước, oil-based sau cùng"
+    },
+    {
+      "pair": ["silicone-based", "silicone-based"],
+      "pillingRisk": "high",
+      "reason": "Silicone chồng silicone dễ bị bong",
+      "solution": "Chỉ dùng 1 sản phẩm silicone trong routine"
+    }
+  ],
+  "layeringOrder": [
+    "cleanser",
+    "toner",
+    "serum",
+    "moisturizer",
+    "sunscreen"
+  ],
+  "textureOrder": [
+    "water-based",
+    "gel",
+    "lotion",
+    "cream",
+    "oil-based",
+    "silicone-based"
+  ]
+}
