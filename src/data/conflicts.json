@@ -1,4 +1,4 @@
-﻿{
+{
   "ingredientConflicts": [
     {
       "pair": ["retinol", "vitamin-c"],
@@ -60,11 +60,20 @@
   "layeringOrder": [
     "cleanser",
     "toner",
+    "exfoliant",
+    "mask",
     "serum",
+    "eye-cream",
     "moisturizer",
-    "sunscreen"
+    "sunscreen",
+    "base-makeup",
+    "blush",
+    "eye",
+    "brow",
+    "lip"
   ],
   "textureOrder": [
+    "liquid",
     "water-based",
     "gel",
     "lotion",

@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(where python:*)",
+      "Bash(dir /b \"C:\\\\Python*\")",
+      "Bash(dir /b \"C:\\\\Users\\\\nguye\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\*\\\\python.exe\")",
+      "Bash(dir /b \"C:\\\\Users\\\\nguye\\\\miniconda3\\\\python.exe\")",
+      "Bash(dir /s /b \"C:\\\\Program Files\\\\Python*\")",
+      "Bash(C:\\\\Users\\\\nguye\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe:*)",
+      "Bash(dir \"C:\\\\Users\\\\nguye\\\\.claude\\\\skills\\\\notebooklm\\\\.venv\\\\Scripts\\\\python.exe\")"
+    ]
+  }
+}

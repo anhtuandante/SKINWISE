@@ -80,3 +80,10 @@
 .stagger > *:nth-child(9) { animation-delay: 360ms; }
 .stagger > *:nth-child(10) { animation-delay: 400ms; }
 
+.lab-bg::before {
+  overflow: hidden;
+  max-width: 100vw;
+  max-height: 100vh;
+  box-sizing: border-box;
+}
+

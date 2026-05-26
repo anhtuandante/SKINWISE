@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { motion, type Variants } from "framer-motion"
 import Button from "@/components/ui/Button"
+import AboutUsSection from "@/components/ui/about-us-section"
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 20 },
@@ -86,7 +87,7 @@ export default function HomePage() {
             <Button href="/quiz" size="lg">
               Làm quiz
             </Button>
-            <Button href="/results" variant="outline">
+            <Button href="/dashboard" variant="outline">
               Xem demo
             </Button>
           </motion.div>
@@ -98,79 +99,8 @@ export default function HomePage() {
         <div className="h-px bg-line" />
       </div>
 
-      {/* Stats */}
-      <section className="py-16 px-6">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          variants={stagger}
-          className="max-w-screen-lg mx-auto grid grid-cols-2 sm:grid-cols-4 gap-8"
-        >
-          {[
-            { n: "70+", label: "sản phẩm" },
-            { n: "15", label: "thành phần" },
-            { n: "5", label: "phân khúc giá" },
-            { n: "12", label: "quy tắc xung đột" },
-          ].map((s) => (
-            <motion.div key={s.label} variants={item}>
-              <div className="text-headline font-semibold text-fg">{s.n}</div>
-              <div className="text-caption text-muted mt-0.5">{s.label}</div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </section>
-
-      {/* Line */}
-      <div className="max-w-screen-lg mx-auto px-6">
-        <div className="h-px bg-line" />
-      </div>
-
-      {/* Features */}
-      <section className="py-20 px-6">
-        <div className="max-w-screen-lg mx-auto">
-          <motion.p
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            custom={0}
-            className="text-micro uppercase text-muted tracking-widest mb-4"
-          >
-            Tính năng
-          </motion.p>
-          <motion.h2
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            custom={1}
-            className="text-headline font-semibold mb-14 max-w-md"
-          >
-            Mọi thứ bạn cần cho một routine đúng chuẩn
-          </motion.h2>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-            variants={stagger}
-            className="grid sm:grid-cols-2 gap-x-16 gap-y-12"
-          >
-            {[
-              { title: "Phân tích da", text: "Quiz xác định loại da, vấn đề cần giải quyết và ngân sách phù hợp." },
-              { title: "Gợi ý sản phẩm", text: "So sánh từ drugstore Việt đến luxury quốc tế, lọc theo budget thực." },
-              { title: "Kiểm tra xung đột", text: "Cảnh báo khi phối hợp thành phần không tương thích như Retinol + AHA." },
-              { title: "Routine builder", text: "Kéo thả sắp xếp bước dưỡng sáng/tối, theo dõi tổng chi phí." },
-            ].map((f) => (
-              <motion.div key={f.title} variants={item}>
-                <h3 className="text-body font-semibold mb-2">{f.title}</h3>
-                <p className="text-body text-muted leading-relaxed">{f.text}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+      {/* Premium About & Features Section */}
+      <AboutUsSection />
 
       {/* Dark section */}
       <section className="bg-fg text-bg py-20 px-6">

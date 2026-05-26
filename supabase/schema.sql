@@ -56,6 +56,8 @@ CREATE TABLE rules (
 CREATE INDEX idx_products_category ON products(category);
 CREATE INDEX idx_products_brand ON products(brand);
 CREATE INDEX idx_ingredients_category ON ingredients(category);
+CREATE INDEX idx_product_ingredients_prod ON product_ingredients(product_id);
+CREATE INDEX idx_product_ingredients_ing ON product_ingredients(ingredient_id);
 
 -- SECURITY (RLS)
 -- We only need READ access for anonymous users. Writing is done via Server/Admin.

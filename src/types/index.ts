@@ -4,7 +4,7 @@ export interface Product {
   brand: string;
   price: number;
   type: "skincare" | "makeup";
-  category: "cleanser" | "toner" | "serum" | "moisturizer" | "sunscreen" | "base-makeup" | "lip" | "eye" | "brow" | "blush";
+  category: "cleanser" | "toner" | "serum" | "moisturizer" | "sunscreen" | "exfoliant" | "eye-cream" | "mask" | "base-makeup" | "lip" | "eye" | "brow" | "blush";
   skinTypes: string[];
   concerns: string[];
   texture: string;
@@ -45,4 +45,21 @@ export interface UserProfile {
   budget: string;
   allergies: string;
   quizCompleted: boolean;
+  barrier?: string;
+  barrierStatus?: "stable" | "redness" | "flaking" | "stinging";
+  lifestyle?: string[];
+  preference?: string;
+  title?: string;
+  mainGoal?: string;
+  subscriptionPlan?: "free" | "premium" | "ultimate";
+  age?: string;
+  gender?: string;
+  environment?: string;
+  makeupFrequency?: string;
+  texturePreference?: string;
+  activeIngredients?: string[];
+  avoidedIngredients?: string[];
+  cycleStartDate?: string;
+  cycleLength?: number;
 }
+

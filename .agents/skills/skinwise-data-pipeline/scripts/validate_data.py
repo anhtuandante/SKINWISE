@@ -9,7 +9,7 @@ import os
 import sys
 
 def load_json(path):
-    with open(path, 'r', encoding='utf-8') as f:
+    with open(path, 'r', encoding='utf-8-sig') as f:
         return json.load(f)
 
 def validate(data_dir):

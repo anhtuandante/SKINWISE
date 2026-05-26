@@ -1,186 +1,499 @@
 "use client"
 
-import { useMemo, useState, useEffect } from "react"
-import Link from "next/link"
-import { motion, type Variants } from "framer-motion"
+import { useState, useEffect, useMemo } from "react"
+import { useRouter } from "next/navigation"
+import { motion, AnimatePresence } from "framer-motion"
 import { useUserStore } from "@/store/user-store"
+import { buildInitialRoutine, formatPrice, calculateTotal, getAllProducts } from "@/lib/quiz-logic"
+import { Product, UserProfile } from "@/types"
+import { calculateMatchScore } from "@/lib/recommendation-engine"
+import { getCyclePhase } from "@/utils/cyclePredictor"
+import { Sparkles, ArrowRight, Loader2, Sun, Moon, CheckCircle2, PlusCircle, ShoppingBag, ExternalLink } from "lucide-react"
 import { useRoutineStore } from "@/store/routine-store"
-import { filterProducts, getProductsByCategory } from "@/lib/quiz-logic"
-import { CATEGORY_LABELS } from "@/lib/constants"
 import { useToastStore } from "@/store/toast-store"
-import UserSummaryCard from "@/components/quiz/UserSummaryCard"
-import RoutineBuilder from "@/components/routine/RoutineBuilder"
-import ProductCard from "@/components/routine/ProductCard"
-import { Product } from "@/types"
-import { ExpandingSearchDock } from "@/components/ui/expanding-search-dock-shadcnui"
 
-const stagger: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.05 } },
-}
-
-const item: Variants = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } },
+// Step labels and tips per category
+const STEP_INFO: Record<string, { label: string, tip: string }> = {
+  cleanser: { label: "Rửa mặt", tip: "Massage nhẹ 60 giây với da ướt, rửa sạch bằng nước ấm." },
+  toner: { label: "Toner", tip: "Đổ ra bông tẩy trang hoặc lòng bàn tay, vỗ nhẹ lên mặt." },
+  serum: { label: "Serum đặc trị", tip: "3-4 giọt, ấn nhẹ vào da. Đợi 1 phút trước bước tiếp." },
+  moisturizer: { label: "Kem dưỡng ẩm", tip: "Lượng bằng hạt đậu, thoa đều mặt và cổ." },
+  sunscreen: { label: "Chống nắng", tip: "2 ngón tay kem. Thoa lại mỗi 2-3 giờ nếu ra ngoài." },
+  exfoliant: { label: "Tẩy da chết", tip: "Chỉ dùng 2-3 lần/tuần vào buổi tối. Không dùng khi da đang kích ứng." },
 }
 
 export default function ResultsPage() {
-  const { skinType, concerns, budget } = useUserStore()
+  const router = useRouter()
+  const user = useUserStore()
   const routine = useRoutineStore()
   const addToast = useToastStore((s) => s.addToast)
-
-  const [recommended, setRecommended] = useState<Product[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [searchQuery, setSearchQuery] = useState("")
+  
+  const [isAnalyzing, setIsAnalyzing] = useState(true)
+  const [analyzeStep, setAnalyzeStep] = useState(0)
+  const [allProducts, setAllProducts] = useState<Product[]>([])
+  const [morningRoutine, setMorningRoutine] = useState<Product[]>([])
+  const [eveningRoutine, setEveningRoutine] = useState<Product[]>([])
 
   useEffect(() => {
-    async function loadProducts() {
-      if (!skinType || !budget) {
-        setIsLoading(false)
-        return
-      }
-      setIsLoading(true)
-      const data = await filterProducts(skinType, concerns, budget)
-      setRecommended(data)
-      setIsLoading(false)
-    }
-    loadProducts()
-  }, [skinType, concerns, budget])
-
-  const filteredRecommended = useMemo(() => {
-    if (!searchQuery) return recommended;
-    return recommended.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.brand.toLowerCase().includes(searchQuery.toLowerCase()))
-  }, [recommended, searchQuery])
-
-  const grouped = useMemo(() => getProductsByCategory(filteredRecommended), [filteredRecommended])
-  const hasData = !!skinType && !!budget
-
-  const handleAdd = (product: Product) => {
-    if (product.timeOfDay === "PM") {
-      routine.addToEvening(product)
-      addToast(`Đã thêm ${product.name} vào routine tối`, "success")
+    if (!user.quizCompleted) {
+      router.replace("/quiz")
       return
     }
-    if (product.timeOfDay === "AM") {
-      routine.addToMorning(product)
-      addToast(`Đã thêm ${product.name} vào routine sáng`, "success")
-      return
+
+    async function loadResults() {
+      const data = await buildInitialRoutine(user)
+      setMorningRoutine(data.morning)
+      setEveningRoutine(data.evening)
+
+      const prods = await getAllProducts()
+      setAllProducts(prods)
     }
-    const addedMorning = routine.addToMorning(product)
-    if (addedMorning) {
-      addToast(`Đã thêm ${product.name} vào routine sáng`, "success")
+
+    loadResults()
+
+    // Staggered loading steps
+    const timers = [
+      setTimeout(() => setAnalyzeStep(1), 600),
+      setTimeout(() => setAnalyzeStep(2), 1400),
+      setTimeout(() => setAnalyzeStep(3), 2200),
+      setTimeout(() => setIsAnalyzing(false), 3000),
+    ]
+    return () => timers.forEach(clearTimeout)
+  }, [user, router])
+
+  const handleApplyEntireRoutine = () => {
+    // Clear previous routines first to prevent over-adding
+    routine.clearRoutine();
+
+    morningRoutine.forEach(p => {
+      routine.addToMorning(p)
+    });
+
+    eveningRoutine.forEach(p => {
+      routine.addToEvening(p)
+    });
+
+    addToast("Đã lưu toàn bộ Routine của bạn!", "success");
+    router.push("/dashboard")
+  }
+
+  const handleSwapProduct = (timeOfDay: "AM" | "PM", idx: number, newProduct: Product) => {
+    if (timeOfDay === "AM") {
+      const updated = [...morningRoutine]
+      updated[idx] = newProduct
+      setMorningRoutine(updated)
+      addToast(`Đã chọn ${newProduct.name} cho chu trình sáng`, "success")
     } else {
-      routine.addToEvening(product)
-      addToast(`Đã thêm ${product.name} vào routine tối`, "success")
+      const updated = [...eveningRoutine]
+      updated[idx] = newProduct
+      setEveningRoutine(updated)
+      addToast(`Đã chọn ${newProduct.name} cho chu trình tối`, "success")
     }
   }
 
-  return (
-    <div className="min-h-screen bg-bg">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-10 bg-bg/90 backdrop-blur-sm border-b border-line">
-        <div className="max-w-2xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="text-caption text-muted hover:text-fg transition-colors">
-            ← Trang chủ
-          </Link>
-          <span className="text-body font-semibold">Kết quả</span>
-          <Link href="/ingredients" className="text-caption text-muted hover:text-fg transition-colors">
-            Thành phần
-          </Link>
-        </div>
-      </header>
+  const morningTotal = calculateTotal(morningRoutine)
+  const eveningTotal = calculateTotal(eveningRoutine)
+  const allUniqueProducts = Array.from(
+    new Map([...morningRoutine, ...eveningRoutine].map(p => [p.id, p])).values()
+  )
+  const grandTotal = calculateTotal(allUniqueProducts)
 
-      <div className="max-w-2xl mx-auto px-6 pt-22 pb-12 space-y-10">
-        {isLoading ? (
-          <div className="space-y-6">
-            <div className="h-40 bg-line/50 rounded-2xl animate-pulse"></div>
-            <div className="h-64 bg-line/30 rounded-2xl animate-pulse"></div>
-            <div className="h-64 bg-line/30 rounded-2xl animate-pulse"></div>
-          </div>
-        ) : !hasData ? (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="py-20 text-center"
+  const barrierIsWeak = user.barrierStatus === "stinging" || 
+                        user.barrierStatus === "redness" || 
+                        user.barrierStatus === "flaking"
+
+  const cycleInfo = getCyclePhase(user.cycleStartDate, user.cycleLength || 28)
+
+  return (
+    <div className="min-h-screen bg-bg text-fg">
+      <AnimatePresence mode="wait">
+        {isAnalyzing ? (
+          <motion.div 
+            key="loading"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="flex flex-col items-center justify-center min-h-screen p-6 text-center"
           >
-            <div className="text-[3rem] mb-4">🧴</div>
-            <p className="text-body text-muted mb-2">Bạn chưa hoàn thành quiz</p>
-            <p className="text-caption text-muted mb-6">Trả lời vài câu hỏi để nhận gợi ý sản phẩm phù hợp.</p>
-            <Link
-              href="/quiz"
-              className="text-body font-medium px-6 py-3 bg-fg text-bg rounded-xl hover:opacity-90 transition-opacity inline-flex items-center"
-            >
-              Làm quiz
-            </Link>
+            <div className="relative mb-8">
+              <div className="absolute inset-0 bg-fg/10 blur-2xl rounded-full animate-pulse" />
+              <div className="w-20 h-20 bg-fg rounded-[24px] flex items-center justify-center shadow-xl relative z-10 animate-bounce">
+                <Sparkles size={32} className="text-bg animate-spin-slow" />
+              </div>
+            </div>
+            
+            <h2 className="text-title font-semibold mb-2">Đang xây dựng Routine cho bạn...</h2>
+            <p className="text-caption text-muted max-w-[300px] mx-auto mb-10">
+              SkinWise AI đang chọn lọc sản phẩm phù hợp nhất với da và ngân sách của bạn.
+            </p>
+            
+            <div className="space-y-5 w-full max-w-[300px] text-left mx-auto">
+              {[
+                "Phân tích loại da và vấn đề",
+                "Chọn sản phẩm phù hợp ngân sách",
+                "Sắp xếp thứ tự bôi thoa"
+              ].map((text, i) => (
+                <div key={i} className="flex items-center gap-3 text-caption font-medium">
+                  {analyzeStep > i ? (
+                    <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}>
+                      <CheckCircle2 size={18} className="text-success" />
+                    </motion.div>
+                  ) : (
+                    <Loader2 size={18} className="animate-spin text-muted/40" />
+                  )}
+                  <span className={analyzeStep > i ? "text-fg" : "text-muted"}>{text}</span>
+                </div>
+              ))}
+            </div>
           </motion.div>
         ) : (
-          <>
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-            >
-              <UserSummaryCard />
-            </motion.div>
-
-            <section className="space-y-4">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.15 }}
-                className="flex items-center justify-between gap-4 flex-wrap"
+          <motion.div
+            key="results"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-2xl mx-auto px-6 py-10 pb-36"
+          >
+            {/* Header */}
+            <div className="text-center mb-6">
+              <motion.div 
+                initial={{ scale: 0 }} 
+                animate={{ scale: 1 }} 
+                transition={{ type: "spring", delay: 0.2 }}
+                className="w-14 h-14 bg-success/10 text-success rounded-full flex items-center justify-center mx-auto mb-5"
               >
-                <div className="flex items-center gap-4">
-                  <h2 className="text-title font-semibold">Sản phẩm gợi ý</h2>
-                  <span className="text-caption text-muted">{filteredRecommended.length} sản phẩm</span>
-                </div>
-                <ExpandingSearchDock onSearch={setSearchQuery} placeholder="Tìm sản phẩm..." />
+                <CheckCircle2 size={28} />
               </motion.div>
+              <h1 className="text-headline font-semibold mb-2">Routine của bạn đã sẵn sàng!</h1>
+              <p className="text-body text-muted max-w-md mx-auto mb-4">
+                Dựa trên phân tích cơ địa và môi trường, SkinWise AI đã thiết kế chu trình <strong>tối ưu và an toàn nhất</strong> cho bạn.
+              </p>
+            </div>
 
-              <div className="space-y-6">
-                {Object.entries(grouped).map(([category, items]) => (
-                  <div key={category} className="space-y-3">
-                    <div className="text-body font-semibold text-muted">{CATEGORY_LABELS[category] || category}</div>
-                    <motion.div
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: true, margin: "-30px" }}
-                      variants={stagger}
-                      className="grid sm:grid-cols-2 gap-3"
-                    >
-                      {items.map((p) => {
-                        const isInRoutine =
-                          routine.morningRoutine.some((r) => r.id === p.id) ||
-                          routine.eveningRoutine.some((r) => r.id === p.id)
+            {/* Personalized Routine Profile Summary */}
+            <div className="flex flex-wrap gap-2 justify-center mb-8">
+              <span className="text-[10px] font-bold bg-fg/5 text-fg px-3 py-1.5 rounded-full uppercase tracking-wider">
+                Da: {user.skinType === 'oily' ? 'Dầu' : user.skinType === 'dry' ? 'Khô' : user.skinType === 'sensitive' ? 'Nhạy cảm' : user.skinType === 'combination' ? 'Hỗn hợp' : 'Thường'}
+              </span>
+              <span className="text-[10px] font-bold bg-fg/5 text-fg px-3 py-1.5 rounded-full uppercase tracking-wider">
+                Vấn đề: {user.concerns.map(c => c === 'acne' ? 'Mụn' : c === 'pores' ? 'Lỗ chân lông' : c === 'dark-spots' ? 'Thâm nám' : c === 'aging' ? 'Lão hóa' : c === 'dullness' ? 'Xỉn màu' : c === 'dryness' ? 'Thiếu ẩm' : c).join(', ')}
+              </span>
+              <span className="text-[10px] font-bold bg-fg/5 text-fg px-3 py-1.5 rounded-full uppercase tracking-wider">
+                Ngân sách: {user.budget === 'budget' ? 'Dưới 200k' : user.budget === 'affordable' ? '200k-400k' : user.budget === 'mid-range' ? '400k-1tr' : 'Cao cấp'}
+              </span>
+              {barrierIsWeak && (
+                <span className="text-[10px] font-bold bg-red-500/10 text-red-500 px-3 py-1.5 rounded-full uppercase tracking-wider border border-red-500/10 flex items-center gap-1">
+                  🛡️ SOS Phục hồi
+                </span>
+              )}
+              {cycleInfo && (
+                <span className="text-[10px] font-bold bg-indigo-500/10 text-indigo-600 px-3 py-1.5 rounded-full uppercase tracking-wider border border-indigo-500/10 flex items-center gap-1">
+                  📅 {cycleInfo.label}
+                </span>
+              )}
+            </div>
 
-                        return (
-                          <motion.div key={p.id} variants={item}>
-                            <ProductCard
-                              product={p}
-                              onAdd={handleAdd}
-                              isInRoutine={isInRoutine}
-                            />
-                          </motion.div>
-                        )
-                      })}
-                    </motion.div>
-                  </div>
-                ))}
-              </div>
-            </section>
+            {/* Grand Total Budget Card */}
+            {grandTotal > 0 && (
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="mb-8 p-5 bg-white border border-line rounded-2xl shadow-soft text-center"
+              >
+                <div className="text-micro font-bold text-muted uppercase tracking-widest mb-1">💰 Tổng chi phí cả Routine</div>
+                <div className="text-headline font-bold text-fg">{formatPrice(grandTotal)}</div>
+                <div className="text-caption text-muted mt-1">
+                  {allUniqueProducts.length} sản phẩm · Dùng được khoảng 2-3 tháng
+                </div>
+              </motion.div>
+            )}
 
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4 }}
+            <div className="space-y-10">
+              {/* Morning Routine */}
+              <RoutineTimeline
+                title="Chu Trình Buổi Sáng"
+                subtitle="Bảo vệ da khỏi tác hại môi trường"
+                icon={<Sun size={18} />}
+                gradientFrom="#FFB75E"
+                gradientTo="#ED8F03"
+                products={morningRoutine}
+                total={morningTotal}
+                profile={user}
+                delay={0.4}
+                allProducts={allProducts}
+                onSwapProduct={(idx, newP) => handleSwapProduct("AM", idx, newP)}
+              />
+
+              {/* Evening Routine */}
+              <RoutineTimeline
+                title="Chu Trình Buổi Tối"
+                subtitle="Phục hồi và dưỡng chất chuyên sâu"
+                icon={<Moon size={18} />}
+                gradientFrom="#2b5876"
+                gradientTo="#4e4376"
+                products={eveningRoutine}
+                total={eveningTotal}
+                profile={user}
+                delay={0.6}
+                allProducts={allProducts}
+                onSwapProduct={(idx, newP) => handleSwapProduct("PM", idx, newP)}
+              />
+            </div>
+
+            {/* Floating Bottom Bar */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1 }}
+              className="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-bg via-bg/95 to-transparent pointer-events-none z-50"
             >
-              <RoutineBuilder />
+              <div className="max-w-2xl mx-auto pointer-events-auto flex flex-col sm:flex-row gap-3">
+                <button 
+                  onClick={handleApplyEntireRoutine}
+                  className="flex-1 bg-fg text-bg rounded-2xl py-4 font-bold text-body shadow-2xl hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                >
+                  <PlusCircle size={20} /> Lưu Routine & Vào Workspace
+                </button>
+                <button 
+                  onClick={() => router.push("/dashboard")}
+                  className="bg-white text-fg border border-line rounded-2xl py-4 px-6 font-bold text-caption shadow-lg hover:bg-surface active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                >
+                  Tự chọn <ArrowRight size={16} />
+                </button>
+              </div>
             </motion.div>
-          </>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
+
+// --- Routine Timeline Component ---
+function RoutineTimeline({ 
+  title, 
+  subtitle, 
+  icon, 
+  gradientFrom, 
+  gradientTo, 
+  products, 
+  total, 
+  profile, 
+  delay,
+  allProducts,
+  onSwapProduct
+}: {
+  title: string
+  subtitle: string
+  icon: React.ReactNode
+  gradientFrom: string
+  gradientTo: string
+  products: Product[]
+  total: number
+  profile: UserProfile
+  delay: number
+  allProducts: Product[]
+  onSwapProduct: (idx: number, newP: Product) => void
+}) {
+  if (products.length === 0) return null
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay }}
+    >
+      {/* Section Header */}
+      <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center gap-3">
+          <div 
+            className="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-lg"
+            style={{ background: `linear-gradient(135deg, ${gradientFrom}, ${gradientTo})` }}
+          >
+            {icon}
+          </div>
+          <div>
+            <div className="text-body font-bold text-fg">{title}</div>
+            <div className="text-micro text-muted">{subtitle}</div>
+          </div>
+        </div>
+        <div className="text-right">
+          <div className="text-body font-bold text-fg">{formatPrice(total)}</div>
+          <div className="text-micro text-muted">{products.length} sản phẩm</div>
+        </div>
+      </div>
+
+      {/* Timeline Steps */}
+      <div className="relative">
+        {/* Vertical line */}
+        <div className="absolute left-5 top-0 bottom-0 w-px bg-line" />
+
+        <div className="space-y-0">
+          {products.map((product, idx) => (
+            <ProductStepCard
+              key={product.id}
+              product={product}
+              idx={idx}
+              profile={profile}
+              gradientFrom={gradientFrom}
+              gradientTo={gradientTo}
+              allProducts={allProducts}
+              delay={delay + 0.1 + (idx * 0.12)}
+              onSwap={(newP) => onSwapProduct(idx, newP)}
+            />
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
+// --- Modular Step Card component to handle own dropdown state ---
+function ProductStepCard({
+  product,
+  idx,
+  profile,
+  gradientFrom,
+  gradientTo,
+  allProducts,
+  delay,
+  onSwap
+}: {
+  product: Product
+  idx: number
+  profile: UserProfile
+  gradientFrom: string
+  gradientTo: string
+  allProducts: Product[]
+  delay: number
+  onSwap: (newP: Product) => void
+}) {
+  const [showAlts, setShowAlts] = useState(false)
+  const stepInfo = STEP_INFO[product.category] || { label: product.category, tip: "" }
+  const match = calculateMatchScore(product, profile)
+
+  // Filter 2 best alternative products in the same category
+  const alternatives = useMemo(() => {
+    if (allProducts.length === 0) return []
+    return allProducts
+      .filter((p) => p.category === product.category && p.id !== product.id && p.type === "skincare")
+      .map((p) => ({
+        product: p,
+        match: calculateMatchScore(p, profile)
+      }))
+      .sort((a, b) => b.match.score - a.match.score)
+      .slice(0, 2)
+  }, [allProducts, product, profile])
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -10 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay }}
+      className="relative pl-14 pb-6 last:pb-0"
+    >
+      {/* Step number circle */}
+      <div 
+        className="absolute left-[10px] top-1 w-[22px] h-[22px] rounded-full flex items-center justify-center text-white text-[11px] font-bold shadow-sm z-10"
+        style={{ background: `linear-gradient(135deg, ${gradientFrom}, ${gradientTo})` }}
+      >
+        {idx + 1}
+      </div>
+
+      {/* Card */}
+      <div className="bg-white border border-line rounded-2xl p-5 hover:border-fg/20 hover:shadow-soft transition-all">
+        {/* Step label */}
+        <div className="flex justify-between items-center mb-3">
+          <div className="text-micro font-bold text-muted uppercase tracking-widest">
+            Bước {idx + 1}: {stepInfo.label}
+          </div>
+          {alternatives.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setShowAlts(!showAlts)}
+              className="text-[10px] text-indigo-600 hover:text-indigo-800 font-extrabold transition-colors uppercase tracking-wider"
+            >
+              {showAlts ? "Đóng ✕" : "Thay sản phẩm khác ⇄"}
+            </button>
+          )}
+        </div>
+
+        {/* Product info */}
+        <div className="flex items-start justify-between gap-3 mb-3">
+          <div className="flex-1 min-w-0">
+            <div className="text-body font-bold text-fg leading-tight">{product.name}</div>
+            <div className="text-caption text-muted mt-0.5">{product.brand} · {product.size}</div>
+          </div>
+          <div className="text-body font-bold text-fg whitespace-nowrap">{formatPrice(product.price)}</div>
+        </div>
+
+        {/* AI Match reasons */}
+        {match.reasons.length > 0 && (
+          <div className="mb-3 p-3 bg-surface/50 rounded-xl border border-line/50">
+            <div className="flex items-center gap-1.5 mb-2">
+              <Sparkles size={11} className="text-fg animate-pulse" />
+              <span className="text-[11px] font-extrabold text-fg tracking-tight">TẠI SAO SẢN PHẨM NÀY?</span>
+            </div>
+            <ul className="space-y-1">
+              {match.reasons.slice(0, 3).map((reason, i) => (
+                <li key={i} className="flex items-start gap-1.5">
+                  <CheckCircle2 size={11} className="text-success shrink-0 mt-0.5" />
+                  <span className="text-[12px] text-muted leading-relaxed">{reason}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Usage tip */}
+        {stepInfo.tip && (
+          <div className="text-[12px] text-muted/70 italic leading-relaxed mb-3">
+            💡 {stepInfo.tip}
+          </div>
+        )}
+
+        {/* Shopee link */}
+        <a
+          href={`${product.shopeeUrl}${product.shopeeUrl.includes('?') ? '&' : '?'}utm_source=affiliate&utm_medium=skincare_app&utm_campaign=skinwise`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full flex items-center justify-center gap-2 text-caption font-bold text-[#EE4D2D] hover:bg-[#EE4D2D]/5 border border-[#EE4D2D]/20 px-4 py-2.5 rounded-xl transition-all"
+        >
+          <ShoppingBag size={14} /> Mua trên Shopee <ExternalLink size={12} />
+        </a>
+
+        {/* Alternative Product Drawer list */}
+        {showAlts && alternatives.length > 0 && (
+          <div className="mt-4 pt-4 border-t border-line/60 space-y-3 animate-in fade-in slide-in-from-top-2 duration-200">
+            <div className="text-[10px] font-bold text-muted uppercase tracking-widest">Sản phẩm thay thế khuyên dùng:</div>
+            <div className="space-y-2">
+              {alternatives.map(({ product: altP, match: altM }) => (
+                <div 
+                  key={altP.id} 
+                  className="flex items-center justify-between p-3 border border-line rounded-xl hover:border-indigo-500/20 transition-all bg-surface/30 group"
+                >
+                  <div className="min-w-0 flex-1 pr-3">
+                    <div className="text-[13px] font-bold text-fg group-hover:text-indigo-600 transition-colors leading-snug">{altP.name}</div>
+                    <div className="text-[11px] text-muted mt-0.5">
+                      {altP.brand} · {formatPrice(altP.price)} · Match {altM.score}%
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onSwap(altP)
+                      setShowAlts(false)
+                    }}
+                    className="shrink-0 text-[11px] font-extrabold bg-fg text-bg px-3 py-1.5 rounded-lg hover:opacity-90 active:scale-95 transition-all"
+                  >
+                    Chọn
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
       </div>
-    </div>
+    </motion.div>
   )
 }

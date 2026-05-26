@@ -55,6 +55,11 @@ export const useRoutineStore = create<RoutineState>()(
     }),
     {
       name: "skinwise-routine",
+      skipHydration: true,
     }
   )
 );
+
+if (typeof window !== 'undefined') {
+  useRoutineStore.persist.rehydrate();
+}

@@ -31,11 +31,13 @@ export function checkConflicts(products: Product[]): ConflictWarning[] {
   const productIngredients: string[] = [];
 
   products.forEach((p) => {
-    p.ingredients.forEach((ing) => {
-      if (!productIngredients.includes(ing)) {
-        productIngredients.push(ing);
-      }
-    });
+    if (p.ingredients && Array.isArray(p.ingredients)) {
+      p.ingredients.forEach((ing) => {
+        if (!productIngredients.includes(ing)) {
+          productIngredients.push(ing);
+        }
+      });
+    }
   });
 
   // Check ingredient conflicts

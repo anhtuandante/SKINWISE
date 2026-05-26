@@ -3,6 +3,7 @@ import { Be_Vietnam_Pro } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
 import "./globals.css"
 import ToastContainer from "@/components/ui/Toast"
+import AIChatPanel from "@/components/chat/AIChatPanel"
 
 const beVietnamPro = Be_Vietnam_Pro({ 
   subsets: ["vietnamese", "latin"],
@@ -36,6 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="vi" className={`antialiased ${beVietnamPro.variable}`}>
       <body className="font-sans">
         {children}
+        <AIChatPanel />
         <ToastContainer />
         <Analytics />
         <script

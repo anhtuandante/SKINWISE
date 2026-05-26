@@ -1,4 +1,4 @@
-﻿{
+{
   "ingredients": [
     {
       "id": "niacinamide",
@@ -59,7 +59,7 @@
       "nameVi": "BHA",
       "category": "exfoliant",
       "benefits": ["trị mụn", "thông thoáng lỗ chân lông"],
-      "skinTypes": ["oily", "combination", "acne-prone"],
+      "skinTypes": ["oily", "combination"],
       "timeOfDay": "PM",
       "pregnancy": false,
       "conflictsWith": ["retinol"]
@@ -100,7 +100,7 @@
       "nameVi": "Tinh dầu tràm trà",
       "category": "acne-fighting",
       "benefits": ["kháng khuẩn", "giảm mụn"],
-      "skinTypes": ["oily", "acne-prone"],
+      "skinTypes": ["oily"],
       "timeOfDay": "both",
       "pregnancy": true
     },
@@ -110,7 +110,7 @@
       "nameVi": "Kẽm",
       "category": "acne-fighting",
       "benefits": ["kiểm soát dầu", "kháng viêm"],
-      "skinTypes": ["oily", "acne-prone"],
+      "skinTypes": ["oily"],
       "timeOfDay": "both",
       "pregnancy": true
     },
@@ -203,7 +203,7 @@
       "skinTypes": ["oily", "combination"],
       "timeOfDay": "both",
       "pregnancy": true,
-      "conflictsWith": ["sensitive-skin"]
+      "conflictsWith": []
     },
     {
       "id": "green-tea",
