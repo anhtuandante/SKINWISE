@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Product } from "@/types";
 
-const MAX_PRODUCTS = 5;
+const MAX_PRODUCTS = 8;
 
 interface RoutineState {
   morningRoutine: Product[];

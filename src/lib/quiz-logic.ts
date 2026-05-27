@@ -103,8 +103,8 @@ export function calculateTotal(products: Product[]): number {
 export async function buildInitialRoutine(
   profile: UserProfile
 ): Promise<{ morning: Product[]; evening: Product[] }> {
-  // Fetch products matching type skincare
-  const products = await filterProducts(profile, "skincare")
+  // Fetch products (both skincare and makeup)
+  const products = await filterProducts(profile)
 
   const morning: Product[] = []
   const evening: Product[] = []
@@ -211,6 +211,24 @@ export async function buildInitialRoutine(
   const sunscreen = getBestNonConflicting("sunscreen", morning)
   if (sunscreen) {
     morning.push(sunscreen)
+  }
+
+  // --- Step 5: Makeup (Optional based on frequency) ---
+  const makeupFrequency = profile.makeupFrequency || "occasionally"
+  if (makeupFrequency !== "rarely") {
+    // 5.1 Base Makeup
+    const baseMakeup = getBestNonConflicting("base-makeup", morning)
+    if (baseMakeup) morning.push(baseMakeup)
+
+    // 5.2 Lip Makeup
+    const lipMakeup = getBestNonConflicting("lip", morning)
+    if (lipMakeup) morning.push(lipMakeup)
+
+    // 5.3 Eyebrow / Eye Makeup
+    if (makeupFrequency === "daily") {
+      const browMakeup = getBestNonConflicting("brow", morning) || getBestNonConflicting("eye", morning)
+      if (browMakeup) morning.push(browMakeup)
+    }
   }
 
   // --- Knapsack Optimization Solver (Model D) ---
@@ -328,7 +346,7 @@ export async function buildInitialRoutine(
   const sortedEvening = getSortedRoutine(evening)
 
   return {
-    morning: sortedMorning.slice(0, 5),
-    evening: sortedEvening.slice(0, 5)
+    morning: sortedMorning.slice(0, 8),
+    evening: sortedEvening.slice(0, 8)
   }
 }
