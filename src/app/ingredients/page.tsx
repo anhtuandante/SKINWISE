@@ -96,10 +96,15 @@ export default function IngredientsPage() {
                 className="border border-line rounded-xl p-4 hover:border-fg/50 transition-all bg-white shadow-soft"
               >
                 <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <div className="text-body font-semibold">{ing.nameVi}</div>
-                    <div className="text-caption text-muted">{ing.name}</div>
-                    <div className="text-caption text-muted mt-1">{CATEGORY_LABELS[ing.category] || ing.category}</div>
+                  <div className="flex gap-3">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg text-white shrink-0 bg-gradient-to-br from-violet-400 to-fuchsia-500 shadow-sm">
+                      {ing.nameVi[0].toUpperCase()}
+                    </div>
+                    <div>
+                      <div className="text-body font-semibold">{ing.nameVi}</div>
+                      <div className="text-caption text-muted">{ing.name}</div>
+                      <div className="text-caption text-muted mt-1">{CATEGORY_LABELS[ing.category] || ing.category}</div>
+                    </div>
                   </div>
                   <button
                     onClick={() => setExpandedId(expanded ? null : ing.id)}

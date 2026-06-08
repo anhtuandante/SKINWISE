@@ -8,6 +8,7 @@ import { useUserStore } from "@/store/user-store"
 import { Sparkles, CheckCircle2 } from "lucide-react"
 import { calculateMatchScore } from "@/lib/recommendation-engine"
 import { useMemo } from "react"
+import ProductAvatar from "@/components/ui/ProductAvatar"
 
 interface ProductCardProps {
   product: Product
@@ -27,7 +28,8 @@ export default function ProductCard({ product, onAdd, onRemove, isInRoutine, com
 
   if (compact) {
     return (
-      <div className="flex items-center justify-between py-3 border-b border-line last:border-0">
+      <div className="flex items-center justify-between py-3 border-b border-line last:border-0 gap-3">
+        <ProductAvatar brand={product.brand} name={product.name} className="w-10 h-10" />
         <div className="flex-1 min-w-0">
           <div className="text-body font-medium text-fg truncate">{product.name}</div>
           <div className="text-caption text-muted">
@@ -53,9 +55,12 @@ export default function ProductCard({ product, onAdd, onRemove, isInRoutine, com
       className="border border-line rounded-2xl p-6 hover:border-fg/20 transition-all group bg-white relative overflow-hidden flex flex-col h-full"
     >
       <div className="flex items-start justify-between gap-4 mb-4">
-        <div className="flex-1">
-          <div className="text-body font-bold text-fg group-hover:text-fg transition-colors">{product.name}</div>
-          <div className="text-caption text-muted font-medium opacity-80">{product.brand}</div>
+        <div className="flex items-start gap-3 flex-1 min-w-0">
+          <ProductAvatar brand={product.brand} name={product.name} className="w-12 h-12" />
+          <div className="flex-1 min-w-0">
+            <div className="text-body font-bold text-fg group-hover:text-fg transition-colors truncate">{product.name}</div>
+            <div className="text-caption text-muted font-medium opacity-80 truncate">{product.brand}</div>
+          </div>
         </div>
         <span className="text-caption text-fg font-bold bg-line/10 px-3 py-1 rounded-full whitespace-nowrap">{formatPrice(product.price)}</span>
       </div>

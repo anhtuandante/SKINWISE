@@ -3,11 +3,11 @@
 import { useMemo } from "react";
 import { CalendarDays } from "lucide-react";
 import { useUserStore } from "@/store/user-store";
-import { useJournalStore } from "@/store/journal-store";
+import { useSkinStore } from "@/store/useSkinStore";
 
 export default function TreatmentCalendarPanel() {
   const user = useUserStore();
-  const { recoveryMode } = useJournalStore();
+  const { recoveryMode } = useSkinStore();
 
   const treatmentCalendar = useMemo(() => {
     if (recoveryMode) {

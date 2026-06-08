@@ -1,9 +1,11 @@
 "use client"
 
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { motion, type Variants } from "framer-motion"
 import Button from "@/components/ui/Button"
 import AboutUsSection from "@/components/ui/about-us-section"
+import { useUserStore } from "@/store/user-store"
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 20 },
@@ -25,6 +27,20 @@ const item: Variants = {
 }
 
 export default function HomePage() {
+  const router = useRouter()
+  const store = useUserStore()
+
+  const handleDemo = () => {
+    store.setAge("25-34")
+    store.setSkinType("combination")
+    store.toggleConcern("acne")
+    store.toggleConcern("pores")
+    store.setBudget("mid-range")
+    store.setBarrierStatus("stable")
+    store.setQuizCompleted(true)
+    router.push("/dashboard")
+  }
+
   return (
     <div className="min-h-screen bg-bg text-fg">
       {/* Nav */}
@@ -87,7 +103,7 @@ export default function HomePage() {
             <Button href="/quiz" size="lg">
               Làm quiz
             </Button>
-            <Button href="/dashboard" variant="outline">
+            <Button onClick={handleDemo} variant="outline">
               Xem demo
             </Button>
           </motion.div>

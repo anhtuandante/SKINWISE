@@ -1,4 +1,4 @@
-import { DiaryLog } from "@/store/useSkinStore";
+import { DiaryLog } from "@/types";
 
 export interface SkinMetrics {
   oiliness: number;

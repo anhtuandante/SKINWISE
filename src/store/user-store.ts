@@ -24,9 +24,12 @@ interface UserStore extends UserProfile {
   setCycleStartDate: (date: string) => void;
   setCycleLength: (length: number) => void;
   resetQuiz: () => void;
+  isHydrated: boolean;
+  setHydrated: () => void;
 }
 
-const initialState: UserProfile = {
+const initialState: UserProfile & { isHydrated: boolean } = {
+  isHydrated: false,
   skinType: "",
   concerns: [],
   budget: "",
@@ -90,15 +93,14 @@ export const useUserStore = create<UserStore>()(
       setCycleStartDate: (date) => set({ cycleStartDate: date }),
       setCycleLength: (length) => set({ cycleLength: length }),
       resetQuiz: () => set(initialState),
+      setHydrated: () => set({ isHydrated: true }),
     }),
     {
       name: "skinwise-user",
-      skipHydration: true,
+      onRehydrateStorage: () => (state) => {
+        state?.setHydrated();
+      },
     }
   )
 );
 
-// Hydrate store on client side only
-if (typeof window !== 'undefined') {
-  useUserStore.persist.rehydrate();
-}

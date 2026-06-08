@@ -3,62 +3,27 @@
 import { CheckCircle2, Sparkles, Check, RotateCcw } from "lucide-react";
 import { useUserStore } from "@/store/user-store";
 import { useRoutineStore } from "@/store/routine-store";
-import { useToastStore } from "@/store/toast-store";
+import { useAddToRoutine } from "@/hooks/useAddToRoutine";
 import { SKIN_LABELS, CONCERN_LABELS, BUDGET_LABELS } from "@/lib/constants";
 import ProductCard from "@/components/routine/ProductCard";
 import { Product } from "@/types";
-
-interface QuizAnswers {
-  skinType: string;
-  concern: string;
-  barrier: string;
-  lifestyle: string[];
-  preference: string;
-  budget: string;
-  subscriptionPlan?: "free" | "premium" | "ultimate";
-}
+import Link from "next/link";
 
 interface SkinProfileCardProps {
   recommended: Product[];
   setActiveTab: (tab: string) => void;
-  setQuizStep: (step: number) => void;
-  setQuizAnswers: React.Dispatch<React.SetStateAction<QuizAnswers>>;
 }
 
 export default function SkinProfileCard({
   recommended,
   setActiveTab,
-  setQuizStep,
-  setQuizAnswers,
 }: SkinProfileCardProps) {
   const user = useUserStore();
   const routine = useRoutineStore();
-  const addToast = useToastStore((s) => s.addToast);
+  const { handleAddToRoutine } = useAddToRoutine();
 
   const handleAddProduct = (product: Product) => {
-    if (product.timeOfDay === "PM") {
-      const success = routine.addToEvening(product);
-      if (success) addToast(`Đã thêm ${product.name} vào routine tối`, "success");
-      else addToast("Giới hạn tối đa 5 sản phẩm", "error");
-      return;
-    }
-    if (product.timeOfDay === "AM") {
-      const success = routine.addToMorning(product);
-      if (success) addToast(`Đã thêm ${product.name} vào routine sáng`, "success");
-      else addToast("Giới hạn tối đa 5 sản phẩm", "error");
-      return;
-    }
-    const addedMorning = routine.addToMorning(product);
-    if (addedMorning) {
-      addToast(`Đã thêm ${product.name} vào routine sáng`, "success");
-    } else {
-      const addedEvening = routine.addToEvening(product);
-      if (addedEvening) {
-        addToast(`Đã thêm ${product.name} vào routine tối`, "success");
-      } else {
-        addToast("Giới hạn tối đa 5 sản phẩm cho mỗi routine", "error");
-      }
-    }
+    handleAddToRoutine(product);
   };
 
   return (
@@ -341,24 +306,13 @@ export default function SkinProfileCard({
         >
           Xem chiến lược Routine →
         </button>
-        <button
-          onClick={() => {
-            user.resetQuiz();
-            setQuizStep(0);
-            setQuizAnswers({
-              skinType: "",
-              concern: "",
-              barrier: "",
-              lifestyle: [],
-              preference: "",
-              budget: "",
-            });
-          }}
-          className="px-6 py-4 border border-line rounded-2xl hover:bg-surface text-muted hover:text-fg transition-all"
+        <Link
+          href="/quiz"
+          className="px-6 py-4 border border-line rounded-2xl hover:bg-surface text-muted hover:text-fg transition-all flex items-center"
           aria-label="Làm lại chẩn đoán"
         >
           <RotateCcw size={18} />
-        </button>
+        </Link>
       </div>
     </div>
   );

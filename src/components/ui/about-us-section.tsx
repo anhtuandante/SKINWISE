@@ -3,6 +3,7 @@
 import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
+import { useRouter } from "next/navigation"
 import {
   Sparkles,
   Search,
@@ -22,6 +23,7 @@ import {
 import { motion, useScroll, useTransform, useInView, useSpring, type Variants } from "framer-motion"
 
 export default function AboutUsSection() {
+  const router = useRouter()
   const sectionRef = useRef<HTMLDivElement>(null)
   const statsRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(sectionRef, { once: false, amount: 0.1 })
@@ -229,7 +231,8 @@ export default function AboutUsSection() {
                   transition={{ duration: 0.8, delay: 0.9 }}
                 >
                   <motion.button
-                    className="bg-white/95 backdrop-blur-sm text-black px-5 py-2.5 rounded-full flex items-center gap-2 text-sm font-semibold shadow-xl"
+                    onClick={() => router.push("/quiz")}
+                    className="bg-white/95 backdrop-blur-sm text-black px-5 py-2.5 rounded-full flex items-center gap-2 text-sm font-semibold shadow-xl hover:bg-white transition-colors"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
@@ -331,6 +334,7 @@ export default function AboutUsSection() {
             <p className="text-white/70 text-lg">Hãy để AI của chúng tôi phân tích và thiết kế routine chỉ dành riêng cho bạn.</p>
           </div>
           <motion.button
+            onClick={() => router.push("/quiz")}
             className="relative z-10 bg-white text-black px-8 py-4 rounded-xl flex items-center gap-2 font-semibold hover:bg-gray-100 transition-colors whitespace-nowrap"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

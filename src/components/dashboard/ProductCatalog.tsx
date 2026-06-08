@@ -9,12 +9,12 @@ import { CATEGORY_LABELS } from "@/lib/constants";
 import ProductCard from "@/components/routine/ProductCard";
 import { useRoutineStore } from "@/store/routine-store";
 import { useUserStore } from "@/store/user-store";
-import { useToastStore } from "@/store/toast-store";
+import { useAddToRoutine } from "@/hooks/useAddToRoutine";
 
 export default function ProductCatalog() {
   const user = useUserStore();
   const routine = useRoutineStore();
-  const addToast = useToastStore((s) => s.addToast);
+  const { handleAddToRoutine } = useAddToRoutine();
 
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [isLoadingAllProducts, setIsLoadingAllProducts] = useState(true);
@@ -268,9 +268,7 @@ export default function ProductCatalog() {
               <div className="flex flex-col gap-2">
                 <button
                   onClick={() => {
-                    const success = routine.addToMorning(addingProduct);
-                    if (success) addToast(`Đã thêm vào routine sáng`, "success");
-                    else addToast("Routine sáng đã đầy (tối đa 5 sản phẩm)", "error");
+                    handleAddToRoutine(addingProduct, "AM");
                     setAddingProduct(null);
                   }}
                   className="w-full py-3 bg-surface hover:bg-line/25 border border-line rounded-xl text-caption font-bold text-fg transition-all text-center"
@@ -279,9 +277,7 @@ export default function ProductCatalog() {
                 </button>
                 <button
                   onClick={() => {
-                    const success = routine.addToEvening(addingProduct);
-                    if (success) addToast(`Đã thêm vào routine tối`, "success");
-                    else addToast("Routine tối đã đầy (tối đa 5 sản phẩm)", "error");
+                    handleAddToRoutine(addingProduct, "PM");
                     setAddingProduct(null);
                   }}
                   className="w-full py-3 bg-surface hover:bg-line/25 border border-line rounded-xl text-caption font-bold text-fg transition-all text-center"

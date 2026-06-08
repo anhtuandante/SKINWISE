@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { useUserStore } from "@/store/user-store"
+import { useToastStore } from "@/store/toast-store"
 import { 
   SKIN_TYPES, CONCERNS, BUDGETS,
   AGES, BARRIER_STATUS
@@ -41,6 +42,7 @@ export default function QuizPage() {
   const [direction, setDirection] = useState(1)
   const router = useRouter()
   const store = useUserStore()
+  const addToast = useToastStore((s) => s.addToast)
   const [showVision, setShowVision] = useState(false)
 
   const canNext = () => {
@@ -241,13 +243,31 @@ export default function QuizPage() {
               variant="outline" 
               onClick={handleBack} 
               disabled={step === 1}
-              className="bg-white"
+              className="bg-white shrink-0"
             >
               Quay lại
             </Button>
-            <Button onClick={handleNext} disabled={!canNext()} className="flex-1">
-              {step === 6 ? "Xem kết quả" : "Tiếp tục"}
-            </Button>
+            {step === 6 ? (
+              <div className="flex gap-2 flex-1">
+                <Button 
+                  onClick={() => {
+                    store.setCycleStartDate(""); // Xóa nếu bỏ qua
+                    handleNext();
+                  }} 
+                  variant="outline" 
+                  className="bg-white flex-1"
+                >
+                  Bỏ qua
+                </Button>
+                <Button onClick={handleNext} disabled={!canNext()} className="flex-1">
+                  Hoàn thành
+                </Button>
+              </div>
+            ) : (
+              <Button onClick={handleNext} disabled={!canNext()} className="flex-1">
+                Tiếp tục
+              </Button>
+            )}
           </div>
         </div>
       </main>
@@ -260,6 +280,7 @@ export default function QuizPage() {
               setShowVision(false)
               setStep(3) // Jump to concerns step
               setDirection(1)
+              addToast("Phân tích da qua ảnh thành công!", "success")
             }} 
           />
         )}

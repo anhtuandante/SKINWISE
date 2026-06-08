@@ -14,11 +14,14 @@ interface RoutineState {
   reorderMorning: (products: Product[]) => void;
   reorderEvening: (products: Product[]) => void;
   clearRoutine: () => void;
+  isHydrated: boolean;
+  setHydrated: () => void;
 }
 
 export const useRoutineStore = create<RoutineState>()(
   persist(
     (set, get) => ({
+      isHydrated: false,
       morningRoutine: [],
       eveningRoutine: [],
 
@@ -52,14 +55,13 @@ export const useRoutineStore = create<RoutineState>()(
       reorderEvening: (products) => set({ eveningRoutine: products }),
 
       clearRoutine: () => set({ morningRoutine: [], eveningRoutine: [] }),
+      setHydrated: () => set({ isHydrated: true }),
     }),
     {
       name: "skinwise-routine",
-      skipHydration: true,
+      onRehydrateStorage: () => (state) => {
+        state?.setHydrated();
+      },
     }
   )
 );
-
-if (typeof window !== 'undefined') {
-  useRoutineStore.persist.rehydrate();
-}

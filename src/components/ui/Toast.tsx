@@ -39,6 +39,19 @@ export default function ToastContainer() {
           >
             {TONE_ICON[toast.tone]}
             <span>{toast.message}</span>
+            {toast.action && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toast.action?.onClick();
+                  removeToast(toast.id);
+                }}
+                className="ml-3 px-2 py-1 bg-white/20 hover:bg-white/30 rounded-lg text-micro font-extrabold uppercase tracking-wider transition-all"
+              >
+                {toast.action.label}
+              </button>
+            )}
           </motion.div>
         ))}
       </AnimatePresence>

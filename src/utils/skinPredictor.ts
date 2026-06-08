@@ -1,4 +1,4 @@
-import { DiaryLog } from "@/store/useSkinStore";
+import { DiaryLog } from "@/types";
 import { calculateSkinScore } from "./trendAnalysis";
 
 // Helper: Sigmoid activation
@@ -261,9 +261,11 @@ export class SkinPredictorNetwork {
     ];
   }
 
-  // Trains the network using sequential history
+  // Trains the network using sequential history (skips partial/mood-only logs)
   public trainOnLogs(logs: DiaryLog[], epochs: number = 100) {
-    if (logs.length < 2) return;
+    // Only train on full logs — partial (mood-only) entries have estimated metrics
+    const fullLogs = logs.filter(l => !l.isPartial);
+    if (fullLogs.length < 2) return;
 
     const parseDate = (dStr: string) => {
       const parts = dStr.split("/");
@@ -272,7 +274,7 @@ export class SkinPredictorNetwork {
     };
 
     // Make sure they are chronological
-    const sortedLogs = [...logs].sort((a, b) => parseDate(a.date) - parseDate(b.date));
+    const sortedLogs = [...fullLogs].sort((a, b) => parseDate(a.date) - parseDate(b.date));
 
     const trainingSet: { inputs: number[]; targets: number[] }[] = [];
 
@@ -323,7 +325,16 @@ export class SkinPredictorNetwork {
       note: ""
     };
 
-    const inputs = SkinPredictorNetwork.extractFeatures(baselineYesterdayLog, todayLog);
+    const d = new Date();
+    const todayStr = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+    const isToday = todayLog.date === todayStr;
+    const isBeforeEvening = isToday && d.getHours() < 18;
+
+    const adjustedTodayLog = isBeforeEvening
+      ? { ...todayLog, pmRoutineCompleted: true }
+      : todayLog;
+
+    const inputs = SkinPredictorNetwork.extractFeatures(baselineYesterdayLog, adjustedTodayLog);
     const rawOutputs = this.predict(inputs);
 
     const score = Math.round(rawOutputs[0] * 100);
@@ -340,9 +351,13 @@ export class SkinPredictorNetwork {
 
     const skippedAM = !todayLog.amRoutineCompleted;
     const skippedPM = !todayLog.pmRoutineCompleted;
-    if (skippedAM && skippedPM) riskFactors.push("bỏ qua cả chu trình dưỡng da ngày & đêm");
-    else if (skippedAM) riskFactors.push("bỏ qua chu trình dưỡng da buổi sáng");
-    else if (skippedPM) riskFactors.push("bỏ qua chu trình dưỡng da buổi tối");
+    if (isBeforeEvening) {
+      if (skippedAM) riskFactors.push("bỏ qua chu trình dưỡng da buổi sáng");
+    } else {
+      if (skippedAM && skippedPM) riskFactors.push("bỏ qua cả chu trình dưỡng da ngày & đêm");
+      else if (skippedAM) riskFactors.push("bỏ qua chu trình dưỡng da buổi sáng");
+      else if (skippedPM) riskFactors.push("bỏ qua chu trình dưỡng da buổi tối");
+    }
 
     return {
       score,

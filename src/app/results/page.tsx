@@ -11,6 +11,7 @@ import { getCyclePhase } from "@/utils/cyclePredictor"
 import { Sparkles, ArrowRight, Loader2, Sun, Moon, CheckCircle2, PlusCircle, ShoppingBag, ExternalLink } from "lucide-react"
 import { useRoutineStore } from "@/store/routine-store"
 import { useToastStore } from "@/store/toast-store"
+import ProductAvatar from "@/components/ui/ProductAvatar"
 
 // Step labels and tips per category
 const STEP_INFO: Record<string, { label: string, tip: string }> = {
@@ -25,41 +26,46 @@ const STEP_INFO: Record<string, { label: string, tip: string }> = {
 export default function ResultsPage() {
   const router = useRouter()
   const user = useUserStore()
+  const isHydrated = useUserStore((s) => s.isHydrated)
   const routine = useRoutineStore()
   const addToast = useToastStore((s) => s.addToast)
   
   const [isAnalyzing, setIsAnalyzing] = useState(true)
-  const [analyzeStep, setAnalyzeStep] = useState(0)
+  const [analyzeStep] = useState(0)
   const [allProducts, setAllProducts] = useState<Product[]>([])
   const [morningRoutine, setMorningRoutine] = useState<Product[]>([])
   const [eveningRoutine, setEveningRoutine] = useState<Product[]>([])
 
   useEffect(() => {
+    if (!isHydrated) return;
     if (!user.quizCompleted) {
       router.replace("/quiz")
       return
     }
 
     async function loadResults() {
-      const data = await buildInitialRoutine(user)
-      setMorningRoutine(data.morning)
-      setEveningRoutine(data.evening)
+      try {
+        const data = await buildInitialRoutine(user)
+        setMorningRoutine(data.morning)
+        setEveningRoutine(data.evening)
 
-      const prods = await getAllProducts()
-      setAllProducts(prods)
+        const prods = await getAllProducts()
+        setAllProducts(prods)
+      } finally {
+        setIsAnalyzing(false)
+      }
     }
 
     loadResults()
+  }, [user, router, isHydrated])
 
-    // Staggered loading steps
-    const timers = [
-      setTimeout(() => setAnalyzeStep(1), 600),
-      setTimeout(() => setAnalyzeStep(2), 1400),
-      setTimeout(() => setAnalyzeStep(3), 2200),
-      setTimeout(() => setIsAnalyzing(false), 3000),
-    ]
-    return () => timers.forEach(clearTimeout)
-  }, [user, router])
+  if (!isHydrated) {
+    return (
+      <div className="min-h-screen bg-bg flex items-center justify-center">
+        <Loader2 className="animate-spin text-muted" size={24} />
+      </div>
+    )
+  }
 
   const handleApplyEntireRoutine = () => {
     // Clear previous routines first to prevent over-adding
@@ -78,17 +84,15 @@ export default function ResultsPage() {
   }
 
   const handleSwapProduct = (timeOfDay: "AM" | "PM", idx: number, newProduct: Product) => {
-    if (timeOfDay === "AM") {
-      const updated = [...morningRoutine]
-      updated[idx] = newProduct
-      setMorningRoutine(updated)
-      addToast(`Đã chọn ${newProduct.name} cho chu trình sáng`, "success")
-    } else {
-      const updated = [...eveningRoutine]
-      updated[idx] = newProduct
-      setEveningRoutine(updated)
-      addToast(`Đã chọn ${newProduct.name} cho chu trình tối`, "success")
-    }
+    const oldProduct = timeOfDay === "AM" ? morningRoutine[idx] : eveningRoutine[idx];
+    
+    // Replace the old product with the new one in BOTH routines to keep them in sync
+    const updatedMorning = morningRoutine.map(p => p.id === oldProduct.id ? newProduct : p);
+    const updatedEvening = eveningRoutine.map(p => p.id === oldProduct.id ? newProduct : p);
+
+    setMorningRoutine(updatedMorning);
+    setEveningRoutine(updatedEvening);
+    addToast(`Đã chọn ${newProduct.name}`, "success");
   }
 
   const morningTotal = calculateTotal(morningRoutine)
@@ -420,11 +424,14 @@ function ProductStepCard({
 
         {/* Product info */}
         <div className="flex items-start justify-between gap-3 mb-3">
-          <div className="flex-1 min-w-0">
-            <div className="text-body font-bold text-fg leading-tight">{product.name}</div>
-            <div className="text-caption text-muted mt-0.5">{product.brand} · {product.size}</div>
+          <div className="flex items-start gap-3 flex-1 min-w-0">
+            <ProductAvatar brand={product.brand} name={product.name} className="w-12 h-12" />
+            <div className="flex-1 min-w-0">
+              <div className="text-body font-bold text-fg leading-tight truncate">{product.name}</div>
+              <div className="text-caption text-muted mt-0.5 truncate">{product.brand} · {product.size}</div>
+            </div>
           </div>
-          <div className="text-body font-bold text-fg whitespace-nowrap">{formatPrice(product.price)}</div>
+          <div className="text-body font-bold text-fg whitespace-nowrap pl-2">{formatPrice(product.price)}</div>
         </div>
 
         {/* AI Match reasons */}
@@ -470,11 +477,12 @@ function ProductStepCard({
               {alternatives.map(({ product: altP, match: altM }) => (
                 <div 
                   key={altP.id} 
-                  className="flex items-center justify-between p-3 border border-line rounded-xl hover:border-indigo-500/20 transition-all bg-surface/30 group"
+                  className="flex items-center justify-between p-3 border border-line rounded-xl hover:border-indigo-500/20 transition-all bg-surface/30 group gap-3"
                 >
+                  <ProductAvatar brand={altP.brand} name={altP.name} className="w-10 h-10" />
                   <div className="min-w-0 flex-1 pr-3">
-                    <div className="text-[13px] font-bold text-fg group-hover:text-indigo-600 transition-colors leading-snug">{altP.name}</div>
-                    <div className="text-[11px] text-muted mt-0.5">
+                    <div className="text-[13px] font-bold text-fg group-hover:text-indigo-600 transition-colors leading-snug truncate">{altP.name}</div>
+                    <div className="text-[11px] text-muted mt-0.5 truncate">
                       {altP.brand} · {formatPrice(altP.price)} · Match {altM.score}%
                     </div>
                   </div>

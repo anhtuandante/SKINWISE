@@ -62,4 +62,25 @@ export interface UserProfile {
   cycleStartDate?: string;
   cycleLength?: number;
 }
-
+export interface DiaryLog {
+  id: number;
+  date: string;
+  dayName: string; // T2, T3, T4, T5, T6, T7, CN
+  mood: "great" | "okay" | "irritated";
+  isPartial?: boolean;        // true = mood-only quick save
+  source?: "manual" | "ai";   // how metrics were collected
+  metrics: {
+    oiliness: number;
+    dryness: number;
+    redness: number;
+    acne: number;
+    barrierComfort: number;
+    pores?: number;
+    texture?: number;
+  };
+  lifestyle: string[];
+  note: string;
+  image?: string | null;
+  amRoutineCompleted?: boolean;
+  pmRoutineCompleted?: boolean;
+}

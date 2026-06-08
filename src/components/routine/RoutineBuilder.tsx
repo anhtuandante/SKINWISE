@@ -115,14 +115,14 @@ export default function RoutineBuilder() {
   }
 
   return (
-    <section className="border border-line rounded-2xl p-6 bg-white space-y-5">
-      <div className="flex items-center justify-between">
-        <div className="flex gap-2">
+    <section className="border border-line rounded-2xl p-6 bg-white space-y-5 overflow-hidden">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex gap-2 w-full sm:w-auto">
           {["AM", "PM"].map((t) => (
             <button
               key={t}
               onClick={() => setTab(t as "AM" | "PM")}
-              className={`px-4 py-2 rounded-lg text-body font-medium transition-all relative ${
+              className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-body font-medium transition-all relative ${
                 tab === t ? "bg-fg text-bg" : "border border-line text-muted hover:border-fg/50"
               }`}
             >

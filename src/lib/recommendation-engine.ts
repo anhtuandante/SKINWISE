@@ -42,8 +42,8 @@ export function calculateMatchScore(product: Product, profile: UserProfile): Mat
   if (!hasAvoided) {
     score += 10;
     if (isSkinTypeMatch) {
-      const skinLabel = profile.skinType === 'oily' ? 'dầu' : profile.skinType === 'dry' ? 'khô' : profile.skinType === 'sensitive' ? 'nhạy cảm' : profile.skinType === 'combination' ? 'hỗn hợp' : 'của bạn'
-      reasons.push(`An toàn cho da ${skinLabel} và không chứa thành phần bạn cần tránh.`);
+      const skinLabel = profile.skinType === 'oily' ? 'da dầu' : profile.skinType === 'dry' ? 'da khô' : profile.skinType === 'sensitive' ? 'da nhạy cảm' : profile.skinType === 'combination' ? 'da hỗn hợp' : 'da của bạn'
+      reasons.push(`Công thức sinh học cực kỳ an toàn cho ${skinLabel} và tuyệt đối không chứa thành phần bạn muốn tránh.`);
     }
   } else {
     reasons.push(`Lưu ý: Có chứa thành phần bạn muốn tránh.`);
@@ -60,7 +60,16 @@ export function calculateMatchScore(product: Product, profile: UserProfile): Mat
     if (concernsMatchCount > 0) {
       const concernScore = (concernsMatchCount / userConcerns.length) * 25;
       score += concernScore;
-      reasons.push(`Giúp cải thiện ${concernsMatchCount} vấn đề da bạn đang quan tâm.`);
+      const concernNames: Record<string, string> = {
+        acne: "giảm mụn",
+        pores: "thu nhỏ lỗ chân lông",
+        "dark-spots": "mờ thâm nám",
+        aging: "chống lão hóa",
+        dullness: "cải thiện da xỉn màu",
+        dryness: "cấp ẩm sâu"
+      };
+      const translated = matchedConcerns.map(c => concernNames[c] || c).join(' và ');
+      reasons.push(`Thành phần đánh trúng đích giúp ${translated} (đúng với mong muốn hiện tại của bạn).`);
     }
   } else {
     score += 15; 
@@ -118,13 +127,13 @@ export function calculateMatchScore(product: Product, profile: UserProfile): Mat
       activesMatch = false;
       score -= 10; // Penalty
       if (barrierIsWeak) {
-        reasons.push(`Lưu ý: Sản phẩm có hoạt chất mạnh, nên thận trọng khi hàng rào da đang yếu.`);
+        reasons.push(`⚠️ Cảnh báo: Chứa hoạt chất mạnh (AHA/BHA/Retinol). Vui lòng thận trọng khi hàng rào da đang yếu để tránh bùng viêm.`);
       } else {
-        reasons.push(`Lưu ý: Có chứa hoạt chất mạnh, cần dùng cẩn thận vì da chưa quen.`);
+        reasons.push(`⚠️ Lưu ý: Có chứa hoạt chất mạnh, cần test vùng nhỏ trên da trước khi dùng vì da bạn chưa quen.`);
       }
     } else {
       score += 10;
-      reasons.push(`Chứa hoạt chất đặc trị phù hợp với mức độ chịu đựng của da bạn.`);
+      reasons.push(`Chứa hoạt chất đặc trị (AHA/BHA/Retinol) phù hợp với mức độ chịu đựng của da bạn, giúp đẩy nhanh hiệu quả.`);
     }
   } else {
     score += 10;

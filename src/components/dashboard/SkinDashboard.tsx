@@ -6,7 +6,8 @@ import { useRoutineStore } from "@/store/routine-store";
 import { calculateSkinScore } from "@/utils/trendAnalysis";
 import { SkinPredictorNetwork } from "@/utils/skinPredictor";
 import { useState, useMemo, useEffect } from "react";
-import { motion, AnimatePresence, animate } from "framer-motion";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Sparkles,
   Camera,
@@ -24,6 +25,7 @@ import {
 } from "lucide-react";
 import TrendVisualizer from "./TrendVisualizer";
 import VisionLab from "@/components/quiz/VisionLab";
+import SkinCheckinFlow from "./SkinCheckinFlow";
 import { cn } from "@/lib/utils";
 
 const METRIC_LABELS: Record<string, string> = {
@@ -63,9 +65,34 @@ export default function SkinDashboard({
   const { diaryLogs, pinnedMetrics, setPinnedMetrics } = useSkinStore();
 
   const [showVisionModal, setShowVisionModal] = useState(false);
+  const [showCheckinModal, setShowCheckinModal] = useState(false);
   const [showCustomizeModal, setShowCustomizeModal] = useState(false);
   const [tempPinnedMetrics, setTempPinnedMetrics] = useState<string[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
+
+  const [mounted, setMounted] = useState(false);
+  const isSkinStoreHydrated = useSkinStore((s) => s.isHydrated);
+  const isUserStoreHydrated = useUserStore((s) => s.isHydrated);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const [checkinStartStep, setCheckinStartStep] = useState(0);
+  const [checkinInitialMood, setCheckinInitialMood] = useState<"great" | "okay" | "irritated" | null>(null);
+  const [checkinTargetDateStr, setCheckinTargetDateStr] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      setCheckinStartStep(customEvent.detail?.startStep ?? 0);
+      setCheckinInitialMood(customEvent.detail?.initialMood ?? null);
+      setCheckinTargetDateStr(customEvent.detail?.targetDateStr);
+      setShowCheckinModal(true);
+    };
+    window.addEventListener("open-checkin-flow", handler as EventListener);
+    return () => window.removeEventListener("open-checkin-flow", handler as EventListener);
+  }, []);
 
   // Format today's date (DD/MM/YYYY)
   const todayStr = useMemo(() => {
@@ -130,16 +157,10 @@ export default function SkinDashboard({
     return calculateSkinScore(todayMetrics);
   }, [todayMetrics]);
 
-  // Score count-up micro-animation
-  const [displayScore, setDisplayScore] = useState(0);
+  // Score count-up micro-animation (Tắt theo feedback user)
+  const [displayScore, setDisplayScore] = useState(todayScore);
   useEffect(() => {
-    const controls = animate(displayScore, todayScore, {
-      duration: 1.0,
-      ease: "easeOut",
-      onUpdate: (latest) => setDisplayScore(Math.round(latest))
-    });
-    return () => controls.stop();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setDisplayScore(todayScore);
   }, [todayScore]);
 
   // Today's glance strip items status
@@ -185,6 +206,34 @@ export default function SkinDashboard({
   };
 
   const isLoggedToday = !!todayLog;
+
+  if (!mounted || !isSkinStoreHydrated || !isUserStoreHydrated) {
+    return (
+      <div className="flex items-center justify-center p-20 bg-white border border-line rounded-[32px] shadow-soft animate-pulse">
+        <span className="text-caption text-muted font-bold">Đang tải Dashboard...</span>
+      </div>
+    );
+  }
+
+  if (!user.quizCompleted) {
+    return (
+      <div className="border border-line rounded-[32px] p-10 bg-white shadow-soft text-center space-y-5 animate-in mt-10">
+        <div className="w-16 h-16 bg-fg/5 rounded-full flex items-center justify-center mx-auto">
+          <Sparkles size={28} className="text-accent" />
+        </div>
+        <h2 className="text-headline font-semibold">Chào mừng đến với SkinWise</h2>
+        <p className="text-body text-muted max-w-md mx-auto leading-relaxed">
+          Hãy hoàn thành bài kiểm tra ngắn gọn về làn da để SkinWise AI có thể tạo chu trình dưỡng da và theo dõi chỉ số sức khỏe da riêng biệt dành cho bạn.
+        </p>
+        <Link
+          href="/quiz"
+          className="inline-flex items-center gap-2 bg-fg text-bg px-6 py-3.5 rounded-2xl font-bold hover:opacity-90 transition-all shadow-lg"
+        >
+          <Sparkles size={16} /> Bắt đầu chẩn đoán da
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -458,11 +507,27 @@ export default function SkinDashboard({
           Quét sản phẩm mới (OCR)
         </button>
         <button
-          onClick={() => onNavigate("journal")}
+          onClick={() => {
+            const isFullLoggedToday = todayLog && !todayLog.isPartial;
+            if (isFullLoggedToday) {
+              onNavigate("journal");
+            } else {
+              if (todayLog) {
+                setCheckinStartStep(1);
+                setCheckinInitialMood(todayLog.mood);
+                setCheckinTargetDateStr(todayLog.date);
+              } else {
+                setCheckinStartStep(0);
+                setCheckinInitialMood(null);
+                setCheckinTargetDateStr(todayStr);
+              }
+              setShowCheckinModal(true);
+            }
+          }}
           className="bg-white hover:bg-surface border border-line text-fg py-4 px-6 rounded-2xl font-bold flex items-center justify-center gap-2 hover:scale-[1.01] hover:shadow-md transition-all active:scale-[0.99]"
         >
           <Calendar size={18} />
-          Cập nhật nhật ký da
+          {todayLog && !todayLog.isPartial ? "Xem nhật ký da" : todayLog ? "Bổ sung nhật ký" : "Check-in da (3s)"}
         </button>
       </div>
 
@@ -525,6 +590,27 @@ export default function SkinDashboard({
         <VisionLab
           onComplete={() => setShowVisionModal(false)}
           onClose={() => setShowVisionModal(false)}
+        />
+      )}
+
+      {/* 6b. Check-in Flow Modal */}
+      {showCheckinModal && (
+        <SkinCheckinFlow
+          initialMood={checkinInitialMood}
+          startStep={checkinStartStep}
+          targetDateStr={checkinTargetDateStr}
+          onComplete={() => {
+            setShowCheckinModal(false);
+            setCheckinStartStep(0);
+            setCheckinInitialMood(null);
+            setCheckinTargetDateStr(undefined);
+          }}
+          onClose={() => {
+            setShowCheckinModal(false);
+            setCheckinStartStep(0);
+            setCheckinInitialMood(null);
+            setCheckinTargetDateStr(undefined);
+          }}
         />
       )}
 

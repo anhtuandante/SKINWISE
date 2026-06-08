@@ -14,13 +14,16 @@ import {
   Clock,
   ChevronRight,
   ShieldCheck,
-  Zap
+  Zap,
+  Camera
 } from "lucide-react";
-import { getAllProducts } from "@/lib/quiz-logic";
+import { getAllProducts, formatPrice } from "@/lib/quiz-logic";
 import { Product, Ingredient } from "@/types";
 import { checkConflicts, getSortedRoutine } from "@/lib/conflict-checker";
 import { SKIN_LABELS, CATEGORY_LABELS } from "@/lib/constants";
 import { useRoutineStore } from "@/store/routine-store";
+import ProductAvatar from "@/components/ui/ProductAvatar";
+import VisionLab from "@/components/quiz/VisionLab";
 import ingredientsData from "@/data/ingredients.json";
 
 const allIngredients = (ingredientsData as { ingredients: Ingredient[] }).ingredients;
@@ -76,6 +79,7 @@ const getProductActiveIngredients = (product: Product): Ingredient[] => {
 
 export default function SafetyLabPanel() {
   const [safetyMode, setSafetyMode] = useState<"pair" | "full">("pair");
+  const [showVisionModal, setShowVisionModal] = useState(false);
   
   // Zustand Routine Store
   const routineStore = useRoutineStore();
@@ -164,14 +168,7 @@ export default function SafetyLabPanel() {
     setSearchQueryB("");
   };
 
-  // Helper to format price
-  const formatProductPrice = (price: number): string => {
-    if (price >= 1000000) {
-      const m = price / 1000000;
-      return m % 1 === 0 ? `${m} triệu đ` : `${m.toFixed(1)} triệu đ`;
-    }
-    return `${price.toLocaleString("vi-VN")}đ`;
-  };
+
 
   // ==========================================
   // TAB 1 LOGIC: 2-Product Comparison Memos
@@ -394,6 +391,23 @@ export default function SafetyLabPanel() {
       {safetyMode === "pair" ? (
         // Mode 1: Product comparison (Deep Ingredient comparison)
         <div className="space-y-6 animate-in">
+          {/* AI Camera Onboarding CTA */}
+          <div className="border border-violet-500/20 bg-gradient-to-r from-violet-500/5 to-fuchsia-500/5 rounded-[24px] p-6 flex flex-col sm:flex-row items-center gap-5 shadow-soft">
+            <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shrink-0 shadow-md">
+              <Camera size={24} className="text-violet-600" />
+            </div>
+            <div className="flex-1 text-center sm:text-left">
+              <h3 className="text-body font-bold text-fg mb-1">Kiểm tra sản phẩm của bạn chưa có trong kho?</h3>
+              <p className="text-caption text-muted">Sử dụng Camera AI để chụp ảnh nhãn thành phần. Hệ thống sẽ phân tích lập tức mức độ an toàn.</p>
+            </div>
+            <button 
+              onClick={() => setShowVisionModal(true)}
+              className="w-full sm:w-auto bg-violet-600 text-white px-5 py-3 rounded-xl font-bold text-caption hover:opacity-90 active:scale-95 transition-all whitespace-nowrap shadow-lg flex items-center justify-center gap-2"
+            >
+              <Sparkles size={16} /> Quét ảnh ngay
+            </button>
+          </div>
+
           {/* Product search box */}
           <div className="border border-line rounded-[24px] p-6 bg-white shadow-soft">
             <h3 className="text-body font-semibold mb-4 flex items-center gap-2 text-fg">
@@ -408,13 +422,7 @@ export default function SafetyLabPanel() {
                 
                 {selectedProductA ? (
                   <div className="relative p-4 border border-accent rounded-xl bg-accent-light/10 flex items-start gap-3">
-                    {selectedProductA.image ? (
-                      <img src={selectedProductA.image} alt={selectedProductA.name} className="w-12 h-12 rounded-lg object-cover border border-line bg-surface" />
-                    ) : (
-                      <div className="w-12 h-12 rounded-lg bg-accent text-bg font-bold flex items-center justify-center text-body shrink-0">
-                        {selectedProductA.brand.substring(0, 2).toUpperCase()}
-                      </div>
-                    )}
+                    <ProductAvatar brand={selectedProductA.brand} name={selectedProductA.name} className="w-12 h-12 rounded-lg shrink-0" />
                     <div className="flex-1 min-w-0">
                       <p className="text-[10px] text-accent-dark font-bold uppercase">{selectedProductA.brand}</p>
                       <h4 className="text-caption font-bold text-fg truncate">{selectedProductA.name}</h4>
@@ -458,9 +466,7 @@ export default function SafetyLabPanel() {
                               }}
                               className="w-full text-left p-3 hover:bg-surface flex items-center gap-3 transition-colors"
                             >
-                              <div className="w-8 h-8 rounded bg-accent/15 text-accent-dark font-bold text-[10px] flex items-center justify-center shrink-0">
-                                {p.brand.substring(0, 2).toUpperCase()}
-                              </div>
+                              <ProductAvatar brand={p.brand} name={p.name} className="w-8 h-8 rounded shrink-0" />
                               <div className="min-w-0">
                                 <div className="text-caption font-bold text-fg truncate">{p.name}</div>
                                 <div className="text-[10px] text-muted">{p.brand} • {CATEGORY_LABELS[p.category] || p.category}</div>
@@ -480,13 +486,7 @@ export default function SafetyLabPanel() {
                 
                 {selectedProductB ? (
                   <div className="relative p-4 border border-accent rounded-xl bg-accent-light/10 flex items-start gap-3">
-                    {selectedProductB.image ? (
-                      <img src={selectedProductB.image} alt={selectedProductB.name} className="w-12 h-12 rounded-lg object-cover border border-line bg-surface" />
-                    ) : (
-                      <div className="w-12 h-12 rounded-lg bg-accent text-bg font-bold flex items-center justify-center text-body shrink-0">
-                        {selectedProductB.brand.substring(0, 2).toUpperCase()}
-                      </div>
-                    )}
+                    <ProductAvatar brand={selectedProductB.brand} name={selectedProductB.name} className="w-12 h-12 rounded-lg shrink-0" />
                     <div className="flex-1 min-w-0">
                       <p className="text-[10px] text-accent-dark font-bold uppercase">{selectedProductB.brand}</p>
                       <h4 className="text-caption font-bold text-fg truncate">{selectedProductB.name}</h4>
@@ -530,9 +530,7 @@ export default function SafetyLabPanel() {
                               }}
                               className="w-full text-left p-3 hover:bg-surface flex items-center gap-3 transition-colors"
                             >
-                              <div className="w-8 h-8 rounded bg-accent/15 text-accent-dark font-bold text-[10px] flex items-center justify-center shrink-0">
-                                {p.brand.substring(0, 2).toUpperCase()}
-                              </div>
+                              <ProductAvatar brand={p.brand} name={p.name} className="w-8 h-8 rounded shrink-0" />
                               <div className="min-w-0">
                                 <div className="text-caption font-bold text-fg truncate">{p.name}</div>
                                 <div className="text-[10px] text-muted">{p.brand} • {CATEGORY_LABELS[p.category] || p.category}</div>
@@ -652,13 +650,7 @@ export default function SafetyLabPanel() {
                 {/* Product A Spec Card */}
                 <div className="border border-line rounded-2xl p-5 bg-white space-y-4">
                   <div className="flex gap-4">
-                    {selectedProductA.image ? (
-                      <img src={selectedProductA.image} alt={selectedProductA.name} className="w-16 h-16 rounded-xl object-cover border border-line bg-surface shrink-0" />
-                    ) : (
-                      <div className="w-16 h-16 rounded-xl bg-accent text-bg font-bold flex items-center justify-center text-headline shrink-0">
-                        {selectedProductA.brand.substring(0, 2).toUpperCase()}
-                      </div>
-                    )}
+                    <ProductAvatar brand={selectedProductA.brand} name={selectedProductA.name} className="w-16 h-16 rounded-xl shrink-0" />
                     <div className="min-w-0">
                       <span className="text-[10px] text-accent-dark font-bold uppercase tracking-wider">{selectedProductA.brand}</span>
                       <h4 className="text-body font-bold text-fg leading-snug">{selectedProductA.name}</h4>
@@ -669,7 +661,7 @@ export default function SafetyLabPanel() {
                   <div className="grid grid-cols-2 gap-3 text-caption border-t border-line pt-3">
                     <div>
                       <span className="text-[10px] text-muted block uppercase font-medium">Giá niêm yết</span>
-                      <span className="font-semibold text-fg">{formatProductPrice(selectedProductA.price)}</span>
+                      <span className="font-semibold text-fg">{formatPrice(selectedProductA.price)}</span>
                     </div>
                     <div>
                       <span className="text-[10px] text-muted block uppercase font-medium">Kết cấu</span>
@@ -693,13 +685,7 @@ export default function SafetyLabPanel() {
                 {/* Product B Spec Card */}
                 <div className="border border-line rounded-2xl p-5 bg-white space-y-4">
                   <div className="flex gap-4">
-                    {selectedProductB.image ? (
-                      <img src={selectedProductB.image} alt={selectedProductB.name} className="w-16 h-16 rounded-xl object-cover border border-line bg-surface shrink-0" />
-                    ) : (
-                      <div className="w-16 h-16 rounded-xl bg-accent text-bg font-bold flex items-center justify-center text-headline shrink-0">
-                        {selectedProductB.brand.substring(0, 2).toUpperCase()}
-                      </div>
-                    )}
+                    <ProductAvatar brand={selectedProductB.brand} name={selectedProductB.name} className="w-16 h-16 rounded-xl shrink-0" />
                     <div className="min-w-0">
                       <span className="text-[10px] text-accent-dark font-bold uppercase tracking-wider">{selectedProductB.brand}</span>
                       <h4 className="text-body font-bold text-fg leading-snug">{selectedProductB.name}</h4>
@@ -710,7 +696,7 @@ export default function SafetyLabPanel() {
                   <div className="grid grid-cols-2 gap-3 text-caption border-t border-line pt-3">
                     <div>
                       <span className="text-[10px] text-muted block uppercase font-medium">Giá niêm yết</span>
-                      <span className="font-semibold text-fg">{formatProductPrice(selectedProductB.price)}</span>
+                      <span className="font-semibold text-fg">{formatPrice(selectedProductB.price)}</span>
                     </div>
                     <div>
                       <span className="text-[10px] text-muted block uppercase font-medium">Kết cấu</span>
@@ -1237,6 +1223,13 @@ export default function SafetyLabPanel() {
             </div>
           )}
         </div>
+      )}
+
+      {showVisionModal && (
+        <VisionLab
+          onComplete={() => setShowVisionModal(false)}
+          onClose={() => setShowVisionModal(false)}
+        />
       )}
     </div>
   );
