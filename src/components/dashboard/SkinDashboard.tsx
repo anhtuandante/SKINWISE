@@ -21,8 +21,13 @@ import {
   Info,
   Calendar,
   Sparkle,
-  Brain
+  Brain,
+  Download,
+  Upload,
+  Trash2
 } from "lucide-react";
+import { getCyclePhase } from "@/utils/cyclePredictor";
+import { useToastStore } from "@/store/toast-store";
 import TrendVisualizer from "./TrendVisualizer";
 import VisionLab from "@/components/quiz/VisionLab";
 import SkinCheckinFlow from "./SkinCheckinFlow";
@@ -69,6 +74,12 @@ export default function SkinDashboard({
   const [showCustomizeModal, setShowCustomizeModal] = useState(false);
   const [tempPinnedMetrics, setTempPinnedMetrics] = useState<string[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
+  
+  const addToast = useToastStore((s) => s.addToast);
+  const [showCycleModal, setShowCycleModal] = useState(false);
+  const [tempCycleDate, setTempCycleDate] = useState(user.cycleStartDate || "");
+  const [tempCycleLength, setTempCycleLength] = useState(user.cycleLength || 28);
+  const [settingsTab, setSettingsTab] = useState<"metrics" | "backup">("metrics");
 
   const [mounted, setMounted] = useState(false);
   const isSkinStoreHydrated = useSkinStore((s) => s.isHydrated);
@@ -192,16 +203,89 @@ export default function SkinDashboard({
     setShowCustomizeModal(true);
   };
 
+  const cycleInfo = useMemo(() => {
+    return getCyclePhase(user.cycleStartDate, user.cycleLength || 28);
+  }, [user.cycleStartDate, user.cycleLength]);
+
   const handleSelectMetric = (key: string) => {
     if (tempPinnedMetrics.includes(key)) {
       setTempPinnedMetrics(tempPinnedMetrics.filter((m) => m !== key));
     } else {
-      if (tempPinnedMetrics.length < 3) {
+      if (tempPinnedMetrics.length < 5) {
         setTempPinnedMetrics([...tempPinnedMetrics, key]);
       } else {
-        // Replace the first and shift
-        setTempPinnedMetrics([tempPinnedMetrics[1], tempPinnedMetrics[2], key]);
+        addToast("Bạn chỉ có thể ghim tối đa 5 chỉ số da.", "info");
       }
+    }
+  };
+
+  const handleExportBackup = () => {
+    try {
+      const backupData = {
+        userStore: useUserStore.getState(),
+        skinStore: useSkinStore.getState(),
+        routineStore: useRoutineStore.getState(),
+        exportedAt: new Date().toISOString(),
+        version: "1.0.0"
+      };
+      
+      const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `skinwise_backup_${new Date().toISOString().split("T")[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      addToast("Đã xuất file sao lưu thành công!", "success");
+    } catch (err) {
+      console.error(err);
+      addToast("Không thể tạo file sao lưu.", "error");
+    }
+  };
+
+  const handleImportBackup = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const text = event.target?.result as string;
+        const data = JSON.parse(text);
+        
+        if (!data.userStore || !data.skinStore || !data.routineStore) {
+          addToast("File sao lưu không hợp lệ.", "error");
+          return;
+        }
+
+        // Restore stores
+        useUserStore.setState(data.userStore);
+        useSkinStore.setState(data.skinStore);
+        useRoutineStore.setState(data.routineStore);
+
+        addToast("Khôi phục dữ liệu thành công! Đang tải lại...", "success");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      } catch (err) {
+        console.error(err);
+        addToast("Không thể đọc file sao lưu. Vui lòng thử lại.", "error");
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  const handleClearAllData = () => {
+    if (window.confirm("CẢNH BÁO: Hành động này sẽ xóa sạch tất cả nhật ký, chu trình skincare và hồ sơ chẩn đoán da của bạn. Bạn có chắc chắn muốn xóa toàn bộ dữ liệu?")) {
+      useUserStore.getState().resetQuiz();
+      useSkinStore.getState().clearJournal();
+      useRoutineStore.getState().clearRoutine();
+      addToast("Đã xóa toàn bộ dữ liệu trên thiết bị.", "success");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     }
   };
 
@@ -497,6 +581,77 @@ export default function SkinDashboard({
         )}
       </div>
 
+      {/* 2b. Menstrual Cycle Skin Predictor */}
+      <div className="bg-white border border-line rounded-[24px] p-6 shadow-soft space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-body font-bold text-fg flex items-center gap-2">
+            <Calendar size={18} className="text-pink-500" />
+            <span>Theo dõi chu kỳ & Mụn nội tiết</span>
+          </h3>
+          <button
+            onClick={() => {
+              setTempCycleDate(user.cycleStartDate || "");
+              setTempCycleLength(user.cycleLength || 28);
+              setShowCycleModal(true);
+            }}
+            className="p-1.5 hover:bg-surface border border-line rounded-lg text-muted hover:text-fg transition-all text-micro font-bold flex items-center gap-1 select-none"
+          >
+            <Settings size={12} /> Cài đặt
+          </button>
+        </div>
+
+        {user.cycleStartDate ? (
+          cycleInfo && (
+            <div className="space-y-4 animate-in">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl bg-pink-500/[0.02] border border-pink-500/10">
+                <div className="space-y-1">
+                  <span className="text-micro font-bold text-pink-600 uppercase tracking-wider block">
+                    {cycleInfo.label} (Ngày {cycleInfo.day}/{user.cycleLength})
+                  </span>
+                  <p className="text-caption text-fg font-medium leading-relaxed">{cycleInfo.desc}</p>
+                </div>
+                <div className="shrink-0 flex items-center gap-2">
+                  {cycleInfo.phase === "luteal" ? (
+                    <span className="px-2.5 py-1 rounded-xl bg-red-500/10 text-red-500 text-[10px] font-bold border border-red-500/10 uppercase tracking-wider animate-pulse">
+                      ⚠️ Nguy cơ mụn cao
+                    </span>
+                  ) : (
+                    <span className="px-2.5 py-1 rounded-xl bg-green-500/10 text-green-600 text-[10px] font-bold border border-green-500/10 uppercase tracking-wider">
+                      ✅ Da ổn định
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="p-4 bg-surface/50 border border-line rounded-xl text-caption leading-relaxed flex gap-2">
+                <span className="text-base shrink-0">💡</span>
+                <div>
+                  <span className="font-bold text-fg block mb-1">Lời khuyên chăm sóc da chu kỳ:</span>
+                  <p className="text-muted">{cycleInfo.advice}</p>
+                </div>
+              </div>
+            </div>
+          )
+        ) : (
+          <div className="bg-surface/50 border border-line rounded-xl p-6 text-center space-y-3">
+            <p className="text-caption text-muted max-w-sm mx-auto">
+              Chưa kích hoạt theo dõi chu kỳ nội tiết. Hãy bật để AI dự đoán nguy cơ bùng phát mụn nội tiết (hormonal acne) và tối ưu hóa chu trình dưỡng da.
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setTempCycleDate(new Date().toISOString().split("T")[0]);
+                setTempCycleLength(28);
+                setShowCycleModal(true);
+              }}
+              className="px-4 py-2 bg-fg text-bg hover:opacity-90 rounded-xl text-caption font-bold transition-all shadow-sm"
+            >
+              + Kích hoạt theo dõi
+            </button>
+          </div>
+        )}
+      </div>
+
       {/* 3. Action CTAs */}
       <div className="grid grid-cols-2 gap-4">
         <button
@@ -614,50 +769,207 @@ export default function SkinDashboard({
         />
       )}
 
-      {/* 7. Customize Metrics Modal */}
+      {/* 7. Settings & Customization Modal */}
       {showCustomizeModal && (
         <div className="fixed inset-0 z-50 bg-bg/85 backdrop-blur-md flex items-center justify-center p-6">
-          <div className="bg-bg border border-line rounded-3xl w-full max-w-sm p-6 shadow-2xl space-y-6">
-            <div>
-              <h3 className="text-body font-bold text-fg">Tùy chỉnh Dashboard</h3>
-              <p className="text-caption text-muted">Chọn chính xác 3 chỉ số da bạn muốn ghim lên màn hình biểu đồ chính.</p>
-            </div>
-
-            <div className="space-y-2">
-              {availableMetrics.map((key) => {
-                const isSelected = tempPinnedMetrics.includes(key);
-                return (
-                  <button
-                    key={key}
-                    onClick={() => handleSelectMetric(key)}
-                    className={cn(
-                      "w-full p-4 rounded-2xl border text-left flex items-center justify-between font-bold text-caption transition-all",
-                      isSelected ? "border-fg bg-surface hover:scale-[1.01]" : "border-line bg-bg hover:border-fg/40 hover:scale-[1.01]"
-                    )}
-                  >
-                    <span className="capitalize">{METRIC_LABELS[key] || key}</span>
-                    {isSelected && (
-                      <span className="w-5 h-5 bg-fg text-bg rounded-full flex items-center justify-center">
-                        <Check size={12} />
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="flex gap-3">
+          <div className="bg-bg border border-line rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-6 animate-in">
+            {/* Header with Tab Switcher */}
+            <div className="flex items-center justify-between border-b border-line pb-4">
+              <div className="flex bg-line/25 p-1 rounded-xl border border-line/10">
+                <button
+                  onClick={() => setSettingsTab("metrics")}
+                  className={cn(
+                    "px-4 py-1.5 rounded-lg text-caption font-bold transition-all",
+                    settingsTab === "metrics" ? "bg-bg text-fg shadow-sm" : "text-muted hover:text-fg"
+                  )}
+                >
+                  Tùy chọn biểu đồ
+                </button>
+                <button
+                  onClick={() => setSettingsTab("backup")}
+                  className={cn(
+                    "px-4 py-1.5 rounded-lg text-caption font-bold transition-all",
+                    settingsTab === "backup" ? "bg-bg text-fg shadow-sm" : "text-muted hover:text-fg"
+                  )}
+                >
+                  Sao lưu dữ liệu
+                </button>
+              </div>
               <button
-                onClick={() => {
-                  setPinnedMetrics(tempPinnedMetrics);
-                  setShowCustomizeModal(false);
-                }}
-                disabled={tempPinnedMetrics.length !== 3}
-                className="w-full py-3 bg-fg text-bg rounded-xl font-bold disabled:opacity-40 hover:scale-[1.01] active:scale-[0.99] transition-all"
+                onClick={() => setShowCustomizeModal(false)}
+                className="text-caption text-muted hover:text-fg font-bold animate-pulse"
               >
-                Lưu cài đặt
+                Đóng
               </button>
             </div>
+
+            {settingsTab === "metrics" ? (
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-body font-bold text-fg">Ghim chỉ số da</h3>
+                  <p className="text-caption text-muted">Chọn từ 1 đến 5 chỉ số da bạn muốn hiển thị trên biểu đồ xu hướng chính.</p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 max-h-60 overflow-y-auto pr-1">
+                  {availableMetrics.map((key) => {
+                    const isSelected = tempPinnedMetrics.includes(key);
+                    return (
+                      <button
+                        key={key}
+                        onClick={() => handleSelectMetric(key)}
+                        className={cn(
+                          "p-3 rounded-xl border text-left flex items-center justify-between font-bold text-[11px] transition-all",
+                          isSelected ? "border-fg bg-surface hover:scale-[1.01]" : "border-line bg-bg hover:border-fg/40 hover:scale-[1.01]"
+                        )}
+                      >
+                        <span className="capitalize">{METRIC_LABELS[key] || key}</span>
+                        {isSelected && (
+                          <span className="w-4 h-4 bg-fg text-bg rounded-full flex items-center justify-center shrink-0">
+                            <Check size={10} />
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <button
+                  onClick={() => {
+                    setPinnedMetrics(tempPinnedMetrics);
+                    setShowCustomizeModal(false);
+                  }}
+                  disabled={tempPinnedMetrics.length < 1 || tempPinnedMetrics.length > 5}
+                  className="w-full py-3 bg-fg text-bg rounded-xl font-bold disabled:opacity-40 hover:scale-[1.01] active:scale-[0.99] transition-all text-caption"
+                >
+                  Lưu cài đặt biểu đồ ({tempPinnedMetrics.length}/5)
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-body font-bold text-fg">Sao lưu & Phục hồi</h3>
+                  <p className="text-caption text-muted">Vì toàn bộ dữ liệu của bạn nằm offline trên trình duyệt hiện tại, hãy thường xuyên sao lưu để tránh mất mát dữ liệu.</p>
+                </div>
+
+                <div className="space-y-2.5">
+                  {/* Export */}
+                  <button
+                    onClick={handleExportBackup}
+                    className="w-full p-4 border border-line bg-surface hover:bg-line/20 rounded-2xl flex items-center gap-3 transition-all text-caption font-bold text-fg hover:scale-[1.005]"
+                  >
+                    <Download size={16} className="text-accent-dark" />
+                    <div className="text-left">
+                      <span>Sao lưu dữ liệu ra file (.json)</span>
+                      <span className="text-[10px] text-muted block font-normal mt-0.5">Tải xuống toàn bộ nhật ký da và chu trình skincare hiện tại.</span>
+                    </div>
+                  </button>
+
+                  {/* Import */}
+                  <label className="w-full p-4 border border-line bg-surface hover:bg-line/20 rounded-2xl flex items-center gap-3 transition-all text-caption font-bold text-fg hover:scale-[1.005] cursor-pointer block">
+                    <div className="flex items-center gap-3">
+                      <Upload size={16} className="text-indigo-500" />
+                      <div className="text-left">
+                        <span>Khôi phục từ file sao lưu</span>
+                        <span className="text-[10px] text-muted block font-normal mt-0.5">Chọn file .json đã tải về trước đó để phục hồi dữ liệu.</span>
+                      </div>
+                    </div>
+                    <input
+                      type="file"
+                      accept=".json"
+                      onChange={handleImportBackup}
+                      className="hidden"
+                    />
+                  </label>
+
+                  {/* Reset/Clear */}
+                  <button
+                    onClick={handleClearAllData}
+                    className="w-full p-4 border border-red-500/20 bg-red-500/[0.02] hover:bg-red-500/5 rounded-2xl flex items-center gap-3 transition-all text-caption font-bold text-red-500 hover:scale-[1.005]"
+                  >
+                    <Trash2 size={16} />
+                    <div className="text-left">
+                      <span>Xóa toàn bộ dữ liệu</span>
+                      <span className="text-[10px] text-red-500/60 block font-normal mt-0.5">Xóa vĩnh viễn tất cả chẩn đoán, nhật ký, chu trình và bắt đầu lại từ đầu.</span>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* 8. Menstrual Cycle Settings Modal */}
+      {showCycleModal && (
+        <div className="fixed inset-0 z-50 bg-bg/85 backdrop-blur-md flex items-center justify-center p-6">
+          <div className="bg-bg border border-line rounded-3xl w-full max-w-sm p-6 shadow-2xl space-y-6 animate-in">
+            <div className="flex items-center justify-between border-b border-line pb-4">
+              <h3 className="text-body font-bold text-fg">Cài đặt chu kỳ kinh nguyệt</h3>
+              <button
+                onClick={() => setShowCycleModal(false)}
+                className="text-caption text-muted hover:text-fg font-bold"
+              >
+                Đóng
+              </button>
+            </div>
+
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              user.setCycleStartDate(tempCycleDate);
+              user.setCycleLength(tempCycleLength);
+              setShowCycleModal(false);
+              addToast("Đã lưu cài đặt chu kỳ thành công!", "success");
+            }} className="space-y-4">
+              <div className="space-y-1">
+                <label className="text-micro font-bold text-muted uppercase tracking-wider block" htmlFor="modal-period-date">
+                  Ngày bắt đầu kỳ gần nhất
+                </label>
+                <input
+                  id="modal-period-date"
+                  type="date"
+                  required
+                  value={tempCycleDate}
+                  onChange={(e) => setTempCycleDate(e.target.value)}
+                  className="w-full bg-surface border border-line rounded-xl px-4 py-2.5 text-caption text-fg outline-none focus:border-fg transition-all"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-micro font-bold text-muted uppercase tracking-wider block" htmlFor="modal-cycle-len">
+                  Độ dài chu kỳ trung bình (ngày)
+                </label>
+                <input
+                  id="modal-cycle-len"
+                  type="number"
+                  min={15}
+                  max={45}
+                  required
+                  value={tempCycleLength}
+                  onChange={(e) => setTempCycleLength(parseInt(e.target.value) || 28)}
+                  className="w-full bg-surface border border-line rounded-xl px-4 py-2.5 text-caption text-fg outline-none focus:border-fg transition-all"
+                />
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    user.setCycleStartDate("");
+                    setShowCycleModal(false);
+                    addToast("Đã tắt theo dõi chu kỳ.", "info");
+                  }}
+                  className="flex-1 py-2.5 border border-line hover:bg-surface rounded-xl text-caption font-bold text-red-500 hover:text-red-600 transition-all"
+                >
+                  Tắt theo dõi
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-2.5 bg-fg text-bg hover:opacity-90 rounded-xl text-caption font-bold transition-all"
+                >
+                  Lưu cài đặt
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

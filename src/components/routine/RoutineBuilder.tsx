@@ -105,6 +105,13 @@ export default function RoutineBuilder() {
   const warnings = checkConflicts(activeList)
   const missing = getMissingCategories(activeList)
 
+  const [showAddCustomModal, setShowAddCustomModal] = useState(false);
+  const [customName, setCustomName] = useState("");
+  const [customBrand, setCustomBrand] = useState("");
+  const [customCategory, setCustomCategory] = useState<Product["category"]>("serum");
+  const [customTexture, setCustomTexture] = useState("water-based");
+  const [customIngredients, setCustomIngredients] = useState<string[]>([]);
+
   const handleRemove = (id: string) => {
     const product = activeList.find((p) => p.id === id)
     if (tab === "AM") store.removeFromMorning(id)
@@ -114,10 +121,49 @@ export default function RoutineBuilder() {
     }
   }
 
+  const handleSaveCustom = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!customName || !customBrand) return;
+
+    const newProd: Product = {
+      id: `custom-product-${Date.now()}`,
+      name: customName,
+      brand: customBrand,
+      price: 0,
+      type: "skincare",
+      category: customCategory,
+      skinTypes: ["all"],
+      concerns: [],
+      texture: customTexture,
+      size: "unknown",
+      ingredients: customIngredients,
+      isSiliconeBased: customTexture === "silicone-based",
+      isWaterBased: customTexture === "water-based",
+      shopeeUrl: "",
+    };
+
+    let success = false;
+    if (tab === "AM") {
+      success = store.addToMorning(newProd);
+    } else {
+      success = store.addToEvening(newProd);
+    }
+
+    if (success) {
+      addToast(`Đã thêm ${customName} vào routine ${tab}!`, "success");
+      setCustomName("");
+      setCustomBrand("");
+      setCustomIngredients([]);
+      setShowAddCustomModal(false);
+    } else {
+      addToast("Không thể thêm. Giới hạn tối đa 8 sản phẩm hoặc sản phẩm đã tồn tại.", "error");
+    }
+  };
+
   return (
     <section className="border border-line rounded-2xl p-6 bg-white space-y-5 overflow-hidden">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex gap-2 w-full sm:w-auto">
+        <div className="flex gap-2 w-full sm:w-auto items-center flex-wrap">
           {["AM", "PM"].map((t) => (
             <button
               key={t}
@@ -134,6 +180,12 @@ export default function RoutineBuilder() {
               )}
             </button>
           ))}
+          <button
+            onClick={() => setShowAddCustomModal(true)}
+            className="px-3 py-1.5 border border-dashed border-fg/30 hover:border-fg/60 rounded-lg text-caption font-bold text-fg hover:bg-fg/[0.02] transition-all flex items-center gap-1 select-none"
+          >
+            <span>+</span> Tự thêm sản phẩm
+          </button>
         </div>
         <div className="text-caption text-muted">Tổng: {formatPrice(total)}</div>
       </div>
@@ -176,6 +228,119 @@ export default function RoutineBuilder() {
       )}
 
       <ConflictWarnings warnings={warnings} />
+
+      {/* Custom Product Add Modal */}
+      {showAddCustomModal && (
+        <div className="fixed inset-0 z-50 bg-bg/85 backdrop-blur-md flex items-center justify-center p-6 pointer-events-auto">
+          <div className="bg-bg border border-line rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-6 animate-in">
+            <div>
+              <h3 className="text-body font-bold text-fg">Thêm sản phẩm của bạn</h3>
+              <p className="text-caption text-muted">Tự thêm các sản phẩm đang dùng ở nhà để AI kiểm tra xung khắc thành phần.</p>
+            </div>
+
+            <form onSubmit={handleSaveCustom} className="space-y-4">
+              <div className="space-y-1">
+                <label className="text-micro font-bold text-muted uppercase tracking-wider block">Tên sản phẩm</label>
+                <input
+                  type="text" required placeholder="Ví dụ: Retinol 1% Cream..."
+                  value={customName} onChange={(e) => setCustomName(e.target.value)}
+                  className="w-full bg-surface border border-line rounded-xl px-4 py-2 text-caption text-fg outline-none focus:border-fg transition-all"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-micro font-bold text-muted uppercase tracking-wider block">Thương hiệu</label>
+                <input
+                  type="text" required placeholder="Ví dụ: The Ordinary, Obagi..."
+                  value={customBrand} onChange={(e) => setCustomBrand(e.target.value)}
+                  className="w-full bg-surface border border-line rounded-xl px-4 py-2 text-caption text-fg outline-none focus:border-fg transition-all"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="text-micro font-bold text-muted uppercase tracking-wider block">Loại sản phẩm</label>
+                  <select
+                    value={customCategory} onChange={(e) => setCustomCategory(e.target.value as Product["category"])}
+                    className="w-full bg-surface border border-line rounded-xl px-3 py-2 text-caption text-fg outline-none focus:border-fg transition-all font-medium"
+                  >
+                    <option value="cleanser">Sữa rửa mặt</option>
+                    <option value="toner">Nước hoa hồng (Toner)</option>
+                    <option value="serum">Tinh chất (Serum)</option>
+                    <option value="moisturizer">Kem dưỡng ẩm</option>
+                    <option value="sunscreen">Kem chống nắng</option>
+                    <option value="exfoliant">Tẩy da chết (BHA/AHA)</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-micro font-bold text-muted uppercase tracking-wider block">Kết cấu nền</label>
+                  <select
+                    value={customTexture} onChange={(e) => setCustomTexture(e.target.value)}
+                    className="w-full bg-surface border border-line rounded-xl px-3 py-2 text-caption text-fg outline-none focus:border-fg transition-all font-medium"
+                  >
+                    <option value="water-based">Gốc nước (Water-based)</option>
+                    <option value="silicone-based">Gốc Silicone</option>
+                    <option value="cream">Kem đặc (Cream)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-micro font-bold text-muted uppercase tracking-wider block">
+                  Hoạt chất chính (Chọn các hoạt chất nổi bật)
+                </label>
+                <div className="flex flex-wrap gap-1.5 p-3 border border-line rounded-xl bg-surface/50 max-h-24 overflow-y-auto">
+                  {([
+                    { id: "bha", label: "Salicylic Acid (BHA)" },
+                    { id: "aha", label: "Glycolic/Lactic (AHA)" },
+                    { id: "retinol", label: "Retinol / Retinoids" },
+                    { id: "niacinamide", label: "Niacinamide (B3)" },
+                    { id: "vitamin-c", label: "Vitamin C" },
+                    { id: "hyaluronic-acid", label: "Hyaluronic Acid (HA)" },
+                    { id: "centella", label: "Rau má (Centella)" },
+                    { id: "panthenol", label: "Vitamin B5 (Panthenol)" },
+                  ]).map((act) => {
+                    const active = customIngredients.includes(act.id);
+                    return (
+                      <button
+                        key={act.id}
+                        type="button"
+                        onClick={() => {
+                          setCustomIngredients(prev =>
+                            prev.includes(act.id) ? prev.filter(x => x !== act.id) : [...prev, act.id]
+                          );
+                        }}
+                        className={`px-2.5 py-1 rounded-lg border text-[10px] font-bold transition-all ${
+                          active ? "bg-fg text-bg border-fg" : "bg-white text-muted border-line hover:border-fg/30"
+                        }`}
+                      >
+                        {act.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowAddCustomModal(false)}
+                  className="flex-1 py-2.5 border border-line hover:bg-surface rounded-xl text-caption font-bold text-fg transition-all"
+                >
+                  Hủy
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-2.5 bg-fg text-bg hover:opacity-90 rounded-xl text-caption font-bold transition-all"
+                >
+                  Thêm vào routine {tab}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </section>
   )
 }

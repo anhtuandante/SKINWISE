@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { Smile, Meh, Frown, ChevronLeft, ChevronRight, Plus, ArrowUpCircle } from "lucide-react";
+import { Smile, Meh, Frown, ChevronLeft, ChevronRight, Plus, ArrowUpCircle, Search } from "lucide-react";
 import { useSkinStore } from "@/store/useSkinStore";
 import { DiaryLog } from "@/types";
 import { useToastStore } from "@/store/toast-store";
@@ -28,6 +28,19 @@ export default function SkinJournalPanel() {
   const [selectedDayIdx, setSelectedDayIdx] = useState(new Date().getDay() === 0 ? 6 : new Date().getDay() - 1);
   const [weekOffset, setWeekOffset] = useState(0);
   const [showCheckin, setShowCheckin] = useState(false);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [activeFilterTag, setActiveFilterTag] = useState<string | null>(null);
+
+  const filteredLogs = useMemo(() => {
+    return [...diaryLogs]
+      .reverse()
+      .filter((log) => {
+        const matchSearch = !searchTerm || log.note.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchTag = !activeFilterTag || log.lifestyle.includes(activeFilterTag);
+        return matchSearch && matchTag;
+      });
+  }, [diaryLogs, searchTerm, activeFilterTag]);
 
   const [mounted, setMounted] = useState(false);
   const isHydrated = useSkinStore((s) => s.isHydrated);
@@ -296,64 +309,136 @@ export default function SkinJournalPanel() {
 
       {/* Log History */}
       {diaryLogs.length > 0 && (
-        <div className="space-y-3">
-          <h3 className="text-body font-bold text-fg">Lịch sử nhật ký da</h3>
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <h3 className="text-body font-bold text-fg">Lịch sử nhật ký da</h3>
+            <span className="text-micro text-muted font-bold">Tìm thấy: {filteredLogs.length} ngày</span>
+          </div>
+
+          {/* Search & Tag Filter Widget */}
+          <div className="space-y-3 bg-white border border-line rounded-[20px] p-4 shadow-soft">
+            <div className="relative">
+              <Search className="absolute left-3 top-2.5 text-muted" size={14} />
+              <input
+                type="text"
+                placeholder="Tìm kiếm từ khóa trong ghi chú..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-9 pr-4 py-2 bg-surface border border-line rounded-xl text-caption text-fg outline-none focus:border-fg transition-all"
+              />
+              {searchTerm && (
+                <button
+                  onClick={() => setSearchTerm("")}
+                  className="absolute right-3 top-2 text-caption text-muted hover:text-fg font-bold"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+            
+            <div className="flex flex-wrap gap-1.5 items-center">
+              <span className="text-[10px] font-bold text-muted uppercase tracking-wider mr-1">Lọc thói quen:</span>
+              <button
+                onClick={() => setActiveFilterTag(null)}
+                className={`px-2.5 py-1 rounded-lg border text-[10px] font-bold transition-all ${
+                  !activeFilterTag ? "bg-fg text-bg border-fg" : "bg-white text-muted border-line hover:border-fg/30"
+                }`}
+              >
+                Tất cả
+              </button>
+              {[
+                "Ngủ muộn",
+                "Stress công việc",
+                "Ăn đồ ngọt / sữa",
+                "Đeo khẩu trang lâu",
+                "Trang điểm đậm",
+                "Quên chống nắng",
+                "Dùng treatment nặng",
+                "Thay đổi thời tiết"
+              ].map((tag) => {
+                const isSelected = activeFilterTag === tag;
+                const count = diaryLogs.filter(l => l.lifestyle.includes(tag)).length;
+                if (count === 0) return null;
+                return (
+                  <button
+                    key={tag}
+                    onClick={() => setActiveFilterTag(isSelected ? null : tag)}
+                    className={`px-2.5 py-1 rounded-lg border text-[10px] font-bold transition-all flex items-center gap-1.5 ${
+                      isSelected ? "bg-fg text-bg border-fg" : "bg-white text-muted border-line hover:border-fg/30"
+                    }`}
+                  >
+                    <span>{tag}</span>
+                    <span className={`text-[8px] font-extrabold rounded px-1 py-0.5 ${isSelected ? "bg-bg/20 text-bg" : "bg-line/40 text-muted"}`}>
+                      {count}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           <div className="space-y-3 max-h-[300px] overflow-y-auto pr-2 scrollbar-hide">
-            {[...diaryLogs].reverse().map((log: DiaryLog) => (
-              <div key={log.id} className="border border-line rounded-[20px] p-5 bg-white shadow-soft space-y-3">
-                <div className="flex items-center justify-between border-b border-line pb-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-caption text-muted font-bold">{log.date} ({log.dayName})</span>
-                    {log.isPartial && <span className="text-[8px] font-bold px-1.5 py-0.5 rounded bg-warning/10 text-warning">Nhanh</span>}
-                  </div>
-                  {(() => {
-                    const config = MOOD_CONFIG[log.mood] || MOOD_CONFIG.okay;
-                    const MoodIcon = config.icon;
-                    return (
-                      <span className={`text-caption font-bold px-2 py-0.5 rounded-full flex items-center gap-1 ${config.colorClass}`}>
-                        <MoodIcon size={12} />
-                        {config.label}
-                      </span>
-                    );
-                  })()}
-                </div>
-
-                {!log.isPartial && (
-                  <>
-                    <div className="flex gap-2 pt-0.5">
-                      <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${log.amRoutineCompleted ? "bg-amber-500/10 text-amber-600" : "bg-line/15 text-muted"}`}>
-                        🌅 AM: {log.amRoutineCompleted ? "Xong ✓" : "—"}
-                      </span>
-                      <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${log.pmRoutineCompleted ? "bg-indigo-500/10 text-indigo-600" : "bg-line/15 text-muted"}`}>
-                        🌙 PM: {log.pmRoutineCompleted ? "Xong ✓" : "—"}
-                      </span>
-                    </div>
-
-                    <div className="flex flex-wrap gap-x-3 gap-y-1.5 text-[10px] text-muted font-medium">
-                      {Object.entries(log.metrics)
-                        .filter(([k]) => METRIC_SHORT_LABELS[k])
-                        .map(([k, v]) => (
-                          <span key={k}>
-                            {METRIC_SHORT_LABELS[k]}: <strong>{v}/5</strong>
-                          </span>
-                        ))}
-                    </div>
-                  </>
-                )}
-
-                {log.note && <p className="text-caption italic text-muted">{`"${log.note}"`}</p>}
-
-                {log.lifestyle.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {log.lifestyle.map((tag) => (
-                      <span key={tag} className="text-[9px] bg-surface text-muted px-2 py-0.5 rounded-full border border-line">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
+            {filteredLogs.length === 0 ? (
+              <div className="text-center py-12 border border-dashed border-line rounded-[20px] bg-white text-caption text-muted">
+                Không tìm thấy nhật ký da nào khớp với bộ lọc của bạn.
               </div>
-            ))}
+            ) : (
+              filteredLogs.map((log: DiaryLog) => (
+                <div key={log.id} className="border border-line rounded-[20px] p-5 bg-white shadow-soft space-y-3 hover:scale-[1.002] transition-all">
+                  <div className="flex items-center justify-between border-b border-line pb-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-caption text-muted font-bold">{log.date} ({log.dayName})</span>
+                      {log.isPartial && <span className="text-[8px] font-bold px-1.5 py-0.5 rounded bg-warning/10 text-warning">Nhanh</span>}
+                    </div>
+                    {(() => {
+                      const config = MOOD_CONFIG[log.mood] || MOOD_CONFIG.okay;
+                      const MoodIcon = config.icon;
+                      return (
+                        <span className={`text-caption font-bold px-2 py-0.5 rounded-full flex items-center gap-1 ${config.colorClass}`}>
+                          <MoodIcon size={12} />
+                          {config.label}
+                        </span>
+                      );
+                    })()}
+                  </div>
+
+                  {!log.isPartial && (
+                    <>
+                      <div className="flex gap-2 pt-0.5">
+                        <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${log.amRoutineCompleted ? "bg-amber-500/10 text-amber-600" : "bg-line/15 text-muted"}`}>
+                          🌅 AM: {log.amRoutineCompleted ? "Xong ✓" : "—"}
+                        </span>
+                        <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${log.pmRoutineCompleted ? "bg-indigo-500/10 text-indigo-600" : "bg-line/15 text-muted"}`}>
+                          🌙 PM: {log.pmRoutineCompleted ? "Xong ✓" : "—"}
+                        </span>
+                      </div>
+
+                      <div className="flex flex-wrap gap-x-3 gap-y-1.5 text-[10px] text-muted font-medium">
+                        {Object.entries(log.metrics)
+                          .filter(([k]) => METRIC_SHORT_LABELS[k])
+                          .map(([k, v]) => (
+                            <span key={k}>
+                              {METRIC_SHORT_LABELS[k]}: <strong>{v}/5</strong>
+                            </span>
+                          ))}
+                      </div>
+                    </>
+                  )}
+
+                  {log.note && <p className="text-caption italic text-muted">{`"${log.note}"`}</p>}
+
+                  {log.lifestyle.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {log.lifestyle.map((tag) => (
+                        <span key={tag} className="text-[9px] bg-surface text-muted px-2 py-0.5 rounded-full border border-line">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))
+            )}
           </div>
         </div>
       )}

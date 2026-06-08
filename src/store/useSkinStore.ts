@@ -167,7 +167,7 @@ export const useSkinStore = create<SkinState>()(
       setRange: (range) => set({ selectedRange: range }),
       
       setPinnedMetrics: (metrics) => {
-        if (metrics.length === 3) {
+        if (metrics.length >= 1 && metrics.length <= 7) {
           set({ pinnedMetrics: metrics });
         }
       },

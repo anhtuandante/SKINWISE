@@ -36,17 +36,80 @@ import ProductCard from "@/components/routine/ProductCard";
 import RoutineBuilder from "@/components/routine/RoutineBuilder";
 import { Product } from "@/types";
 
-// Mock weather conditions by city
+// Mock weather conditions by city (initial fallback)
 const CITIES_WEATHER = {
   hanoi: { name: "Hà Nội", uv: 6, status: "Vừa phải", desc: "Trời có mây, nắng nhẹ.", advice: "Nên thoa kem chống nắng khi ra đường vào buổi trưa.", icon: "⛅" },
   danang: { name: "Đà Nẵng", uv: 8, status: "Rất cao", desc: "Trời nắng gắt, ít mây.", advice: "UV rất mạnh. Hãy thoa lại kem chống nắng sau mỗi 2-3 giờ hoạt động ngoài trời.", icon: "☀️" },
   hcm: { name: "TP. Hồ Chí Minh", uv: 10, status: "Cực kỳ nguy hiểm", desc: "Nắng nóng gay gắt kéo dài.", advice: "Hạn chế ra ngoài từ 11h - 15h. Đeo kính râm và che chắn cơ thể kỹ càng.", icon: "🥵" }
 };
 
+const CITY_COORDS = {
+  hanoi: { lat: 21.0285, lon: 105.8542 },
+  danang: { lat: 16.0544, lon: 108.2022 },
+  hcm: { lat: 10.8231, lon: 106.6297 }
+};
+
 export default function DashboardPage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("dashboard");
   const [selectedCity, setSelectedCity] = useState<keyof typeof CITIES_WEATHER>("danang");
+  const [citiesWeather, setCitiesWeather] = useState(CITIES_WEATHER);
+
+  // Live weather fetching using Open-Meteo API
+  useEffect(() => {
+    async function fetchLiveWeather() {
+      const coords = CITY_COORDS[selectedCity];
+      if (!coords) return;
+      try {
+        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&current=temperature_2m,weather_code&daily=uv_index_max&timezone=auto&forecast_days=1`);
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        
+        const temp = Math.round(data.current?.temperature_2m ?? 30);
+        const uv = Math.round(data.daily?.uv_index_max?.[0] ?? 6);
+        const code = data.current?.weather_code ?? 0;
+        
+        let status = "Vừa phải";
+        let advice = "Nên thoa kem chống nắng khi ra đường vào buổi trưa.";
+        let icon = "⛅";
+        let desc = "Trời có mây, nắng nhẹ.";
+
+        if (uv >= 8) {
+          status = "Rất cao 🚨";
+          advice = "UV rất mạnh. Hãy thoa lại kem chống nắng sau mỗi 2-3 giờ hoạt động ngoài trời.";
+        } else if (uv >= 6) {
+          status = "Cao ⚠️";
+          advice = "Nên thoa kem chống nắng đầy đủ, đeo kính râm khi ra ngoài.";
+        } else if (uv >= 3) {
+          status = "Vừa phải";
+          advice = "Thoa kem chống nắng trước khi ra đường.";
+        } else {
+          status = "Thấp ✅";
+          advice = "Chỉ số UV an toàn cho da.";
+        }
+
+        if (code >= 71) { desc = "Có tuyết."; icon = "❄️"; }
+        else if (code >= 51) { desc = "Trời mưa ẩm ướt."; icon = "🌧️"; }
+        else if (code >= 1) { desc = "Nắng ấm, có mây rải rác."; icon = "⛅"; }
+        else { desc = "Trời nắng trong xanh."; icon = "☀️"; }
+
+        setCitiesWeather(prev => ({
+          ...prev,
+          [selectedCity]: {
+            name: prev[selectedCity].name,
+            uv,
+            status,
+            desc: `${desc} (Nhiệt độ: ${temp}°C)`,
+            advice,
+            icon
+          }
+        }));
+      } catch (err) {
+        console.error("Failed to fetch live weather", err);
+      }
+    }
+    fetchLiveWeather();
+  }, [selectedCity]);
 
   const user = useUserStore();
   const routine = useRoutineStore();
@@ -135,7 +198,7 @@ export default function DashboardPage() {
                 onNavigate={setActiveTab}
                 selectedCity={selectedCity}
                 setSelectedCity={(city) => setSelectedCity(city as "hanoi" | "danang" | "hcm")}
-                citiesWeather={CITIES_WEATHER}
+                citiesWeather={citiesWeather}
               />
             </motion.div>
           )}
