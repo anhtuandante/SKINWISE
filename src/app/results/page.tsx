@@ -8,7 +8,7 @@ import { buildInitialRoutine, formatPrice, calculateTotal, getAllProducts } from
 import { Product, UserProfile } from "@/types"
 import { calculateMatchScore } from "@/lib/recommendation-engine"
 import { getCyclePhase } from "@/utils/cyclePredictor"
-import { Sparkles, ArrowRight, Loader2, Sun, Moon, CheckCircle2, PlusCircle, ShoppingBag, ExternalLink } from "lucide-react"
+import { Sparkles, ArrowRight, Loader2, Sun, Moon, CheckCircle2, PlusCircle, ShoppingBag, ExternalLink, Salad } from "lucide-react"
 import { useRoutineStore } from "@/store/routine-store"
 import { useToastStore } from "@/store/toast-store"
 import ProductAvatar from "@/components/ui/ProductAvatar"
@@ -35,6 +35,96 @@ export default function ResultsPage() {
   const [allProducts, setAllProducts] = useState<Product[]>([])
   const [morningRoutine, setMorningRoutine] = useState<Product[]>([])
   const [eveningRoutine, setEveningRoutine] = useState<Product[]>([])
+
+  const dietGuide = useMemo(() => {
+    const isSensitive = user.skinType === "sensitive";
+    const isDry = user.skinType === "dry" || user.concerns.includes("dryness");
+    const isOily = user.skinType === "oily" || user.concerns.includes("pores");
+    const isAcne = user.concerns.includes("acne");
+
+    if (isAcne) {
+      return {
+        title: "Dinh dưỡng ngừa mụn & Kháng viêm",
+        desc: "Hạn chế sữa bò, đường ngọt tinh luyện và tinh bột trắng. Tăng chất béo tốt (omega-3) và kẽm.",
+        foods: [
+          { name: "Hạt bí ngô", desc: "Giàu kẽm kiểm soát bã nhờn", emoji: "🎃" },
+          { name: "Trà xanh", desc: "Kháng viêm, chống oxy hóa", emoji: "🍵" },
+          { name: "Cá hồi", desc: "Omega-3 giảm viêm sưng đỏ", emoji: "🐟" },
+          { name: "Bông cải xanh", desc: "Hỗ trợ thải độc da", emoji: "🥦" }
+        ],
+        nutrients: [
+          { name: "Kẽm (Zinc)", desc: "Giúp điều hòa tuyến bã nhờn, giảm dầu thừa và tăng tốc làm lành vết thương do mụn." },
+          { name: "Omega-3", desc: "Làm giảm phản ứng viêm sưng ở cấp độ tế bào, xoa dịu mụn bọc, mụn sưng đỏ." }
+        ]
+      };
+    }
+
+    if (isSensitive) {
+      return {
+        title: "Dinh dưỡng làm mát & Làm dịu kích ứng",
+        desc: "Hạn chế rượu bia, caffeine và đồ cay nóng. Ưu tiên làm dịu hệ thần kinh và cấp nước từ bên trong.",
+        foods: [
+          { name: "Nước dừa", desc: "Cấp nước, cân bằng điện giải", emoji: "🥥" },
+          { name: "Sữa chua Hy Lạp", desc: "Probiotics phục hồi ruột & da", emoji: "🥛" },
+          { name: "Dưa chuột", desc: "Làm mát cơ thể, chứa silica", emoji: "🥒" },
+          { name: "Trà hoa cúc", desc: "Làm dịu hệ thần kinh & làn da", emoji: "🌼" }
+        ],
+        nutrients: [
+          { name: "Apigenin", desc: "Chất kháng viêm tự nhiên dồi dào trong trà hoa cúc giúp làm giãn nở và xoa dịu mao mạch." },
+          { name: "Probiotics", desc: "Lợi khuẩn củng cố hệ vi sinh đường ruột và hàng rào biểu bì thông qua trục Ruột - Da." }
+        ]
+      };
+    }
+
+    if (isDry) {
+      return {
+        title: "Dinh dưỡng cấp nước & Phục hồi màng ẩm",
+        desc: "Bổ sung chất béo lành mạnh (axit oleic, vitamin E) để tái tạo lớp màng lipid. Uống đủ 2 - 2.5 lít nước.",
+        foods: [
+          { name: "Trái bơ", desc: "Chất béo tốt dưỡng ẩm tự nhiên", emoji: "🥑" },
+          { name: "Hạt óc chó / chia", desc: "Cấp ẩm sâu cho tế bào da", emoji: "🌰" },
+          { name: "Cà chua", desc: "Chứa Lycopene chống mất nước", emoji: "🍅" },
+          { name: "Nước lọc", desc: "Cung cấp độ ẩm cho tế bào da", emoji: "💧" }
+        ],
+        nutrients: [
+          { name: "Axit béo tốt", desc: "Nuôi dưỡng màng lipid, cải thiện tính thẩm thấu và làm mềm các lớp vảy thô ráp." },
+          { name: "Lycopene", desc: "Ngăn chặn sự mất nước xuyên biểu bì (TEWL) và tăng tính dẻo dai liên kết mô da." }
+        ]
+      };
+    }
+
+    if (isOily) {
+      return {
+        title: "Dinh dưỡng kiểm soát bã nhờn",
+        desc: "Tăng cường Vitamin A, B và Kẽm để ổn định hoạt động tuyến dầu. Hạn chế chất béo bão hòa từ đồ chiên xào.",
+        foods: [
+          { name: "Rau chân vịt", desc: "Giàu vitamin A giúp mịn da", emoji: "🥬" },
+          { name: "Hạnh nhân", desc: "Vitamin E giảm oxy hóa dầu nhờn", emoji: "🥜" },
+          { name: "Khoai lang", desc: "Beta-carotene điều hòa tuyến bã nhờn", emoji: "🍠" },
+          { name: "Yến mạch", desc: "Chứa chất xơ ổn định đường huyết", emoji: "🌾" }
+        ],
+        nutrients: [
+          { name: "Vitamin A", desc: "Thúc đẩy đổi mới biểu bì da, thu nhỏ gián tiếp kích thước lỗ chân lông và kiểm soát nhờn." },
+          { name: "Crom (Chromium)", desc: "Giúp kiểm soát đột biến insulin đột ngột - tác nhân kích hoạt bùng phát androgen tiết dầu." }
+        ]
+      };
+    }
+
+    return {
+      title: "Dinh dưỡng duy trì da khỏe mạnh",
+      desc: "Tăng cường các chất chống oxy hóa và Vitamin C để thúc đẩy tổng hợp collagen tự nhiên của da.",
+      foods: [
+        { name: "Cam / Quả mọng", desc: "Vitamin C tăng collagen, sáng da", emoji: "🍊" },
+        { name: "Hạt chia", desc: "Nguồn dinh dưỡng chống lão hóa", emoji: "🌱" },
+        { name: "Rau cải xoăn", desc: "Chứa nhiều vitamin nuôi dưỡng da", emoji: "🥬" },
+        { name: "Nước ép cần tây", desc: "Thanh lọc cơ thể, căng mịn da", emoji: "🥤" }
+      ],
+      nutrients: [
+        { name: "Vitamin C", desc: "Co-factor thiết yếu sản sinh collagen sợi đàn hồi, ngăn ngừa lão hóa và thâm xạm da." },
+        { name: "Anthocyanins", desc: "Chất chống oxy hóa tự nhiên dồi dào trong quả mọng giúp bảo vệ da trước tia UV từ bên trong." }
+      ]
+    };
+  }, [user.skinType, user.concerns]);
 
   useEffect(() => {
     if (!isHydrated) return;
@@ -243,6 +333,53 @@ export default function ResultsPage() {
                 onSwapProduct={(idx, newP) => handleSwapProduct("PM", idx, newP)}
               />
             </div>
+
+            {/* 3. AI Skin Diet Advice Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 }}
+              className="bg-white border border-line rounded-[24px] p-6 shadow-soft space-y-4 mt-8"
+            >
+              <h3 className="text-body font-bold text-fg flex items-center gap-2">
+                <Salad size={18} className="text-emerald-500 animate-pulse" />
+                <span>Dinh dưỡng chuyên sâu từ Quiz</span>
+              </h3>
+              
+              <div className="p-4 bg-emerald-500/[0.02] border border-emerald-500/10 rounded-2xl space-y-4">
+                <div>
+                  <span className="text-micro font-bold text-emerald-600 uppercase tracking-wider block">Chế độ dinh dưỡng AI gợi ý</span>
+                  <span className="text-body font-extrabold text-fg mt-0.5 block">{dietGuide.title}</span>
+                  <p className="text-caption text-muted mt-1 leading-relaxed">{dietGuide.desc}</p>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                  {dietGuide.foods.map((food, idx) => (
+                    <div key={idx} className="bg-white border border-line rounded-xl p-3 text-center space-y-1 hover:border-emerald-500/30 transition-all select-none">
+                      <span className="text-2xl block">{food.emoji}</span>
+                      <span className="text-caption font-bold text-fg block">{food.name}</span>
+                      <span className="text-[10px] text-muted block leading-snug">{food.desc}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="border-t border-emerald-500/5 pt-3 space-y-2">
+                  <span className="text-[10px] font-bold text-muted uppercase tracking-wider block">🔑 Hoạt chất vàng cho làn da của bạn</span>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {dietGuide.nutrients.map((nut, idx) => (
+                      <div key={idx} className="text-[11px] text-muted bg-surface/50 border border-line/50 p-2.5 rounded-xl space-y-0.5 animate-in">
+                        <strong className="text-fg font-extrabold block">{nut.name}</strong>
+                        <p className="leading-relaxed text-[10px]">{nut.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="border-t border-emerald-500/5 pt-3 flex items-center justify-between">
+                  <span className="text-[11px] text-muted italic">Mẹo: Khi vào Workspace, bạn có thể nhấp &quot;Xem hướng dẫn chuyên sâu&quot; để xem công thức nấu món ăn này và thực đơn mẫu cả ngày!</span>
+                </div>
+              </div>
+            </motion.div>
 
             {/* Floating Bottom Bar */}
             <motion.div 
