@@ -53,8 +53,11 @@ export default function HomePage() {
             <Link href="/ingredients" className="text-caption text-muted hover:text-fg transition-colors">
               Thành phần
             </Link>
-            <Button href="/login" size="sm">
-              Bắt đầu
+            <Link href="/login?mode=login" className="text-caption text-muted hover:text-fg transition-colors">
+              Đăng nhập
+            </Link>
+            <Button href="/login?mode=signup" size="sm">
+              Đăng ký
             </Button>
           </div>
         </div>
@@ -100,8 +103,8 @@ export default function HomePage() {
             variants={fadeUp}
             className="flex items-center gap-3"
           >
-            <Button href="/login" size="lg">
-              Bắt đầu
+            <Button href="/login?mode=signup" size="lg">
+              Bắt đầu ngay
             </Button>
             <Button onClick={handleDemo} variant="outline">
               Xem demo
@@ -172,7 +175,7 @@ export default function HomePage() {
             Bắt đầu ngay
           </motion.h2>
           <motion.div variants={item}>
-            <Button href="/login" size="lg">
+            <Button href="/login?mode=signup" size="lg">
               Tạo tài khoản miễn phí
             </Button>
           </motion.div>

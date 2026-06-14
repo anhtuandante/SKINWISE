@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ArrowLeft, Loader2, Mail, Lock } from "lucide-react";
@@ -22,6 +22,18 @@ export default function LoginPage() {
   const addToast = useToastStore((s) => s.addToast);
   const supabase = createClient();
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const mode = params.get("mode");
+      if (mode === "signup") {
+        setIsLogin(false);
+      } else if (mode === "login") {
+        setIsLogin(true);
+      }
+    }
+  }, []);
+
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) return;
@@ -32,23 +44,32 @@ export default function LoginPage() {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         addToast("Đăng nhập thành công!", "success");
-        // Trigger a sync if needed
         router.push("/dashboard");
       } else {
-        const { error } = await supabase.auth.signUp({ email, password });
+        const { data, error } = await supabase.auth.signUp({ email, password });
         if (error) throw error;
-        addToast("Đăng ký thành công! Vui lòng kiểm tra email (nếu có yêu cầu xác thực).", "success");
         
-        // Push local data to cloud (Guest to Member migration)
         const userState = useUserStore.getState();
         const skinState = useSkinStore.getState();
         
-        if (userState.skinType || skinState.diaryLogs.length > 0) {
-          // This happens asynchronously in the background
-          syncLocalToCloud();
+        // Check if user session was automatically established (email confirmation disabled)
+        if (data.session) {
+          addToast("Đăng ký thành công và đã tự động đăng nhập!", "success");
+          
+          // Push local data to cloud (Guest to Member migration)
+          if (userState.skinType || skinState.diaryLogs.length > 0) {
+            await syncLocalToCloud();
+          }
+          
+          if (userState.quizCompleted) {
+            router.push("/dashboard");
+          } else {
+            router.push("/quiz");
+          }
+        } else {
+          addToast("Đăng ký thành công! Vui lòng kiểm tra email để xác thực tài khoản trước khi đăng nhập.", "success");
+          setIsLogin(true); // Switch to login tab so they can login after confirming
         }
-        
-        router.push("/quiz");
       }
     } catch (err: unknown) {
       if (err instanceof Error) {
