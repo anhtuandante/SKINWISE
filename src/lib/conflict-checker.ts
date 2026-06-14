@@ -1,6 +1,7 @@
 import conflictsData from "@/data/conflicts.json";
 import ingredientsData from "@/data/ingredients.json";
 import { Product, ConflictWarning, Ingredient } from "@/types";
+import { supabase } from "@/lib/supabase";
 
 const rawConflicts = conflictsData as {
   ingredientConflicts: {
@@ -20,6 +21,35 @@ const rawConflicts = conflictsData as {
 };
 
 const allIngredients = (ingredientsData as { ingredients: Ingredient[] }).ingredients;
+
+interface DbRule {
+  id: number;
+  rule_type: string;
+  item_a: string;
+  item_b: string;
+  severity: string;
+  reason: string;
+  solution: string;
+}
+
+// Dynamic database-backed rules cache
+let dbRules: DbRule[] | null = null;
+
+async function initDbRules() {
+  try {
+    const { data, error } = await supabase.from("rules").select("*");
+    if (!error && data && data.length > 0) {
+      dbRules = data;
+    }
+  } catch (e) {
+    console.warn("Failed to load rules from Supabase, using local JSON rules fallback:", e);
+  }
+}
+
+// Start loading immediately in the background
+if (typeof window !== "undefined") {
+  initDbRules();
+}
 
 function getIngredientName(id: string): string {
   const ing = allIngredients.find((i) => i.id === id);
@@ -41,7 +71,16 @@ export function checkConflicts(products: Product[]): ConflictWarning[] {
   });
 
   // Check ingredient conflicts
-  rawConflicts.ingredientConflicts.forEach((conflict) => {
+  const ingredientConflicts = dbRules 
+    ? dbRules.filter(r => r.rule_type === "ingredient").map(r => ({
+        pair: [r.item_a, r.item_b] as [string, string],
+        severity: r.severity as "high" | "medium" | "low",
+        reason: r.reason,
+        solution: r.solution
+      }))
+    : rawConflicts.ingredientConflicts;
+
+  ingredientConflicts.forEach((conflict) => {
     const [a, b] = conflict.pair;
     if (productIngredients.includes(a) && productIngredients.includes(b)) {
       warnings.push({
@@ -56,7 +95,16 @@ export function checkConflicts(products: Product[]): ConflictWarning[] {
 
   // Check texture conflicts
   const textures = products.map((p) => p.texture);
-  rawConflicts.textureConflicts.forEach((conflict) => {
+  const textureConflicts = dbRules
+    ? dbRules.filter(r => r.rule_type === "texture").map(r => ({
+        pair: [r.item_a, r.item_b] as [string, string],
+        pillingRisk: r.severity as "high" | "medium" | "low",
+        reason: r.reason,
+        solution: r.solution
+      }))
+    : rawConflicts.textureConflicts;
+
+  textureConflicts.forEach((conflict) => {
     const [a, b] = conflict.pair;
     const aTextures = textures.filter((t) => t === a);
     const bTextures = textures.filter((t) => t === b);

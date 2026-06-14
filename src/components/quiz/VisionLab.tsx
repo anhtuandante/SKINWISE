@@ -1,8 +1,9 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
+import Image from "next/image"
 import {
   Camera,
   X,
@@ -15,7 +16,7 @@ import {
   AlertTriangle,
   ShieldCheck
 } from "lucide-react"
-import { Product, ConflictWarning } from "@/types"
+import { Product, ConflictWarning, Ingredient } from "@/types"
 
 interface ScannedProductResult {
   product: Product;
@@ -30,6 +31,8 @@ import { useUserStore } from "@/store/user-store"
 import { useRoutineStore } from "@/store/routine-store"
 import { CATEGORY_LABELS } from "@/lib/constants"
 import ingredientsData from "@/data/ingredients.json"
+import { supabase } from "@/lib/supabase"
+import { trackEvent } from "@/lib/tracking"
 
 interface VisionLabProps {
   onComplete: () => void;
@@ -44,6 +47,33 @@ export default function VisionLab({ onComplete, onClose }: VisionLabProps) {
   const [productResult, setProductResult] = useState<ScannedProductResult | null>(null)
   const [error, setError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  
+  const [ingredients, setIngredients] = useState<Ingredient[]>(ingredientsData.ingredients as Ingredient[]);
+
+  useEffect(() => {
+    const loadIngredients = async () => {
+      try {
+        const { data, error } = await supabase.from("ingredients").select("*");
+        if (!error && data && data.length > 0) {
+          const mapped: Ingredient[] = data.map((i) => ({
+            id: i.id,
+            name: i.name,
+            nameVi: i.name_vi,
+            category: i.category,
+            benefits: i.benefits || [],
+            skinTypes: i.skin_types || [],
+            timeOfDay: i.time_of_day as Ingredient["timeOfDay"],
+            pregnancy: i.pregnancy,
+            conflictsWith: i.conflicts_with || []
+          }));
+          setIngredients(mapped);
+        }
+      } catch (err) {
+        console.warn("Failed to load ingredients from Supabase for VisionLab, using fallback:", err);
+      }
+    };
+    loadIngredients();
+  }, []);
   
   const store = useUserStore()
   const { morningRoutine, eveningRoutine } = useRoutineStore()
@@ -94,6 +124,12 @@ export default function VisionLab({ onComplete, onClose }: VisionLabProps) {
         const data = await response.json()
         setResult(data)
         
+        // Track success
+        trackEvent("ai_face_scan_success", { 
+          skinType: data.skinType, 
+          concerns: data.concerns 
+        });
+
         // Auto-map to store
         store.setSkinType(data.skinType)
         data.concerns.forEach((c: string) => {
@@ -229,7 +265,7 @@ export default function VisionLab({ onComplete, onClose }: VisionLabProps) {
               {/* Show original image overlay scan effect only during analysis */}
               {!hasResult && (
                 <div className="relative w-full aspect-[4/5] rounded-[32px] overflow-hidden bg-black shadow-inner group">
-                  <img src={image} alt="Target" className="w-full h-full object-cover opacity-90 transition-all duration-700" />
+                  <Image src={image} alt="Target" fill className="object-cover opacity-90 transition-all duration-700" />
                   
                   {/* HUD Corner Targets */}
                   <div className="absolute inset-x-6 top-6 flex justify-between z-20 pointer-events-none">
@@ -327,7 +363,7 @@ export default function VisionLab({ onComplete, onClose }: VisionLabProps) {
                       ) : (
                         <>
                           {productResult.product.ingredients.map((ingId: string) => {
-                            const ingName = ingredientsData.ingredients.find(i => i.id === ingId)?.nameVi || ingId;
+                            const ingName = ingredients.find(i => i.id === ingId)?.nameVi || ingId;
                             return (
                               <span key={ingId} className="px-2.5 py-1 rounded-full bg-fg text-bg text-[10px] font-medium capitalize">
                                 {ingName}

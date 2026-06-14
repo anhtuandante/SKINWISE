@@ -39,10 +39,18 @@ export interface ConflictWarning {
   items: string[];
 }
 
+export interface WalletAllocation {
+  cleanser: number;
+  moisturizer: number;
+  treatment: number;
+  sunscreen: number;
+}
+
 export interface UserProfile {
   skinType: string;
   concerns: string[];
   budget: string;
+  totalBudget?: number; // In VND, e.g. 1500000
   allergies: string;
   quizCompleted: boolean;
   barrier?: string;
@@ -51,7 +59,7 @@ export interface UserProfile {
   preference?: string;
   title?: string;
   mainGoal?: string;
-  subscriptionPlan?: "free" | "premium" | "ultimate";
+
   age?: string;
   gender?: string;
   environment?: string;
@@ -78,9 +86,20 @@ export interface DiaryLog {
     pores?: number;
     texture?: number;
   };
+
   lifestyle: string[];
+  diet?: string[];
   note: string;
   image?: string | null;
+  aiOriginalMetrics?: {
+    oiliness: number;
+    dryness: number;
+    redness: number;
+    acne: number;
+    barrierComfort: number;
+  };
+  userCorrected?: boolean;
+
   amRoutineCompleted?: boolean;
   pmRoutineCompleted?: boolean;
 }

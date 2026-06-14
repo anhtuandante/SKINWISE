@@ -1,4 +1,4 @@
-import { Product, UserProfile } from "@/types"
+import { Product, UserProfile, WalletAllocation } from "@/types"
 import { getCyclePhase } from "../utils/cyclePredictor"
 
 export const BUDGET_RANGES: Record<string, [number, number]> = {
@@ -7,6 +7,99 @@ export const BUDGET_RANGES: Record<string, [number, number]> = {
   "mid-range": [0, 1000000],
   premium: [0, 3000000],
   luxury: [0, Infinity],
+}
+
+/**
+ * Calculates the ideal budget allocation for a skincare routine based on total budget and user profile.
+ * Follows the "Invest vs. Save" clinical approach.
+ */
+export function calculateSkinWalletAllocation(totalBudget: number, profile: UserProfile): WalletAllocation {
+  let treatmentPct = 0.35;
+  let sunscreenPct = 0.25;
+  let moisturizerPct = 0.25;
+  let cleanserPct = 0.15;
+
+  // Adjust percentages based on budget size
+  if (totalBudget < 800000) {
+    // Low budget: focus on essentials (cleanser, moisturizer, sunscreen)
+    treatmentPct = 0.20;
+    sunscreenPct = 0.30;
+    moisturizerPct = 0.30;
+    cleanserPct = 0.20;
+  } else if (totalBudget >= 2000000) {
+    // High budget: can invest heavily in treatments and high-end sunscreens
+    treatmentPct = 0.45;
+    sunscreenPct = 0.30;
+    moisturizerPct = 0.15;
+    cleanserPct = 0.10;
+  }
+
+  // Adjust based on concerns
+  if (profile.concerns?.some(c => ["acne", "aging", "dark-spots"].includes(c))) {
+    // Increase treatment weight if there are active concerns
+    treatmentPct += 0.05;
+    moisturizerPct -= 0.05;
+  }
+
+  return {
+    treatment: Math.round(totalBudget * treatmentPct),
+    sunscreen: Math.round(totalBudget * sunscreenPct),
+    moisturizer: Math.round(totalBudget * moisturizerPct),
+    cleanser: Math.round(totalBudget * cleanserPct)
+  };
+}
+
+export interface SmartSpendResult {
+  score: number;
+  reasons: string[];
+}
+
+export function calculateSmartSpendScore(
+  totalBudget: number, 
+  actualSpend: WalletAllocation, 
+  profile: UserProfile
+): SmartSpendResult {
+  if (totalBudget === 0) return { score: 100, reasons: ["Chưa có dữ liệu ngân sách."] };
+  
+  let score = 100;
+  const reasons: string[] = [];
+  const totalActual = actualSpend.treatment + actualSpend.sunscreen + actualSpend.moisturizer + actualSpend.cleanser;
+  
+  if (totalActual === 0) return { score: 100, reasons: ["Chưa có dữ liệu chi tiêu."] };
+
+  const treatmentPct = actualSpend.treatment / totalActual;
+  const cleanserPct = actualSpend.cleanser / totalActual;
+  const sunscreenPct = actualSpend.sunscreen / totalActual;
+  const moisturizerPct = actualSpend.moisturizer / totalActual;
+
+  // 1. Treatment Under-invest Penalty
+  if (treatmentPct < 0.15 && cleanserPct > 0.25) {
+    score -= 25;
+    reasons.push("Bạn đang chi tiêu lệch trục. Rút ngân sách từ Sữa rửa mặt để nâng cấp Serum đặc trị sẽ giúp da cải thiện nhanh hơn.");
+  }
+
+  // 2. Sunscreen Filter Risk
+  const isTreatmentHeavy = profile.activeIngredients?.some(i => ["retinol", "bha", "aha"].includes(i.toLowerCase())) ||
+                           profile.concerns?.includes("aging") || profile.concerns?.includes("dark-spots");
+  if (isTreatmentHeavy && sunscreenPct < 0.15) {
+    score -= 20;
+    reasons.push("Da đang dùng treatment/cần chống lão hóa nhưng KCN đầu tư quá ít (<15% ví). Hãy ưu tiên mua KCN tốt hơn để bảo vệ thành quả dưỡng da.");
+  }
+
+  // 3. Routine Bloat Penalty for low budget
+  if (totalBudget < 600000 && (treatmentPct > 0 && sunscreenPct > 0 && moisturizerPct > 0 && cleanserPct > 0)) {
+     // If they bought everything on a 600k budget, it means they bought very cheap stuff
+     if (actualSpend.treatment > 0 && actualSpend.treatment < 150000) {
+        score -= 15;
+        reasons.push("Với ví nhỏ (<600k), không nên cố mua đủ các bước giá quá rẻ. Hãy tập trung làm sạch và chống nắng thật tốt trước.");
+     }
+  }
+
+  if (score >= 90) {
+     reasons.unshift("Tuyệt vời! AI đánh giá bạn phân bổ ngân sách rất tối ưu chuẩn y khoa.");
+  }
+
+  return { score: Math.max(0, score), reasons };
 }
 
 export interface MatchResult {
@@ -104,14 +197,37 @@ export function calculateMatchScore(product: Product, profile: UserProfile): Mat
   score += textureScore;
 
   // 4. Budget Match (15 points)
-  const [, maxBudget] = BUDGET_RANGES[profile.budget] || [0, Infinity];
-  const isBudgetMatch = product.price <= maxBudget;
-  
-  if (isBudgetMatch) {
-    score += 15;
-    reasons.push(`Nằm trong mức ngân sách của bạn.`);
+  let isBudgetMatch = false;
+  if (profile.totalBudget && profile.totalBudget > 0) {
+    // Dynamic budget matching based on SkinWallet allocation
+    const allocation = calculateSkinWalletAllocation(profile.totalBudget, profile);
+    let categoryLimit = 0;
+    
+    if (product.category === "cleanser") categoryLimit = allocation.cleanser;
+    else if (product.category === "sunscreen") categoryLimit = allocation.sunscreen;
+    else if (product.category === "serum" || product.category === "exfoliant" || product.category === "mask") categoryLimit = allocation.treatment;
+    else categoryLimit = allocation.moisturizer; // default fallback
+
+    // Allow 10% tolerance
+    isBudgetMatch = product.price <= categoryLimit * 1.1;
+    
+    if (isBudgetMatch) {
+      score += 15;
+      reasons.push(`Nằm trong hạn mức SkinWallet gợi ý cho bước ${product.category}.`);
+    } else {
+      reasons.push(`Giá sản phẩm vượt hạn mức phân bổ thông minh của bước này (Max: ${(categoryLimit).toLocaleString()}đ).`);
+    }
   } else {
-    reasons.push(`Hơi vượt mức ngân sách một chút, nhưng chất lượng đáng cân nhắc.`);
+    // Legacy budget matching
+    const [, maxBudget] = BUDGET_RANGES[profile.budget] || [0, Infinity];
+    isBudgetMatch = product.price <= maxBudget;
+    
+    if (isBudgetMatch) {
+      score += 15;
+      reasons.push(`Nằm trong mức ngân sách của bạn.`);
+    } else {
+      reasons.push(`Hơi vượt mức ngân sách một chút, nhưng chất lượng đáng cân nhắc.`);
+    }
   }
 
   // 5. Active Ingredients (10 points)

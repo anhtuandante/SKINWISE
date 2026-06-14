@@ -8,26 +8,12 @@ import { SkinPredictorNetwork } from "@/utils/skinPredictor";
 import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Sparkles,
-  Camera,
-  Settings,
-  Check,
-  ChevronDown,
-  ChevronUp,
-  Droplets,
-  Sun,
-  ShieldAlert,
-  Info,
-  Calendar,
-  Sparkle,
-  Brain,
-  Download,
-  Upload,
-  Trash2
-} from "lucide-react";
+import { Wallet, Sparkles, Camera, Settings, Check, ChevronDown, ChevronUp, Droplets, Sun, Moon, ShieldAlert, Info, Calendar, Sparkle, Brain, Download, Upload, Trash2, Salad } from "lucide-react";
 import { getCyclePhase } from "@/utils/cyclePredictor";
 import { useToastStore } from "@/store/toast-store";
+import { trackEvent } from "@/lib/tracking";
+import { CATEGORY_LABELS } from "@/lib/constants";
+import { calculateSkinWalletAllocation, calculateSmartSpendScore } from "@/lib/recommendation-engine";
 import TrendVisualizer from "./TrendVisualizer";
 import VisionLab from "@/components/quiz/VisionLab";
 import SkinCheckinFlow from "./SkinCheckinFlow";
@@ -67,7 +53,7 @@ export default function SkinDashboard({
 }: SkinDashboardProps) {
   const user = useUserStore();
   const routine = useRoutineStore();
-  const { diaryLogs, pinnedMetrics, setPinnedMetrics } = useSkinStore();
+  const { diaryLogs, pinnedMetrics, setPinnedMetrics, toggleRoutineCompleted } = useSkinStore();
 
   const [showVisionModal, setShowVisionModal] = useState(false);
   const [showCheckinModal, setShowCheckinModal] = useState(false);
@@ -134,22 +120,6 @@ export default function SkinDashboard({
     return diaryLogs[diaryLogs.length - 1];
   }, [diaryLogs]);
 
-  // Initialize Predictor model
-  const predictor = useMemo(() => new SkinPredictorNetwork(), []);
-
-  // Online training in background when logs update
-  useEffect(() => {
-    if (diaryLogs.length >= 2) {
-      predictor.trainOnLogs(diaryLogs);
-    }
-  }, [diaryLogs, predictor]);
-
-  // Compute tomorrow's forecast if today is logged
-  const forecast = useMemo(() => {
-    if (!todayLog) return null;
-    return predictor.getForecast(yesterdayLog || null, todayLog, user);
-  }, [todayLog, yesterdayLog, predictor, user]);
-
   // Active metrics to calculate score
   const todayMetrics = useMemo(() => {
     return todayLog?.metrics || latestLog?.metrics || {
@@ -167,6 +137,121 @@ export default function SkinDashboard({
   const todayScore = useMemo(() => {
     return calculateSkinScore(todayMetrics);
   }, [todayMetrics]);
+
+  // Initialize Predictor model
+  const predictor = useMemo(() => new SkinPredictorNetwork(), []);
+
+
+
+  // Compute tomorrow's forecast if today is logged
+  const forecast = useMemo(() => {
+    if (!todayLog) return null;
+    return predictor.getForecast(yesterdayLog || null, todayLog, user, diaryLogs);
+  }, [todayLog, yesterdayLog, predictor, user, diaryLogs]);
+
+  // Diet recommendation based on today's metrics
+  const dietGuide = useMemo(() => {
+    const acne = todayMetrics.acne ?? 1;
+    const redness = todayMetrics.redness ?? 1;
+    const comfort = todayMetrics.barrierComfort ?? 5;
+    const dryness = todayMetrics.dryness ?? 1;
+    const oiliness = todayMetrics.oiliness ?? 2;
+
+    if (acne >= 3 || user.concerns.includes("acne")) {
+      return {
+        type: "acne",
+        title: "Dinh dưỡng ngừa mụn & Kháng viêm",
+        desc: "Hạn chế tối đa sữa bò, đồ ngọt tinh luyện, tinh bột trắng. Nên nạp nhiều chất béo tốt (omega-3) và kẽm.",
+        foods: [
+          { name: "Hạt bí ngô", desc: "Giàu kẽm kiểm soát bã nhờn", emoji: "🎃" },
+          { name: "Trà xanh", desc: "Kháng viêm, chống oxy hóa", emoji: "🍵" },
+          { name: "Cá hồi", desc: "Omega-3 giảm viêm sưng đỏ", emoji: "🐟" },
+          { name: "Bông cải xanh", desc: "Hỗ trợ thải độc da", emoji: "🥦" }
+        ]
+      };
+    }
+
+    if (redness >= 3 || comfort <= 3) {
+      return {
+        type: "irritated",
+        title: "Dinh dưỡng làm mát & Làm dịu kích ứng",
+        desc: "Tránh xa đồ uống có cồn, caffeine và đồ ăn cay nóng gây giãn mạch. Ưu tiên làm mát và làm dịu da từ bên trong.",
+        foods: [
+          { name: "Nước dừa", desc: "Cấp nước, cân bằng điện giải", emoji: "🥥" },
+          { name: "Sữa chua Hy Lạp", desc: "Probiotics phục hồi đường ruột & da", emoji: "🥛" },
+          { name: "Dưa chuột", desc: "Làm mát cơ thể, chứa silica", emoji: "🥒" },
+          { name: "Trà hoa cúc", desc: "Làm dịu hệ thần kinh & làn da", emoji: "🌼" }
+        ]
+      };
+    }
+
+    if (dryness >= 3) {
+      return {
+        type: "dry",
+        title: "Dinh dưỡng cấp nước & Phục hồi màng ẩm",
+        desc: "Bổ sung chất béo lành mạnh để tái tạo lớp màng lipid bảo vệ da. Uống đủ 2 - 2.5 lít nước lọc.",
+        foods: [
+          { name: "Trái bơ", desc: "Chất béo tốt dưỡng ẩm tự nhiên", emoji: "🥑" },
+          { name: "Hạt óc chó / chia", desc: "Cấp ẩm sâu cho tế bào da", emoji: "🌰" },
+          { name: "Cà chua", desc: "Chứa Lycopene chống mất nước", emoji: "🍅" },
+          { name: "Nước lọc", desc: "Cung cấp độ ẩm cho tế bào da", emoji: "💧" }
+        ]
+      };
+    }
+
+    if (oiliness >= 4) {
+      return {
+        type: "oily",
+        title: "Dinh dưỡng kiểm soát bã nhờn",
+        desc: "Tăng cường Vitamin A, B và Kẽm để ổn định hoạt động tuyến dầu. Hạn chế chất béo bão hòa từ đồ chiên xào.",
+        foods: [
+          { name: "Rau chân vịt", desc: "Giàu vitamin A giúp mịn da", emoji: "🥬" },
+          { name: "Hạnh nhân", desc: "Vitamin E giảm oxy hóa dầu nhờn", emoji: "🥜" },
+          { name: "Khoai lang", desc: "Beta-carotene điều hòa tuyến bã nhờn", emoji: "🍠" },
+          { name: "Yến mạch", desc: "Chứa chất xơ ổn định đường huyết", emoji: "🌾" }
+        ]
+      };
+    }
+
+    return {
+      type: "normal",
+      title: "Dinh dưỡng duy trì da khỏe mạnh",
+      desc: "Tăng cường các chất chống oxy hóa và Vitamin C để thúc đẩy tổng hợp collagen tự nhiên của da.",
+      foods: [
+        { name: "Cam / Quả mọng", desc: "Vitamin C tăng collagen, sáng da", emoji: "🍊" },
+        { name: "Hạt chia", desc: "Nguồn dinh dưỡng chống lão hóa", emoji: "🌱" },
+        { name: "Rau cải xoăn", desc: "Chứa nhiều vitamin nuôi dưỡng da", emoji: "🥬" },
+        { name: "Nước ép cần tây", desc: "Thanh lọc cơ thể, căng mịn da", emoji: "🥤" }
+      ]
+    };
+  }, [todayMetrics, user.concerns]);
+
+  // Analyze logged diet to provide feedback
+  const dietFeedback = useMemo(() => {
+    if (!todayLog || !todayLog.diet || todayLog.diet.length === 0) return null;
+    const items = todayLog.diet;
+    const triggers = [];
+    const goods = [];
+
+    if (items.includes("dairy")) triggers.push("sữa/chế phẩm sữa 🥛");
+    if (items.includes("sugar")) triggers.push("đồ ngọt 🍩");
+    if (items.includes("greasy_spicy")) triggers.push("đồ cay nóng/dầu mỡ 🌶️");
+    if (items.includes("greens")) goods.push("ăn rau xanh quả mọng 🥦");
+    if (items.includes("water")) goods.push("uống đủ nước 💧");
+
+    let text = "";
+    if (triggers.length > 0 && goods.length > 0) {
+      text = `Hôm nay bạn đã ${goods.join(" và ")} (rất tốt cho da!). Tuy nhiên, lưu ý việc tiêu thụ ${triggers.join(" và ")} vì có thể gây kích thích tăng bã nhờn hoặc phát triển mụn ẩn.`;
+    } else if (triggers.length > 0) {
+      text = `Hôm nay bạn đã tiêu thụ ${triggers.join(" và ")}. Để tránh tăng sinh dầu nhờn hoặc sưng viêm vào ngày mai, hãy bù lại bằng cách uống nhiều nước lọc và đắp mặt nạ làm dịu nhé!`;
+    } else if (goods.length > 0) {
+      text = `Tuyệt vời! Bạn đang duy trì chế độ ăn lành mạnh bằng cách ${goods.join(" và ")}. Làn da sẽ sớm khỏe đẹp nhờ thói quen này!`;
+    }
+
+    return text;
+  }, [todayLog]);
+
+
 
   // Score count-up micro-animation (Tắt theo feedback user)
   const [displayScore, setDisplayScore] = useState(todayScore);
@@ -194,6 +279,31 @@ export default function SkinDashboard({
     const normalizedRedness = redness > 10 ? redness : redness * 20;
     return normalizedRedness > 50;
   }, [todayMetrics]);
+
+  // --- SkinWallet Calculations ---
+  const [walletInput, setWalletInput] = useState((user.totalBudget || 1500000).toString());
+  const [isWalletExpanded, setIsWalletExpanded] = useState(false);
+
+  const walletAllocation = useMemo(() => {
+    return calculateSkinWalletAllocation(user.totalBudget || 1500000, user);
+  }, [user]);
+
+  const actualSpend = useMemo(() => {
+    const allProducts = [...routine.morningRoutine, ...routine.eveningRoutine];
+    const uniqueProducts = Array.from(new Map(allProducts.map(p => [p.id, p])).values());
+    const allocation = { cleanser: 0, moisturizer: 0, treatment: 0, sunscreen: 0 };
+    for (const p of uniqueProducts) {
+      if (p.category === "cleanser") allocation.cleanser += p.price;
+      else if (p.category === "sunscreen") allocation.sunscreen += p.price;
+      else if (p.category === "serum" || p.category === "exfoliant" || p.category === "mask") allocation.treatment += p.price;
+      else allocation.moisturizer += p.price;
+    }
+    return allocation;
+  }, [routine.morningRoutine, routine.eveningRoutine]);
+
+  const smartSpendResult = useMemo(() => {
+    return calculateSmartSpendScore(user.totalBudget || 1500000, actualSpend, user);
+  }, [actualSpend, user]);
 
   // Available metrics for customization
   const availableMetrics = Object.keys(METRIC_LABELS);
@@ -368,7 +478,7 @@ export default function SkinDashboard({
           </div>
 
           <div className="flex flex-col gap-2 bg-white/5 border border-white/10 p-5 rounded-2xl max-w-sm">
-            <p className="text-micro font-bold text-slate-400 uppercase tracking-widest">Lời khuyên từ AI</p>
+            <p className="text-micro font-bold text-slate-400 uppercase tracking-widest">Gợi ý hôm nay</p>
             <p className="text-caption text-slate-200 leading-relaxed">
               {(user.barrierStatus === "stinging" || user.barrierStatus === "flaking" || user.barrierStatus === "redness")
                 ? "Hàng rào da của bạn đang mỏng yếu. Ưu tiên cấp ẩm phục hồi và dừng các hoạt chất đặc trị mạnh."
@@ -466,22 +576,138 @@ export default function SkinDashboard({
         )}
       </div>
 
+      {/* 2c. Today's Skincare Checklist Widget */}
+      <div className="bg-white border border-line rounded-[24px] p-6 shadow-soft space-y-4 animate-in">
+        <div className="flex items-center justify-between">
+          <h3 className="text-body font-bold text-fg flex items-center gap-2">
+            <Check size={18} className="text-accent-dark" />
+            <span>Theo dõi chu trình hôm nay</span>
+          </h3>
+          {todayLog?.amRoutineCompleted && todayLog?.pmRoutineCompleted && (
+            <span className="text-[10px] bg-success/10 text-success px-2.5 py-1 rounded-full font-bold border border-success/10 uppercase tracking-wider">
+              Hoàn thành cả hai! 🎉
+            </span>
+          )}
+        </div>
+        <p className="text-caption text-muted">Đánh dấu sau khi bôi để AI theo dõi tính kiên trì và đo lường độ ẩm da chính xác.</p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* AM Routine Card */}
+          <div className={cn(
+            "border rounded-2xl p-4 transition-all duration-250 flex items-start gap-3.5",
+            todayLog?.amRoutineCompleted 
+              ? "bg-accent-light/10 border-accent/40" 
+              : "bg-surface/30 border-line hover:border-fg/20"
+          )}>
+            <button
+              onClick={() => {
+                toggleRoutineCompleted(todayStr, "AM");
+                const completed = !todayLog?.amRoutineCompleted;
+                addToast(completed ? "Đã xong chu trình sáng! 🌅" : "Đã hủy chu trình sáng.", "success");
+                trackEvent("routine_completed_toggle", { period: "AM", completed });
+              }}
+              className={cn(
+                "w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 transition-all",
+                todayLog?.amRoutineCompleted 
+                  ? "bg-accent border-accent text-bg" 
+                  : "border-muted hover:border-fg bg-white"
+              )}
+            >
+              {todayLog?.amRoutineCompleted && <Check size={12} className="stroke-[3.5px] text-white" />}
+            </button>
+            <div className="space-y-1.5 flex-1">
+              <div className="flex items-center gap-1.5">
+                <Sun size={14} className="text-amber-500 shrink-0" />
+                <span className="text-caption font-bold text-fg">Chu trình Sáng (AM)</span>
+              </div>
+              
+              {routine.morningRoutine.length > 0 ? (
+                <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[10px] text-muted font-medium">
+                  {routine.morningRoutine.map((p, idx) => (
+                    <span key={p.id} className="flex items-center gap-1.5">
+                      <span className="text-fg">{CATEGORY_LABELS[p.category] || p.category}</span>
+                      {idx < routine.morningRoutine.length - 1 && <span className="text-subtle font-light">&rarr;</span>}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <button
+                  onClick={() => onNavigate("routine")}
+                  className="text-[10px] text-accent-dark hover:underline font-bold block"
+                >
+                  + Thiết lập chu trình sáng
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* PM Routine Card */}
+          <div className={cn(
+            "border rounded-2xl p-4 transition-all duration-250 flex items-start gap-3.5",
+            todayLog?.pmRoutineCompleted 
+              ? "bg-accent/[0.03] border-accent/35" 
+              : "bg-surface/30 border-line hover:border-fg/20"
+          )}>
+            <button
+              onClick={() => {
+                toggleRoutineCompleted(todayStr, "PM");
+                const completed = !todayLog?.pmRoutineCompleted;
+                addToast(completed ? "Đã xong chu trình tối! 🌙" : "Đã hủy chu trình tối.", "success");
+                trackEvent("routine_completed_toggle", { period: "PM", completed });
+              }}
+              className={cn(
+                "w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 transition-all",
+                todayLog?.pmRoutineCompleted 
+                  ? "bg-accent-dark border-accent-dark text-bg" 
+                  : "border-muted hover:border-fg bg-white"
+              )}
+            >
+              {todayLog?.pmRoutineCompleted && <Check size={12} className="stroke-[3.5px] text-white" />}
+            </button>
+            <div className="space-y-1.5 flex-1">
+              <div className="flex items-center gap-1.5">
+                <Moon size={14} className="text-accent-dark shrink-0" />
+                <span className="text-caption font-bold text-fg">Chu trình Tối (PM)</span>
+              </div>
+              
+              {routine.eveningRoutine.length > 0 ? (
+                <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[10px] text-muted font-medium">
+                  {routine.eveningRoutine.map((p, idx) => (
+                    <span key={p.id} className="flex items-center gap-1.5">
+                      <span className="text-fg">{CATEGORY_LABELS[p.category] || p.category}</span>
+                      {idx < routine.eveningRoutine.length - 1 && <span className="text-subtle font-light">&rarr;</span>}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <button
+                  onClick={() => onNavigate("routine")}
+                  className="text-[10px] text-accent-dark hover:underline font-bold block"
+                >
+                  + Thiết lập chu trình tối
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* AI Tomorrow's Skin Forecast */}
       <div className="bg-white border border-line rounded-[24px] p-6 shadow-soft space-y-4">
         <h3 className="text-body font-bold text-fg flex items-center gap-2">
-          <Brain size={18} className="text-indigo-500 animate-pulse" />
-          <span>Dự báo làn da ngày mai (AI Predictor)</span>
+          <Brain size={18} className="text-accent-dark animate-pulse" />
+          <span>Dự báo làn da ngày mai</span>
         </h3>
         
         {!todayLog ? (
-          <div className="bg-indigo-500/[0.01] border border-indigo-500/10 rounded-xl p-4 text-center space-y-2">
+          <div className="bg-accent/[0.01] border border-accent/15 rounded-xl p-4 text-center space-y-2">
             <p className="text-caption text-muted">
               Nhập nhật ký da hôm nay để AI phân tích thói quen và dự đoán trạng thái da ngày mai của bạn.
             </p>
             <button
               type="button"
               onClick={() => onNavigate("journal")}
-              className="text-caption text-indigo-600 hover:underline font-bold"
+              className="text-caption text-accent-dark hover:underline font-bold"
             >
               Check-in ngay &rarr;
             </button>
@@ -561,8 +787,8 @@ export default function SkinDashboard({
               )}
 
               {/* AI Recommendation dynamic box */}
-              <div className="p-4 bg-indigo-500/5 border border-indigo-500/10 rounded-xl text-caption leading-relaxed">
-                <span className="font-bold text-indigo-700 block mb-1">💡 Lời khuyên ngừa kích ứng ngày mai:</span>
+              <div className="p-4 bg-accent/10 border border-accent/15 rounded-xl text-caption leading-relaxed">
+                <span className="font-bold text-accent-dark block mb-1">💡 Lời khuyên ngừa kích ứng ngày mai:</span>
                 {(() => {
                   if (forecast.redness >= 3) {
                     return "Hôm nay hàng rào da chịu áp lực hoặc dùng treatment nặng. Tối nay hãy ưu tiên kem dưỡng phục hồi chứa B5, Ceramide, Centella. Tạm ngưng AHA/BHA/Retinol nếu cảm thấy châm chích.";
@@ -576,9 +802,79 @@ export default function SkinDashboard({
                   return "Chỉ số da đang ở mức an toàn. Hãy duy trì routine dưỡng ẩm tối nay và bôi chống nắng bảo vệ vào ngày mai.";
                 })()}
               </div>
+
+              {/* Personal AI Insights from correlation */}
+              {forecast.personalInsights && forecast.personalInsights.length > 0 && (
+                <div className="p-4 bg-accent-light/30 border border-accent/15 rounded-xl text-caption space-y-2">
+                  <span className="font-bold text-accent-dark block">🧠 AI Phân Tích Thói Quen (Cá nhân hóa):</span>
+                  <ul className="list-disc pl-4 space-y-1 text-fg/80">
+                    {forecast.personalInsights.map((insight, idx) => (
+                      <li key={idx} className="leading-relaxed">
+                        {insight}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           )
         )}
+      </div>
+
+      {/* 2a. Today's Skin Diet Guide */}
+      <div className="bg-white border border-line rounded-[24px] p-6 shadow-soft space-y-4">
+        <h3 className="text-body font-bold text-fg flex items-center gap-2">
+          <Salad size={18} className="text-emerald-500" />
+          <span>Dinh dưỡng đẹp da hôm nay</span>
+        </h3>
+
+        <div className="space-y-4">
+          {/* Diet recommendations */}
+          <div className="p-4 bg-emerald-500/[0.02] border border-emerald-500/10 rounded-2xl space-y-3">
+            <div>
+              <span className="text-micro font-bold text-emerald-600 uppercase tracking-wider block">Thực đơn khuyến nghị</span>
+              <span className="text-body font-extrabold text-fg mt-0.5 block">{dietGuide.title}</span>
+              <p className="text-caption text-muted mt-1 leading-relaxed">{dietGuide.desc}</p>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
+              {dietGuide.foods.map((food, idx) => (
+                <div key={idx} className="bg-white border border-line rounded-xl p-3 text-center space-y-1 hover:border-emerald-500/30 transition-all select-none">
+                  <span className="text-2xl block">{food.emoji}</span>
+                  <span className="text-caption font-bold text-fg block">{food.name}</span>
+                  <span className="text-[10px] text-muted block leading-snug">{food.desc}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* User's diet feedback if logged */}
+          {todayLog ? (
+            dietFeedback ? (
+              <div className="p-3.5 bg-accent/10 border border-accent/15 rounded-xl text-caption leading-relaxed flex items-start gap-2 animate-in">
+                <span className="text-base shrink-0">🍽️</span>
+                <div>
+                  <span className="font-bold text-accent-dark">Phản hồi ăn uống hôm nay: </span>
+                  <span className="text-muted">{dietFeedback}</span>
+                </div>
+              </div>
+            ) : (
+              <div className="p-3.5 bg-surface border border-line rounded-xl text-caption text-muted flex items-start gap-2 animate-in">
+                <span className="text-base shrink-0">✍️</span>
+                <div>
+                  Bạn chưa ghi nhận các nhóm thực phẩm đã ăn hôm nay. Hãy check-in để bổ sung thói quen dinh dưỡng nhé!
+                </div>
+              </div>
+            )
+          ) : (
+            <div className="p-3.5 bg-surface border border-line rounded-xl text-caption text-muted flex items-start gap-2 animate-in">
+              <span className="text-base shrink-0">🔒</span>
+              <div>
+                Hãy check-in da hôm nay để nhận phản hồi dinh dưỡng cá nhân hóa và theo dõi thói quen ăn uống!
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* 2b. Menstrual Cycle Skin Predictor */}
@@ -684,6 +980,119 @@ export default function SkinDashboard({
           <Calendar size={18} />
           {todayLog && !todayLog.isPartial ? "Xem nhật ký da" : todayLog ? "Bổ sung nhật ký" : "Check-in da (3s)"}
         </button>
+      </div>
+
+      {/* 3.5 SkinWallet Optimizer */}
+      <div className="bg-white border border-line rounded-[24px] overflow-hidden shadow-soft">
+        <button
+          onClick={() => setIsWalletExpanded(!isWalletExpanded)}
+          className="w-full p-6 flex items-center justify-between text-body font-bold text-fg hover:bg-line/5 transition-all"
+        >
+          <span className="flex items-center gap-2">
+            <Wallet size={18} className="text-accent-dark" />
+            Ví Skincare Thông Minh (SkinWallet)
+          </span>
+          <div className="flex items-center gap-3">
+            <span className={cn(
+              "text-micro font-bold px-2 py-1 rounded-full",
+              smartSpendResult.score >= 90 ? "bg-green-500/10 text-green-600" :
+              smartSpendResult.score >= 70 ? "bg-amber-500/10 text-amber-600" :
+              "bg-red-500/10 text-red-500"
+            )}>
+              Điểm chi tiêu: {smartSpendResult.score}/100
+            </span>
+            {isWalletExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+          </div>
+        </button>
+
+        <AnimatePresence>
+          {isWalletExpanded && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="border-t border-line p-6 space-y-6"
+            >
+              {/* Top part: Budget input */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h4 className="text-caption font-bold text-fg">Tổng ngân sách dưỡng da</h4>
+                  <p className="text-micro text-muted">Nhập số tiền tối đa bạn muốn đầu tư cho quy trình.</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="number"
+                    value={walletInput}
+                    onChange={(e) => setWalletInput(e.target.value)}
+                    onBlur={(e) => {
+                      const val = parseInt(e.target.value) || 0;
+                      user.setTotalBudget(val);
+                      addToast("Đã cập nhật ngân sách SkinWallet", "success");
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        const val = parseInt(e.currentTarget.value) || 0;
+                        user.setTotalBudget(val);
+                        e.currentTarget.blur();
+                      }
+                    }}
+                    className="w-32 sm:w-40 bg-surface border border-line rounded-xl px-3 py-2 text-caption text-right outline-none focus:border-fg transition-all font-bold"
+                  />
+                  <span className="text-caption font-bold text-muted">VND</span>
+                </div>
+              </div>
+
+              {/* Middle part: Wallet Allocation */}
+              <div className="space-y-3">
+                <h4 className="text-caption font-bold text-fg">Phân bổ chuẩn Y khoa (Invest vs. Save)</h4>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="bg-surface/50 border border-line rounded-xl p-3 flex justify-between items-center">
+                    <div>
+                      <span className="text-micro font-bold text-muted block uppercase">Đặc trị / Serum (⭐ Đầu tư)</span>
+                      <span className="text-caption font-bold text-fg">{walletAllocation.treatment.toLocaleString()}đ</span>
+                    </div>
+                    <span className="text-[10px] bg-accent/10 text-accent-dark px-2 py-0.5 rounded-full font-bold">Invest</span>
+                  </div>
+                  <div className="bg-surface/50 border border-line rounded-xl p-3 flex justify-between items-center">
+                    <div>
+                      <span className="text-micro font-bold text-muted block uppercase">Chống nắng (☀️ Đầu tư)</span>
+                      <span className="text-caption font-bold text-fg">{walletAllocation.sunscreen.toLocaleString()}đ</span>
+                    </div>
+                    <span className="text-[10px] bg-amber-500/10 text-amber-600 px-2 py-0.5 rounded-full font-bold">Invest</span>
+                  </div>
+                  <div className="bg-surface/50 border border-line rounded-xl p-3 flex justify-between items-center">
+                    <div>
+                      <span className="text-micro font-bold text-muted block uppercase">Kem dưỡng ẩm (💧 Vừa phải)</span>
+                      <span className="text-caption font-bold text-fg">{walletAllocation.moisturizer.toLocaleString()}đ</span>
+                    </div>
+                    <span className="text-[10px] bg-blue-500/10 text-blue-500 px-2 py-0.5 rounded-full font-bold">Save</span>
+                  </div>
+                  <div className="bg-surface/50 border border-line rounded-xl p-3 flex justify-between items-center">
+                    <div>
+                      <span className="text-micro font-bold text-muted block uppercase">Làm sạch (🧼 Tiết kiệm)</span>
+                      <span className="text-caption font-bold text-fg">{walletAllocation.cleanser.toLocaleString()}đ</span>
+                    </div>
+                    <span className="text-[10px] bg-slate-500/10 text-slate-500 px-2 py-0.5 rounded-full font-bold">Save</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom part: Smart Spend Score Result */}
+              <div className="bg-accent/5 border border-accent/15 rounded-xl p-4 space-y-2">
+                <span className="text-micro font-bold text-accent-dark block uppercase">Đánh giá thực tế từ AI</span>
+                <ul className="space-y-1.5">
+                  {smartSpendResult.reasons.map((reason, idx) => (
+                    <li key={idx} className="text-caption text-fg flex items-start gap-2 leading-relaxed">
+                      <span className="text-base shrink-0 mt-0.5">{reason.includes("Tuyệt vời") ? "🎉" : reason.includes("⚠️") || reason.includes("lệch trục") || reason.includes("quá ít") ? "⚠️" : "💡"}</span>
+                      <span>{reason}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* 4. Trend Visualizer */}
@@ -867,7 +1276,7 @@ export default function SkinDashboard({
                   {/* Import */}
                   <label className="w-full p-4 border border-line bg-surface hover:bg-line/20 rounded-2xl flex items-center gap-3 transition-all text-caption font-bold text-fg hover:scale-[1.005] cursor-pointer block">
                     <div className="flex items-center gap-3">
-                      <Upload size={16} className="text-indigo-500" />
+                      <Upload size={16} className="text-accent-dark" />
                       <div className="text-left">
                         <span>Khôi phục từ file sao lưu</span>
                         <span className="text-[10px] text-muted block font-normal mt-0.5">Chọn file .json đã tải về trước đó để phục hồi dữ liệu.</span>

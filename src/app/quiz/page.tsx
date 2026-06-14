@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { useUserStore } from "@/store/user-store"
@@ -12,6 +12,7 @@ import {
 import Button from "@/components/ui/Button"
 import VisionLab from "@/components/quiz/VisionLab"
 import { Sparkles, Check } from "lucide-react"
+import { trackEvent } from "@/lib/tracking"
 
 const STEPS = [
   { title: "Độ tuổi", sub: "Xác định chu kỳ tái tạo da" },
@@ -45,6 +46,16 @@ export default function QuizPage() {
   const addToast = useToastStore((s) => s.addToast)
   const [showVision, setShowVision] = useState(false)
 
+  // Track quiz load
+  useEffect(() => {
+    trackEvent("quiz_start");
+  }, []);
+
+  // Track step changes
+  useEffect(() => {
+    trackEvent("quiz_step_view", { step });
+  }, [step]);
+
   const canNext = () => {
     switch (step) {
       case 1: return !!store.age;
@@ -62,6 +73,15 @@ export default function QuizPage() {
       setDirection(1)
       setStep(step + 1)
     } else {
+      trackEvent("quiz_complete", {
+        age: store.age,
+        skinType: store.skinType,
+        concerns: store.concerns,
+        barrierStatus: store.barrierStatus,
+        budget: store.budget,
+        cycleLength: store.cycleLength,
+        hasCycleDate: !!store.cycleStartDate
+      });
       store.setQuizCompleted(true)
       router.push("/results")
     }
@@ -119,7 +139,10 @@ export default function QuizPage() {
                   title={item.label}
                   desc={item.desc}
                   isActive={store.age === item.id}
-                  onClick={() => store.setAge(item.id)}
+                  onClick={() => {
+                    trackEvent("quiz_answer", { step: 1, type: "age", value: item.id });
+                    store.setAge(item.id);
+                  }}
                 />
               ))}
 
@@ -129,7 +152,10 @@ export default function QuizPage() {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => setShowVision(true)}
+                    onClick={() => {
+                      trackEvent("ai_face_scan_start");
+                      setShowVision(true);
+                    }}
                     className="w-full mb-6 p-4 bg-fg text-bg rounded-2xl flex items-center justify-center gap-3 shadow-lg"
                   >
                     <Sparkles size={20} className="animate-pulse" />
@@ -146,7 +172,10 @@ export default function QuizPage() {
                       title={item.label}
                       desc={item.desc}
                       isActive={store.skinType === item.id}
-                      onClick={() => store.setSkinType(item.id)}
+                      onClick={() => {
+                        trackEvent("quiz_answer", { step: 2, type: "skinType", value: item.id });
+                        store.setSkinType(item.id);
+                      }}
                     />
                   ))}
                 </>
@@ -158,7 +187,11 @@ export default function QuizPage() {
                   key={item.id}
                   title={item.label}
                   isActive={store.concerns.includes(item.id)}
-                  onClick={() => store.toggleConcern(item.id)}
+                  onClick={() => {
+                    const active = store.concerns.includes(item.id);
+                    trackEvent("quiz_answer", { step: 3, type: "concern", value: item.id, selected: !active });
+                    store.toggleConcern(item.id);
+                  }}
                   isMulti
                 />
               ))}
@@ -170,7 +203,10 @@ export default function QuizPage() {
                   title={item.label}
                   desc={item.desc}
                   isActive={store.barrierStatus === item.id}
-                  onClick={() => store.setBarrierStatus(item.id as "stable" | "redness" | "flaking" | "stinging")}
+                  onClick={() => {
+                    trackEvent("quiz_answer", { step: 4, type: "barrierStatus", value: item.id });
+                    store.setBarrierStatus(item.id as "stable" | "redness" | "flaking" | "stinging");
+                  }}
                 />
               ))}
 
@@ -181,7 +217,10 @@ export default function QuizPage() {
                   title={item.label}
                   desc={item.desc}
                   isActive={store.budget === item.id}
-                  onClick={() => store.setBudget(item.id)}
+                  onClick={() => {
+                    trackEvent("quiz_answer", { step: 5, type: "budget", value: item.id });
+                    store.setBudget(item.id);
+                  }}
                 />
               ))}
 

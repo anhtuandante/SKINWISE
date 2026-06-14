@@ -107,7 +107,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         
         {showRing && isFocused && (
           <motion.span 
-            className="absolute inset-0 rounded-md pointer-events-none ring-2 ring-offset-0 ring-violet-500/30"
+            className="absolute inset-0 rounded-md pointer-events-none ring-2 ring-offset-0 ring-accent/30"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -117,7 +117,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
 
         {props.onChange && (
           <div 
-            className="absolute bottom-2 right-2 opacity-0 w-2 h-2 bg-violet-500 rounded-full"
+            className="absolute bottom-2 right-2 opacity-0 w-2 h-2 bg-accent rounded-full"
             style={{
               animation: 'none',
             }}
@@ -280,10 +280,10 @@ export function AnimatedAIChat() {
 
     return (
         <div className="min-h-screen flex flex-col w-full items-center justify-center bg-transparent text-white p-6 relative overflow-hidden">
-        <div className="absolute inset-0 w-full h-full overflow-hidden">
-                <div className="absolute top-0 left-1/4 w-96 h-96 bg-violet-500/10 rounded-full mix-blend-normal filter blur-[128px] animate-pulse" />
-                <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-500/10 rounded-full mix-blend-normal filter blur-[128px] animate-pulse delay-700" />
-                <div className="absolute top-1/4 right-1/3 w-64 h-64 bg-fuchsia-500/10 rounded-full mix-blend-normal filter blur-[96px] animate-pulse delay-1000" />
+         <div className="absolute inset-0 w-full h-full overflow-hidden">
+                <div className="absolute top-0 left-1/4 w-96 h-96 bg-accent/10 rounded-full mix-blend-normal filter blur-[128px] animate-pulse" />
+                <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent-light/10 rounded-full mix-blend-normal filter blur-[128px] animate-pulse delay-700" />
+                <div className="absolute top-1/4 right-1/3 w-64 h-64 bg-accent-dark/5 rounded-full mix-blend-normal filter blur-[96px] animate-pulse delay-1000" />
             </div>
             <div className="w-full max-w-2xl mx-auto relative">
                 <motion.div 
@@ -543,9 +543,9 @@ export function AnimatedAIChat() {
                 )}
             </AnimatePresence>
 
-            {inputFocused && (
+             {inputFocused && (
                 <motion.div 
-                    className="fixed w-[50rem] h-[50rem] rounded-full pointer-events-none z-0 opacity-[0.02] bg-gradient-to-r from-violet-500 via-fuchsia-500 to-indigo-500 blur-[96px]"
+                    className="fixed w-[50rem] h-[50rem] rounded-full pointer-events-none z-0 opacity-[0.02] bg-gradient-to-r from-accent via-accent-light to-accent-dark blur-[96px]"
                     animate={{
                         x: mousePosition.x - 400,
                         y: mousePosition.y - 400,

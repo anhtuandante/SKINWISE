@@ -9,6 +9,7 @@ import { Sparkles, CheckCircle2 } from "lucide-react"
 import { calculateMatchScore } from "@/lib/recommendation-engine"
 import { useMemo } from "react"
 import ProductAvatar from "@/components/ui/ProductAvatar"
+import { trackEvent } from "@/lib/tracking"
 
 interface ProductCardProps {
   product: Product
@@ -38,7 +39,10 @@ export default function ProductCard({ product, onAdd, onRemove, isInRoutine, com
         </div>
         {onRemove && (
           <button
-            onClick={() => onRemove(product.id)}
+            onClick={() => {
+              trackEvent("remove_from_routine", { productId: product.id, name: product.name });
+              onRemove(product.id);
+            }}
             className="text-caption text-muted hover:text-danger transition-colors ml-3"
           >
             Xóa
@@ -52,9 +56,10 @@ export default function ProductCard({ product, onAdd, onRemove, isInRoutine, com
     <motion.div
       whileHover={{ y: -4, boxShadow: "0 12px 24px rgba(0,0,0,0.08)" }}
       transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
-      className="border border-line rounded-2xl p-6 hover:border-fg/20 transition-all group bg-white relative overflow-hidden flex flex-col h-full"
+      onClick={() => trackEvent("product_click", { productId: product.id, name: product.name, brand: product.brand })}
+      className="border border-line rounded-2xl p-6 hover:border-fg/20 transition-all group bg-white relative overflow-hidden flex flex-col h-full cursor-pointer"
     >
-      <div className="flex items-start justify-between gap-4 mb-4">
+      <div className="flex items-start justify-between gap-4 mb-4" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-start gap-3 flex-1 min-w-0">
           <ProductAvatar brand={product.brand} name={product.name} className="w-12 h-12" />
           <div className="flex-1 min-w-0">
@@ -67,7 +72,7 @@ export default function ProductCard({ product, onAdd, onRemove, isInRoutine, com
 
       {/* AI Compatibility Badge - Premium Style */}
       {matchResult && (
-        <div className="mb-5 flex-1">
+        <div className="mb-5 flex-1" onClick={(e) => e.stopPropagation()}>
           <motion.div 
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
@@ -91,7 +96,7 @@ export default function ProductCard({ product, onAdd, onRemove, isInRoutine, com
         </div>
       )}
 
-      <div className="text-caption text-muted flex flex-wrap items-center gap-2 mb-2 mt-auto">
+      <div className="text-caption text-muted flex flex-wrap items-center gap-2 mb-2 mt-auto" onClick={(e) => e.stopPropagation()}>
         <span className="px-2 py-1 rounded-md bg-surface border border-line whitespace-nowrap">
           {CATEGORY_LABELS[product.category] || product.category}
         </span>
@@ -101,15 +106,16 @@ export default function ProductCard({ product, onAdd, onRemove, isInRoutine, com
         )}
       </div>
 
-      <div className="text-caption text-muted line-clamp-2 mb-4">
+      <div className="text-caption text-muted line-clamp-2 mb-4" onClick={(e) => e.stopPropagation()}>
         Phù hợp: {product.skinTypes.join(", ")}
       </div>
 
-      <div className="flex items-center justify-between pt-3 border-t border-line/50">
+      <div className="flex items-center justify-between pt-3 border-t border-line/50" onClick={(e) => e.stopPropagation()}>
         <a
           href={`${product.shopeeUrl}${product.shopeeUrl.includes('?') ? '&' : '?'}utm_source=affiliate&utm_medium=skincare_app&utm_campaign=skinwise_workspace`}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackEvent("shopee_click", { productId: product.id, name: product.name, brand: product.brand, category: product.category, price: product.price })}
           className="text-caption font-bold text-[#EE4D2D] hover:bg-[#EE4D2D]/10 border border-[#EE4D2D]/30 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 whitespace-nowrap"
         >
           Mua Shopee 🛒
@@ -117,7 +123,10 @@ export default function ProductCard({ product, onAdd, onRemove, isInRoutine, com
 
         {onRemove ? (
           <button
-            onClick={() => onRemove(product.id)}
+            onClick={() => {
+              trackEvent("remove_from_routine", { productId: product.id, name: product.name });
+              onRemove(product.id);
+            }}
             className="text-caption text-danger hover:underline transition-colors"
           >
             Xóa
@@ -125,7 +134,10 @@ export default function ProductCard({ product, onAdd, onRemove, isInRoutine, com
         ) : (
           <motion.button
             whileTap={{ scale: 0.96 }}
-            onClick={() => onAdd?.(product)}
+            onClick={() => {
+              trackEvent("add_to_routine", { productId: product.id, name: product.name, brand: product.brand, category: product.category });
+              onAdd?.(product);
+            }}
             disabled={isInRoutine}
             className="text-caption font-medium px-4 py-2 rounded-lg bg-fg text-bg hover:opacity-90 disabled:opacity-30 transition-all whitespace-nowrap"
           >

@@ -53,7 +53,7 @@ export default function HomePage() {
             <Link href="/ingredients" className="text-caption text-muted hover:text-fg transition-colors">
               Thành phần
             </Link>
-            <Button href="/quiz" size="sm">
+            <Button href="/login" size="sm">
               Bắt đầu
             </Button>
           </div>
@@ -68,7 +68,7 @@ export default function HomePage() {
             animate="visible"
             custom={0}
             variants={fadeUp}
-            className="text-micro uppercase text-muted tracking-widest mb-6"
+            className="text-micro uppercase text-accent-dark tracking-widest mb-6"
           >
             Skincare & Makeup — Cá nhân hóa
           </motion.p>
@@ -100,8 +100,8 @@ export default function HomePage() {
             variants={fadeUp}
             className="flex items-center gap-3"
           >
-            <Button href="/quiz" size="lg">
-              Làm quiz
+            <Button href="/login" size="lg">
+              Bắt đầu
             </Button>
             <Button onClick={handleDemo} variant="outline">
               Xem demo
@@ -165,15 +165,15 @@ export default function HomePage() {
           variants={stagger}
           className="max-w-screen-lg mx-auto"
         >
-          <motion.p variants={item} className="text-micro uppercase text-muted tracking-widest mb-4">
+          <motion.p variants={item} className="text-micro uppercase text-accent-dark tracking-widest mb-4">
             Miễn phí · Không cần đăng ký
           </motion.p>
           <motion.h2 variants={item} className="text-headline font-semibold mb-6">
             Bắt đầu ngay
           </motion.h2>
           <motion.div variants={item}>
-            <Button href="/quiz" size="lg">
-              Làm quiz miễn phí
+            <Button href="/login" size="lg">
+              Tạo tài khoản miễn phí
             </Button>
           </motion.div>
         </motion.div>

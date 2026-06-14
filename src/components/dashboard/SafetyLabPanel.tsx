@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import { 
   FlaskConical, 
   AlertTriangle, 
@@ -25,6 +25,7 @@ import { useRoutineStore } from "@/store/routine-store";
 import ProductAvatar from "@/components/ui/ProductAvatar";
 import VisionLab from "@/components/quiz/VisionLab";
 import ingredientsData from "@/data/ingredients.json";
+import { supabase } from "@/lib/supabase";
 
 const allIngredients = (ingredientsData as { ingredients: Ingredient[] }).ingredients;
 
@@ -70,14 +71,41 @@ const SAMPLE_COMPARISONS = [
   }
 ];
 
-const getProductActiveIngredients = (product: Product): Ingredient[] => {
-  if (!product.ingredients) return [];
-  return product.ingredients
-    .map(ingId => allIngredients.find(i => i.id === ingId))
-    .filter((ing): ing is Ingredient => !!ing);
-};
-
 export default function SafetyLabPanel() {
+  const [ingredients, setIngredients] = useState<Ingredient[]>(allIngredients);
+
+  useEffect(() => {
+    const loadIngredients = async () => {
+      try {
+        const { data, error } = await supabase.from("ingredients").select("*");
+        if (!error && data && data.length > 0) {
+          const mapped: Ingredient[] = data.map((i) => ({
+            id: i.id,
+            name: i.name,
+            nameVi: i.name_vi,
+            category: i.category,
+            benefits: i.benefits || [],
+            skinTypes: i.skin_types || [],
+            timeOfDay: i.time_of_day as Ingredient["timeOfDay"],
+            pregnancy: i.pregnancy,
+            conflictsWith: i.conflicts_with || []
+          }));
+          setIngredients(mapped);
+        }
+      } catch (err) {
+        console.warn("Failed to load ingredients from Supabase for SafetyLab, using fallback:", err);
+      }
+    };
+    loadIngredients();
+  }, []);
+
+  const getProductActiveIngredients = useCallback((product: Product): Ingredient[] => {
+    if (!product.ingredients) return [];
+    return product.ingredients
+      .map(ingId => ingredients.find(i => i.id === ingId))
+      .filter((ing): ing is Ingredient => !!ing);
+  }, [ingredients]);
+
   const [safetyMode, setSafetyMode] = useState<"pair" | "full">("pair");
   const [showVisionModal, setShowVisionModal] = useState(false);
   
@@ -225,7 +253,7 @@ export default function SafetyLabPanel() {
     const uniqueActivesB = activesB.filter(b => !activeIdsA.includes(b.id));
 
     return { activesA, activesB, sharedActives, uniqueActivesA, uniqueActivesB };
-  }, [selectedProductA, selectedProductB]);
+  }, [selectedProductA, selectedProductB, getProductActiveIngredients]);
 
   const pregnancySafety = useMemo(() => {
     if (!selectedProductA || !selectedProductB) return null;
@@ -239,7 +267,7 @@ export default function SafetyLabPanel() {
     const isSafe = unsafeA.length === 0 && unsafeB.length === 0;
 
     return { isSafe, unsafeA, unsafeB };
-  }, [selectedProductA, selectedProductB]);
+  }, [selectedProductA, selectedProductB, getProductActiveIngredients]);
 
   const layeringRecommendation = useMemo(() => {
     if (!selectedProductA || !selectedProductB) return null;
@@ -267,7 +295,7 @@ export default function SafetyLabPanel() {
     }
 
     return { first, second, timingAdvice };
-  }, [selectedProductA, selectedProductB]);
+  }, [selectedProductA, selectedProductB, getProductActiveIngredients]);
 
   const safetyLevel = useMemo(() => {
     if (!selectedProductA || !selectedProductB) return "safe";
@@ -342,7 +370,7 @@ export default function SafetyLabPanel() {
     });
     
     return unsafeProducts;
-  }, [amList, pmList]);
+  }, [amList, pmList, getProductActiveIngredients]);
 
   // 5. Overall Routine Safety Level
   const routineSafetyLevel = useMemo(() => {
@@ -359,10 +387,10 @@ export default function SafetyLabPanel() {
 
   return (
     <div className="space-y-6">
-      <div className="bg-gradient-to-br from-violet-950 to-slate-900 rounded-[32px] p-6 text-white shadow-lg">
+      <div className="bg-gradient-to-br from-accent-dark to-[#1A1A1A] rounded-[32px] p-6 text-white shadow-lg">
         <div className="flex items-center gap-2 mb-2">
-          <FlaskConical size={18} className="text-violet-400" />
-          <span className="text-violet-400 text-caption font-bold uppercase tracking-wider">Routine Safety Lab</span>
+          <FlaskConical size={18} className="text-accent" />
+          <span className="text-accent text-caption font-bold uppercase tracking-wider">Routine Safety Lab</span>
         </div>
         <h2 className="text-headline font-light mb-1">Kiểm tra kết hợp hoạt chất</h2>
         <p className="text-slate-300 text-caption">Tránh kích ứng da bằng cách đối chiếu thành phần & kết cấu trước khi thoa dưỡng da hoặc trang điểm lên mặt.</p>
@@ -392,9 +420,9 @@ export default function SafetyLabPanel() {
         // Mode 1: Product comparison (Deep Ingredient comparison)
         <div className="space-y-6 animate-in">
           {/* AI Camera Onboarding CTA */}
-          <div className="border border-violet-500/20 bg-gradient-to-r from-violet-500/5 to-fuchsia-500/5 rounded-[24px] p-6 flex flex-col sm:flex-row items-center gap-5 shadow-soft">
+          <div className="border border-accent/20 bg-gradient-to-r from-accent/5 to-accent-light/10 rounded-[24px] p-6 flex flex-col sm:flex-row items-center gap-5 shadow-soft">
             <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shrink-0 shadow-md">
-              <Camera size={24} className="text-violet-600" />
+              <Camera size={24} className="text-accent-dark" />
             </div>
             <div className="flex-1 text-center sm:text-left">
               <h3 className="text-body font-bold text-fg mb-1">Kiểm tra sản phẩm của bạn chưa có trong kho?</h3>
@@ -402,9 +430,9 @@ export default function SafetyLabPanel() {
             </div>
             <button 
               onClick={() => setShowVisionModal(true)}
-              className="w-full sm:w-auto bg-violet-600 text-white px-5 py-3 rounded-xl font-bold text-caption hover:opacity-90 active:scale-95 transition-all whitespace-nowrap shadow-lg flex items-center justify-center gap-2"
+              className="w-full sm:w-auto bg-fg text-bg px-5 py-3 rounded-xl font-bold text-caption hover:opacity-90 active:scale-95 transition-all whitespace-nowrap shadow-lg flex items-center justify-center gap-2"
             >
-              <Sparkles size={16} /> Quét ảnh ngay
+              <Sparkles size={16} className="text-bg" /> Quét ảnh ngay
             </button>
           </div>
 
@@ -1032,8 +1060,8 @@ export default function SafetyLabPanel() {
                               <span className="text-[10px] text-muted block">{p.brand} • {CATEGORY_LABELS[p.category] || p.category}</span>
                             </div>
                           </div>
-                          <span className={`text-[8px] font-bold px-2 py-0.5 rounded uppercase ${
-                            p.isSiliconeBased ? "bg-purple-150 text-purple-700 border border-purple-200" : p.isWaterBased ? "bg-blue-150 text-blue-700 border border-blue-200" : "bg-gray-100 text-gray-500"
+                          <span className={`text-[8px] font-bold px-2 py-0.5 rounded uppercase border ${
+                            p.isSiliconeBased ? "bg-accent/10 text-accent-dark border-accent/20" : p.isWaterBased ? "bg-blue-50 text-blue-600 border-blue-100" : "bg-gray-50 text-gray-500 border-gray-100"
                           }`}>
                             {p.isSiliconeBased ? "Silicone" : p.isWaterBased ? "Gốc Nước" : "Khác"}
                           </span>
@@ -1046,7 +1074,7 @@ export default function SafetyLabPanel() {
                 {/* PM Routine Column */}
                 <div className="border border-line rounded-[24px] p-5 bg-white space-y-4">
                   <h4 className="text-caption font-bold text-fg border-b border-line pb-2 flex items-center gap-1.5">
-                    <Clock size={15} className="text-indigo-500" />
+                    <Clock size={15} className="text-accent-dark" />
                     🌙 Chu trình buổi TỐI ({pmList.length} sản phẩm)
                   </h4>
                   {pmList.length === 0 ? (

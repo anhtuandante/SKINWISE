@@ -1,0 +1,538 @@
+[
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {
+      "path": "/"
+    },
+    "created_at": "2026-06-13T13:39:31.657Z",
+    "id": "xkk6t4j5s",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "page_view",
+    "page_path": "/login",
+    "metadata": {
+      "path": "/login"
+    },
+    "created_at": "2026-06-13T13:41:51.634Z",
+    "id": "ql47d2ruk",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "page_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "path": "/quiz"
+    },
+    "created_at": "2026-06-13T13:42:01.019Z",
+    "id": "n15halm2i",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-13T13:42:01.380Z",
+    "id": "y774q3i0x",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-13T13:42:01.380Z",
+    "id": "7qfzaglkm",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-13T13:42:01.380Z",
+    "id": "v6h2klsnv",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-13T13:42:01.380Z",
+    "id": "6jwndv2kz",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-13T13:42:03.177Z",
+    "id": "myroz3js8",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-13T13:42:04.390Z",
+    "id": "ls01m4w6s",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-13T13:42:05.238Z",
+    "id": "aqkico5e9",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-13T13:42:06.359Z",
+    "id": "7ie7f6bdo",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-13T13:42:07.372Z",
+    "id": "4m0hjbygu",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "quiz_complete",
+    "page_path": "/quiz",
+    "metadata": {
+      "age": "18-24",
+      "skinType": "combination",
+      "concerns": [
+        "dark-spots"
+      ],
+      "barrierStatus": "stable",
+      "budget": "luxury",
+      "cycleLength": 28,
+      "hasCycleDate": false
+    },
+    "created_at": "2026-06-13T13:42:20.457Z",
+    "id": "lzyi4vzgf",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "page_view",
+    "page_path": "/login",
+    "metadata": {
+      "path": "/login"
+    },
+    "created_at": "2026-06-13T13:42:20.549Z",
+    "id": "vzsfof2vj",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {
+      "path": "/"
+    },
+    "created_at": "2026-06-13T13:42:47.614Z",
+    "id": "7azj3sbv8",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "path": "/dashboard"
+    },
+    "created_at": "2026-06-13T13:42:50.781Z",
+    "id": "l8mtgg056",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM",
+      "completed": true
+    },
+    "created_at": "2026-06-13T13:42:56.087Z",
+    "id": "sy4gzg5q2",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM",
+      "completed": false
+    },
+    "created_at": "2026-06-13T13:42:58.941Z",
+    "id": "h47q5z9k6",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM",
+      "completed": true
+    },
+    "created_at": "2026-06-13T13:43:00.114Z",
+    "id": "oep41cj4e",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM",
+      "completed": false
+    },
+    "created_at": "2026-06-13T13:43:00.341Z",
+    "id": "kbmaa5gc6",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM",
+      "completed": true
+    },
+    "created_at": "2026-06-13T13:43:01.067Z",
+    "id": "kfdsny31t",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM",
+      "completed": false
+    },
+    "created_at": "2026-06-13T13:43:02.024Z",
+    "id": "8l327hmd0",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM",
+      "completed": true
+    },
+    "created_at": "2026-06-13T13:43:03.533Z",
+    "id": "dhxubub2u",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM",
+      "completed": false
+    },
+    "created_at": "2026-06-13T13:43:04.412Z",
+    "id": "s686ghlma",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM",
+      "completed": true
+    },
+    "created_at": "2026-06-13T13:43:04.996Z",
+    "id": "xspcklmgo",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM",
+      "completed": true
+    },
+    "created_at": "2026-06-13T13:43:06.230Z",
+    "id": "sfnravgd9",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "path": "/dashboard"
+    },
+    "created_at": "2026-06-13T13:54:17.889Z",
+    "id": "5w4l6k1i4",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
+    "event_name": "page_view",
+    "page_path": "/login",
+    "metadata": {
+      "path": "/login"
+    },
+    "created_at": "2026-06-14T13:49:22.543Z",
+    "id": "7p4wenksy",
+    "fallback_log": true,
+    "db_error": "TypeError: fetch failed"
+  },
+  {
+    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
+    "event_name": "page_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "path": "/quiz"
+    },
+    "created_at": "2026-06-14T13:49:40.743Z",
+    "id": "m2cyjmvun",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-14T13:49:41.126Z",
+    "id": "rlgd1tmxb",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-14T13:49:41.127Z",
+    "id": "8e0vr75g6",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-14T13:49:41.127Z",
+    "id": "tq8jmqdx7",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-14T13:49:41.127Z",
+    "id": "fj44kueqb",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
+    "event_name": "quiz_answer",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1,
+      "type": "age",
+      "value": "25-34"
+    },
+    "created_at": "2026-06-14T13:49:48.345Z",
+    "id": "z6jn01jxi",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-14T13:49:49.149Z",
+    "id": "lg3dlnkk9",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-14T13:49:50.136Z",
+    "id": "pbiijy15c",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-14T13:49:50.876Z",
+    "id": "4l4qdx9uc",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-14T13:49:51.555Z",
+    "id": "kzcnipx7p",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-14T13:49:52.247Z",
+    "id": "2vo42ab7s",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
+    "event_name": "quiz_complete",
+    "page_path": "/quiz",
+    "metadata": {
+      "age": "25-34",
+      "skinType": "dry",
+      "concerns": [
+        "aging"
+      ],
+      "barrierStatus": "stable",
+      "budget": "affordable",
+      "cycleLength": 28,
+      "hasCycleDate": false
+    },
+    "created_at": "2026-06-14T13:49:53.846Z",
+    "id": "v2lqrnwf0",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
+    "event_name": "page_view",
+    "page_path": "/login",
+    "metadata": {
+      "path": "/login"
+    },
+    "created_at": "2026-06-14T13:49:53.908Z",
+    "id": "7m4chlsn7",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "71ff3aa2-5c35-4b93-ad6a-52784d407d57",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {
+      "path": "/"
+    },
+    "created_at": "2026-06-14T14:14:09.378Z",
+    "id": "znehah686",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  },
+  {
+    "session_id": "71ff3aa2-5c35-4b93-ad6a-52784d407d57",
+    "event_name": "page_view",
+    "page_path": "/login",
+    "metadata": {
+      "path": "/login"
+    },
+    "created_at": "2026-06-14T14:14:22.614Z",
+    "id": "5sbj85r5d",
+    "fallback_log": true,
+    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+  }
+]

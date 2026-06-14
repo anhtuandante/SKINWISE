@@ -4,14 +4,12 @@ import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X, Camera,
-  CheckCircle2, Sparkles, Brain, Flame,
-  ChevronRight, ChevronLeft, Loader2
+  CheckCircle2, Sparkles, Flame,
+  ChevronRight, Loader2, Copy,
+  Droplet, Sun, ShieldAlert, AlertCircle
 } from "lucide-react";
 import { useSkinStore } from "@/store/useSkinStore";
-import { useUserStore } from "@/store/user-store";
 import { useToastStore } from "@/store/toast-store";
-import { SkinPredictorNetwork } from "@/utils/skinPredictor";
-import { calculateSkinScore } from "@/utils/trendAnalysis";
 import { DiaryLog } from "@/types";
 
 interface SkinCheckinFlowProps {
@@ -23,17 +21,73 @@ interface SkinCheckinFlowProps {
 }
 
 const LIFESTYLE_OPTIONS = [
-  "Ngủ muộn", "Stress công việc", "Ăn đồ ngọt / sữa", "Đeo khẩu trang lâu",
-  "Trang điểm đậm", "Quên chống nắng", "Dùng treatment nặng", "Thay đổi thời tiết"
+  { value: "Ngủ muộn", label: "Ngủ muộn" },
+  { value: "Stress công việc", label: "Stress" },
+  { value: "Ăn đồ ngọt / sữa", label: "Đồ ngọt/sữa" },
+  { value: "Đeo khẩu trang lâu", label: "Khẩu trang" },
+  { value: "Trang điểm đậm", label: "Trang điểm" },
+  { value: "Quên chống nắng", label: "Quên chống nắng" },
+  { value: "Dùng treatment nặng", label: "Treatment" },
+  { value: "Thay đổi thời tiết", label: "Thời tiết" }
 ];
 
-const METRICS_CONFIG = [
-  { key: "oiliness", label: "Dầu thừa", descriptions: ["Rất ít", "Nhẹ", "Vừa phải", "Nhiều", "Rất nhiều"] },
-  { key: "dryness", label: "Khô căng", descriptions: ["Rất ít", "Nhẹ", "Vừa phải", "Nhiều", "Rất nhiều"] },
-  { key: "redness", label: "Mẩn đỏ", descriptions: ["Rất ít", "Nhẹ", "Vừa phải", "Nhiều", "Rất nhiều"] },
-  { key: "acne", label: "Mụn mới", descriptions: ["Rất ít", "Nhẹ", "Vừa phải", "Nhiều", "Rất nhiều"] },
-  { key: "barrierComfort", label: "Độ dễ chịu", descriptions: ["Rất khó chịu", "Khó chịu", "Bình thường", "Dễ chịu", "Rất khỏe"] },
+const DIET_OPTIONS = [
+  { value: "dairy", label: "🥛 Sữa & phô mai" },
+  { value: "sugar", label: "🍩 Đồ ngọt / đường" },
+  { value: "greasy_spicy", label: "🌶️ Đồ cay / dầu mỡ" },
+  { value: "greens", label: "🥦 Ăn nhiều rau quả" },
+  { value: "water", label: "💧 Đủ >= 2L nước" }
 ];
+
+const OILINESS_OPTIONS = [
+  { value: "matte", label: "Khô thoáng, mịn màng", desc: "Da thông thoáng suốt cả ngày, không nhờn dính", oiliness: 1 },
+  { value: "normal", label: "Bình thường / Ít dầu", desc: "Ẩm mịn tự nhiên, đổ dầu cực nhẹ vùng mũi", oiliness: 2 },
+  { value: "t_zone", label: "Bóng dầu vùng chữ T", desc: "Đổ dầu trán/mũi/cằm rõ rệt, má bình thường", oiliness: 3 },
+  { value: "greasy", label: "Bóng nhờn toàn mặt", desc: "Cả mặt đổ nhiều dầu, bóng loáng và dính", oiliness: 5 },
+];
+
+const DRYNESS_OPTIONS = [
+  { value: "hydrated", label: "Ẩm mịn, đủ nước", desc: "Da mềm mại, không có cảm giác khô căng", dryness: 1 },
+  { value: "tight", label: "Hơi căng nhẹ", desc: "Cảm giác hơi căng sau rửa mặt hoặc ngồi điều hòa", dryness: 3 },
+  { value: "flaking", label: "Khô ráp / Bong tróc", desc: "Da khô căng khó chịu, thô ráp hoặc tróc vảy", dryness: 5 },
+];
+
+const IRRITATION_OPTIONS = [
+  { value: "calm", label: "Êm dịu, bình thường", desc: "Da hoàn toàn bình thường, khỏe mạnh, không đỏ rát", redness: 1, barrierComfort: 5 },
+  { value: "stinging", label: "Châm chích nhẹ", desc: "Hơi ngứa hoặc rát nhẹ lúc bôi kem dưỡng/treatment", redness: 2, barrierComfort: 3 },
+  { value: "burning", label: "Đỏ rát, kích ứng", desc: "Da đỏ ửng rõ rệt, ngứa ngáy hoặc nóng rát dữ dội", redness: 4, barrierComfort: 1 },
+];
+
+const ACNE_OPTIONS = [
+  { value: "none", label: "Không có mụn mới", desc: "Da êm, không mọc thêm nốt mụn nào", acne: 1 },
+  { value: "tiny", label: "Mụn cám / Mụn li ti", desc: "Mọc vài nốt mụn đầu đen hoặc đầu trắng li ti", acne: 3 },
+  { value: "inflamed", label: "Mụn sưng viêm đỏ", desc: "Có mụn đỏ, mụn bọc, mụn mủ sưng đau nhức", acne: 5 },
+];
+
+const getOilinessSelected = (oiliness: number) => {
+  if (oiliness <= 1) return "matte";
+  if (oiliness === 2) return "normal";
+  if (oiliness === 3 || oiliness === 4) return "t_zone";
+  return "greasy";
+};
+
+const getDrynessSelected = (dryness: number) => {
+  if (dryness <= 1) return "hydrated";
+  if (dryness >= 2 && dryness <= 4) return "tight";
+  return "flaking";
+};
+
+const getIrritationSelected = (redness: number, barrierComfort: number) => {
+  if (redness >= 4 || barrierComfort <= 2) return "burning";
+  if (redness >= 2 || barrierComfort <= 4) return "stinging";
+  return "calm";
+};
+
+const getAcneSelected = (acne: number) => {
+  if (acne <= 1) return "none";
+  if (acne >= 2 && acne <= 4) return "tiny";
+  return "inflamed";
+};
 
 const slideVariants = {
   enter: (dir: number) => ({ x: dir > 0 ? 60 : -60, opacity: 0 }),
@@ -49,29 +103,29 @@ export default function SkinCheckinFlow({
   targetDateStr
 }: SkinCheckinFlowProps) {
   const { diaryLogs, addPartialLog, addDiaryLog, checkinStreak } = useSkinStore();
-  const user = useUserStore();
   const addToast = useToastStore((s) => s.addToast);
 
   const [step, setStep] = useState(startStep);
   const [direction, setDirection] = useState(1);
 
-  // Step 1 state
+  // Step 0 state
   const [mood, setMood] = useState<"great" | "okay" | "irritated" | null>(initialMood);
 
-  // Step 2 state
+  // Step 1 state (Consolidated)
   const [metrics, setMetrics] = useState<Record<string, number>>({
     oiliness: 2, dryness: 2, redness: 1, acne: 1, barrierComfort: 4,
   });
   const [metricsSource, setMetricsSource] = useState<"manual" | "ai">("manual");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [selfieImage, setSelfieImage] = useState<string | null>(null);
+  
+  const [aiOriginalMetrics, setAiOriginalMetrics] = useState<Record<string, number> | null>(null);
+  const [userCorrected, setUserCorrected] = useState(false);
 
-  // Step 3 state
   const [lifestyle, setLifestyle] = useState<string[]>([]);
+  const [diet, setDiet] = useState<string[]>([]);
   const [amDone, setAmDone] = useState(false);
   const [pmDone, setPmDone] = useState(false);
-
-  // Step 4 state
   const [note, setNote] = useState("");
 
   // Date
@@ -94,6 +148,33 @@ export default function SkinCheckinFlow({
     };
   }, [targetDateStr]);
 
+  const existingLog = useMemo(() => {
+    return diaryLogs.find((l) => l.date === today.str);
+  }, [diaryLogs, today.str]);
+
+  const yesterdayLog = useMemo(() => {
+    return diaryLogs.length > 0 && diaryLogs[diaryLogs.length - 1].date !== today.str
+      ? diaryLogs[diaryLogs.length - 1]
+      : null;
+  }, [diaryLogs, today.str]);
+
+  useEffect(() => {
+    if (existingLog) {
+      setAmDone(!!existingLog.amRoutineCompleted);
+      setPmDone(!!existingLog.pmRoutineCompleted);
+      if (existingLog.mood && !mood) setMood(existingLog.mood);
+      if (existingLog.metrics) setMetrics(existingLog.metrics);
+      if (existingLog.lifestyle && lifestyle.length === 0) setLifestyle(existingLog.lifestyle);
+      if (existingLog.diet && diet.length === 0) setDiet(existingLog.diet);
+      if (existingLog.note && !note) setNote(existingLog.note);
+      if (existingLog.image && !selfieImage) setSelfieImage(existingLog.image);
+      if (existingLog.source) setMetricsSource(existingLog.source);
+      if (existingLog.aiOriginalMetrics) setAiOriginalMetrics(existingLog.aiOriginalMetrics);
+      if (existingLog.userCorrected) setUserCorrected(existingLog.userCorrected);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [existingLog]);
+
   // Escape key overlay close handler
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -103,39 +184,19 @@ export default function SkinCheckinFlow({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
 
-  // Memoize trained predictor to avoid redundant training
-  const predictor = useMemo(() => {
-    const p = new SkinPredictorNetwork();
-    if (diaryLogs.length >= 2) p.trainOnLogs(diaryLogs);
-    return p;
-  }, [diaryLogs]);
-
-  // Forecast
-  const forecast = useMemo(() => {
-    if (step < 3) return null;
-    try {
-      const todayLog: DiaryLog = {
-        id: 0, date: today.str, dayName: today.dayName, mood: mood || "okay",
-        metrics: {
-          oiliness: metrics.oiliness, dryness: metrics.dryness,
-          redness: metrics.redness, acne: metrics.acne, barrierComfort: metrics.barrierComfort,
-        },
-        lifestyle, note: "",
-        amRoutineCompleted: amDone, pmRoutineCompleted: pmDone,
-      };
-
-      const yesterdayLog = diaryLogs.length > 0 ? diaryLogs[diaryLogs.length - 1] : null;
-      return predictor.getForecast(yesterdayLog, todayLog, {
-        concerns: user.concerns, skinType: user.skinType, barrierStatus: user.barrierStatus,
-      });
-    } catch { return null; }
-  }, [step, predictor, today, mood, metrics, lifestyle, amDone, pmDone, user, diaryLogs]);
-
-  const todayScore = useMemo(() => calculateSkinScore(metrics as { oiliness: number; dryness: number; redness: number; acne: number; barrierComfort: number }), [metrics]);
-
   // Navigation
   const goNext = () => { setDirection(1); setStep((s) => s + 1); };
-  const goBack = () => { setDirection(-1); setStep((s) => s - 1); };
+
+  const handleCopyYesterday = () => {
+    if (yesterdayLog) {
+      setMetrics(yesterdayLog.metrics);
+      setLifestyle(yesterdayLog.lifestyle);
+      if (yesterdayLog.diet) setDiet(yesterdayLog.diet);
+      setMetricsSource("manual");
+      addToast("Đã copy dữ liệu ngày hôm qua", "success");
+      goNext();
+    }
+  };
 
   // Quick save (mood only)
   const handleQuickSave = () => {
@@ -164,11 +225,13 @@ export default function SkinCheckinFlow({
         oiliness: metrics.oiliness, dryness: metrics.dryness,
         redness: metrics.redness, acne: metrics.acne, barrierComfort: metrics.barrierComfort,
       },
-      lifestyle, note,
+      aiOriginalMetrics: aiOriginalMetrics ? (aiOriginalMetrics as DiaryLog["aiOriginalMetrics"]) : undefined,
+      userCorrected,
+      lifestyle, diet, note,
       image: selfieImage,
       amRoutineCompleted: amDone, pmRoutineCompleted: pmDone,
     });
-    addToast("Đã lưu nhật ký đầy đủ!", "success");
+    addToast("Đã lưu nhật ký thành công!", "success");
     onComplete();
   };
 
@@ -187,6 +250,9 @@ export default function SkinCheckinFlow({
       });
       setSelfieImage(base64);
 
+      // Simulate analysis delay for visual effect
+      await new Promise(r => setTimeout(r, 2000));
+
       const res = await fetch("/api/vision/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -197,14 +263,19 @@ export default function SkinCheckinFlow({
       const data = await res.json();
 
       if (data.estimatedMetrics) {
-        setMetrics({
-          oiliness: data.estimatedMetrics.oiliness,
-          dryness: data.estimatedMetrics.dryness,
-          redness: data.estimatedMetrics.redness,
-          acne: data.estimatedMetrics.acne,
-          barrierComfort: data.estimatedMetrics.barrierComfort,
+        // apply calibration offsets
+        const store = useSkinStore.getState();
+        const calibrated = { ...data.estimatedMetrics };
+        Object.keys(calibrated).forEach((k) => {
+          if (store.calibrationOffsets[k]) {
+             calibrated[k] = Math.max(1, Math.min(5, calibrated[k] + store.calibrationOffsets[k]));
+          }
         });
+
+        setAiOriginalMetrics(calibrated);
+        setMetrics(calibrated);
         setMetricsSource("ai");
+        setUserCorrected(false);
         addToast("AI đã phân tích ảnh thành công!", "success");
       }
     } catch {
@@ -224,7 +295,7 @@ export default function SkinCheckinFlow({
     if (s < 3) return `Bắt đầu streak!`;
     if (s < 7) return `🔥 ${s} ngày liên tiếp!`;
     if (s < 14) return `🏆 ${s} ngày! Da bạn cảm ơn bạn đó.`;
-    return `🎯 ${s} ngày! AI đã học đủ để dự đoán chuẩn hơn.`;
+    return `🎯 ${s} ngày! Da ngày một đẹp hơn.`;
   }, [checkinStreak]);
 
   return (
@@ -235,11 +306,8 @@ export default function SkinCheckinFlow({
           <X size={22} />
         </button>
         <div className="flex items-center gap-2">
-          {[0, 1, 2, 3].map((i) => (
-            <div key={i} className={`h-1.5 rounded-full transition-all duration-300 ${
-              i === step ? "w-6 bg-fg" : i < step ? "w-3 bg-fg/40" : "w-3 bg-line"
-            }`} />
-          ))}
+          <div className={`h-1.5 rounded-full transition-all duration-300 ${step === 0 ? "w-6 bg-fg" : "w-3 bg-fg/40"}`} />
+          <div className={`h-1.5 rounded-full transition-all duration-300 ${step === 1 ? "w-6 bg-fg" : "w-3 bg-line"}`} />
         </div>
         <div className="w-10" />
       </div>
@@ -289,260 +357,286 @@ export default function SkinCheckinFlow({
                 </div>
 
                 {mood && (
-                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex gap-3">
-                    <button onClick={handleQuickSave} className="flex-1 py-3.5 border border-line bg-white hover:bg-surface rounded-2xl text-caption font-bold text-fg transition-all">
-                      Lưu nhanh & xong
-                    </button>
-                    <button onClick={goNext} className="flex-1 py-3.5 bg-fg text-bg rounded-2xl text-caption font-bold hover:opacity-90 transition-all flex items-center justify-center gap-1.5">
-                      Kể thêm cho AI <ChevronRight size={16} />
-                    </button>
+                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col gap-3">
+                    {yesterdayLog && !existingLog && (
+                      <button onClick={handleCopyYesterday} className="w-full py-3.5 bg-fg/[0.05] text-fg border border-fg/20 rounded-2xl text-caption font-bold hover:bg-fg/[0.08] transition-all flex items-center justify-center gap-2">
+                        <Copy size={16} /> Giữ nguyên như hôm qua
+                      </button>
+                    )}
+                    <div className="flex gap-3">
+                      <button onClick={handleQuickSave} className="flex-1 py-3.5 border border-line bg-white hover:bg-surface rounded-2xl text-caption font-bold text-fg transition-all">
+                        Lưu nhanh & xong
+                      </button>
+                      <button onClick={goNext} className="flex-1 py-3.5 bg-fg text-bg rounded-2xl text-caption font-bold hover:opacity-90 transition-all flex items-center justify-center gap-1.5">
+                        Kể chi tiết <ChevronRight size={16} />
+                      </button>
+                    </div>
                   </motion.div>
                 )}
               </motion.div>
             )}
 
-            {/* ───── STEP 1: METRICS ───── */}
+            {/* ───── STEP 1: CONSOLIDATED CHECK-IN ───── */}
             {step === 1 && (
               <motion.div
-                key="metrics"
+                key="consolidated"
                 custom={direction}
                 variants={slideVariants}
                 initial="enter" animate="center" exit="exit"
                 transition={{ duration: 0.25, ease: "easeOut" }}
-                className="space-y-6 pt-6"
+                className="space-y-8 pt-6"
               >
-                <div>
-                  <h2 className="text-[22px] font-bold text-fg">Trạng thái da chi tiết</h2>
-                  <p className="text-caption text-muted mt-1">Chụp selfie để AI tự đánh giá, hoặc tự chấm điểm.</p>
-                </div>
-
-                {/* Selfie upload */}
-                <div className="relative">
-                  <label className={`block border-2 border-dashed rounded-2xl p-5 text-center cursor-pointer transition-all ${
-                    selfieImage ? "border-fg/30 bg-fg/[0.02]" : "border-line hover:border-fg/30 bg-surface/30"
-                  }`}>
+                {/* Selfie upload with Scan Animation */}
+                <div className="relative overflow-hidden rounded-2xl">
+                  <label className={`block border-2 border-dashed p-6 text-center cursor-pointer transition-all ${
+                    selfieImage ? "border-accent/50 bg-accent/5" : "border-line hover:border-fg/30 bg-surface/30 rounded-2xl"
+                  }`} style={{ backgroundImage: selfieImage ? `url(${selfieImage})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center', height: selfieImage ? '180px' : 'auto', borderRadius: '1rem' }}>
+                    
                     <input
                       type="file" accept="image/*" capture="user"
-                      className="absolute inset-0 opacity-0 cursor-pointer"
+                      className="absolute inset-0 opacity-0 cursor-pointer z-10"
                       onChange={(e) => { const f = e.target.files?.[0]; if (f) handleSelfie(f); }}
                     />
-                    {isAnalyzing ? (
-                      <div className="flex items-center justify-center gap-2 py-2">
-                        <Loader2 size={20} className="animate-spin text-fg" />
-                        <span className="text-caption font-bold text-fg">AI đang phân tích...</span>
+                    
+                    {/* Scanning Animation */}
+                    {isAnalyzing && (
+                      <div className="absolute inset-0 z-0 bg-black/40 pointer-events-none">
+                        <motion.div
+                          initial={{ top: "-100%" }}
+                          animate={{ top: "100%" }}
+                          transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+                          className="absolute inset-x-0 h-32 bg-gradient-to-b from-transparent to-accent/60 border-b-2 border-accent-dark"
+                        />
                       </div>
-                    ) : selfieImage ? (
-                      <div className="flex items-center justify-center gap-2 py-1">
-                        <CheckCircle2 size={18} className="text-success" />
-                        <span className="text-caption font-bold text-success">Đã phân tích — chạm để chụp lại</span>
+                    )}
+
+                    {!selfieImage && !isAnalyzing && (
+                      <div className="flex flex-col items-center justify-center gap-2">
+                        <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm">
+                          <Camera size={24} className="text-muted" />
+                        </div>
+                        <span className="text-caption font-bold text-fg mt-2">Chụp selfie để AI phân tích</span>
                       </div>
-                    ) : (
-                      <div className="flex items-center justify-center gap-2 py-2">
-                        <Camera size={20} className="text-muted" />
-                        <span className="text-caption font-bold text-fg">Chụp selfie để AI tự đánh giá</span>
+                    )}
+
+                    {isAnalyzing && (
+                      <div className="absolute inset-0 flex items-center justify-center z-10">
+                        <div className="bg-bg/80 backdrop-blur-sm px-4 py-2 rounded-full flex items-center gap-2 shadow-lg">
+                          <Loader2 size={16} className="animate-spin text-accent-dark" />
+                          <span className="text-micro font-bold text-accent-dark">Đang quét...</span>
+                        </div>
                       </div>
                     )}
                   </label>
                 </div>
 
-                {/* Metric dot ratings */}
-                <div className="space-y-4">
-                  {metricsSource === "ai" && (
-                    <div className="flex items-center gap-2 px-1">
-                      <Sparkles size={14} className="text-violet-500" />
-                      <span className="text-[10px] font-bold text-violet-600 uppercase tracking-wider">AI đề xuất — bạn có thể chỉnh lại</span>
+                {/* Symptom Questions */}
+                <div className="space-y-6">
+                  {/* Header info */}
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-micro font-bold text-muted uppercase tracking-wider">Trạng thái da hôm nay</span>
+                      <p className="text-[11px] text-muted mt-0.5">Chọn mô tả khớp nhất với làn da của bạn.</p>
                     </div>
-                  )}
-                  {METRICS_CONFIG.map(({ key, label, descriptions }) => (
-                    <div key={key} className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-caption font-bold text-fg">{label}</span>
-                        <span className="text-[10px] font-bold text-muted bg-surface/50 border border-line/50 px-2 py-0.5 rounded-md">{descriptions[(metrics[key] || 1) - 1]}</span>
+                    {metricsSource === "ai" && (
+                      <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-accent-light/20">
+                        <Sparkles size={12} className="text-accent animate-pulse" />
+                        <span className="text-[10px] font-bold text-accent-dark">AI Điền sẵn</span>
                       </div>
-                      <div className="flex items-center justify-between gap-1 bg-surface/40 p-2.5 rounded-2xl border border-line/60">
-                        {[1, 2, 3, 4, 5].map((v) => {
-                          const active = metrics[key] === v;
-                          return (
-                            <button
-                              key={v}
-                              type="button"
-                              onClick={() => {
-                                setMetrics((m) => ({ ...m, [key]: v }));
-                                if (metricsSource === "ai") setMetricsSource("manual");
-                              }}
-                              className="flex-1 flex flex-col items-center gap-1 py-1 group focus:outline-none"
-                            >
-                              <div className={`w-5 h-5 rounded-full flex items-center justify-center transition-all ${
-                                active ? "bg-fg scale-110 shadow-soft" : "border-2 border-line bg-white group-hover:border-muted"
-                              }`}>
-                                {active && <div className="w-1.5 h-1.5 rounded-full bg-bg" />}
-                              </div>
-                              <span className={`text-[10px] font-bold ${active ? "text-fg" : "text-muted opacity-60"}`}>
-                                {v}
-                              </span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex flex-col gap-2 pt-2">
-                  <div className="flex gap-3">
-                    <button onClick={goBack} className="flex-1 py-3.5 border border-line bg-white rounded-2xl text-caption font-bold text-fg transition-all flex items-center justify-center gap-1">
-                      <ChevronLeft size={16} /> Quay lại
-                    </button>
-                    <button onClick={goNext} className="flex-1 py-3.5 bg-fg text-bg rounded-2xl text-caption font-bold hover:opacity-90 transition-all flex items-center justify-center gap-1">
-                      Tiếp tục <ChevronRight size={16} />
-                    </button>
+                    )}
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => { setDirection(1); setStep(3); }}
-                    className="w-full py-2.5 text-micro text-muted hover:text-fg font-bold transition-all text-center"
-                  >
-                    Bỏ qua & Xem dự đoán AI →
-                  </button>
-                </div>
-              </motion.div>
-            )}
 
-            {/* ───── STEP 2: LIFESTYLE & ROUTINE ───── */}
-            {step === 2 && (
-              <motion.div
-                key="lifestyle"
-                custom={direction}
-                variants={slideVariants}
-                initial="enter" animate="center" exit="exit"
-                transition={{ duration: 0.25, ease: "easeOut" }}
-                className="space-y-6 pt-6"
-              >
-                <div>
-                  <h2 className="text-[22px] font-bold text-fg">Hôm nay bạn có gì đặc biệt?</h2>
-                  <p className="text-caption text-muted mt-1">Chọn các yếu tố ảnh hưởng đến da hôm nay.</p>
+                  {/* 1. Droplet: Oiliness */}
+                  <div className="space-y-3 bg-white p-5 rounded-2xl border border-line shadow-soft">
+                    <div className="flex items-center gap-2 text-fg border-b border-line pb-2 mb-2">
+                      <Droplet size={15} className="text-blue-500" />
+                      <span className="text-caption font-bold">Mức độ đổ dầu</span>
+                    </div>
+                    <div className="grid grid-cols-1 gap-2">
+                      {OILINESS_OPTIONS.map((opt) => {
+                        const isSelected = getOilinessSelected(metrics.oiliness) === opt.value;
+                        return (
+                          <button
+                            key={opt.value}
+                            type="button"
+                            onClick={() => {
+                              setMetrics((m) => ({ ...m, oiliness: opt.oiliness }));
+                              if (metricsSource === "ai") setUserCorrected(true);
+                            }}
+                            className={`p-3 rounded-xl border text-left transition-all ${
+                              isSelected
+                                ? "border-fg bg-fg/[0.02] font-bold shadow-sm"
+                                : "border-line bg-surface/30 hover:border-fg/20"
+                            }`}
+                          >
+                            <span className="text-caption font-bold block text-fg">{opt.label}</span>
+                            <span className="text-micro text-muted mt-0.5 block font-normal leading-relaxed">{opt.desc}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* 2. Sun: Dryness */}
+                  <div className="space-y-3 bg-white p-5 rounded-2xl border border-line shadow-soft">
+                    <div className="flex items-center gap-2 text-fg border-b border-line pb-2 mb-2">
+                      <Sun size={15} className="text-amber-500" />
+                      <span className="text-caption font-bold">Cảm giác khô căng</span>
+                    </div>
+                    <div className="grid grid-cols-1 gap-2">
+                      {DRYNESS_OPTIONS.map((opt) => {
+                        const isSelected = getDrynessSelected(metrics.dryness) === opt.value;
+                        return (
+                          <button
+                            key={opt.value}
+                            type="button"
+                            onClick={() => {
+                              setMetrics((m) => ({ ...m, dryness: opt.dryness }));
+                              if (metricsSource === "ai") setUserCorrected(true);
+                            }}
+                            className={`p-3 rounded-xl border text-left transition-all ${
+                              isSelected
+                                ? "border-fg bg-fg/[0.02] font-bold shadow-sm"
+                                : "border-line bg-surface/30 hover:border-fg/20"
+                            }`}
+                          >
+                            <span className="text-caption font-bold block text-fg">{opt.label}</span>
+                            <span className="text-micro text-muted mt-0.5 block font-normal leading-relaxed">{opt.desc}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* 3. ShieldAlert: Irritation & Comfort */}
+                  <div className="space-y-3 bg-white p-5 rounded-2xl border border-line shadow-soft">
+                    <div className="flex items-center gap-2 text-fg border-b border-line pb-2 mb-2">
+                      <ShieldAlert size={15} className="text-red-500" />
+                      <span className="text-caption font-bold">Độ nhạy cảm & kích ứng</span>
+                    </div>
+                    <div className="grid grid-cols-1 gap-2">
+                      {IRRITATION_OPTIONS.map((opt) => {
+                        const isSelected = getIrritationSelected(metrics.redness, metrics.barrierComfort) === opt.value;
+                        return (
+                          <button
+                            key={opt.value}
+                            type="button"
+                            onClick={() => {
+                              setMetrics((m) => ({ ...m, redness: opt.redness, barrierComfort: opt.barrierComfort }));
+                              if (metricsSource === "ai") setUserCorrected(true);
+                            }}
+                            className={`p-3 rounded-xl border text-left transition-all ${
+                              isSelected
+                                ? "border-fg bg-fg/[0.02] font-bold shadow-sm"
+                                : "border-line bg-surface/30 hover:border-fg/20"
+                            }`}
+                          >
+                            <span className="text-caption font-bold block text-fg">{opt.label}</span>
+                            <span className="text-micro text-muted mt-0.5 block font-normal leading-relaxed">{opt.desc}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* 4. AlertCircle: Acne */}
+                  <div className="space-y-3 bg-white p-5 rounded-2xl border border-line shadow-soft">
+                    <div className="flex items-center gap-2 text-fg border-b border-line pb-2 mb-2">
+                      <AlertCircle size={15} className="text-emerald-500" />
+                      <span className="text-caption font-bold">Tình trạng mụn</span>
+                    </div>
+                    <div className="grid grid-cols-1 gap-2">
+                      {ACNE_OPTIONS.map((opt) => {
+                        const isSelected = getAcneSelected(metrics.acne) === opt.value;
+                        return (
+                          <button
+                            key={opt.value}
+                            type="button"
+                            onClick={() => {
+                              setMetrics((m) => ({ ...m, acne: opt.acne }));
+                              if (metricsSource === "ai") setUserCorrected(true);
+                            }}
+                            className={`p-3 rounded-xl border text-left transition-all ${
+                              isSelected
+                                ? "border-fg bg-fg/[0.02] font-bold shadow-sm"
+                                : "border-line bg-surface/30 hover:border-fg/20"
+                            }`}
+                          >
+                            <span className="text-caption font-bold block text-fg">{opt.label}</span>
+                            <span className="text-micro text-muted mt-0.5 block font-normal leading-relaxed">{opt.desc}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2">
-                  {LIFESTYLE_OPTIONS.map((tag) => {
-                    const active = lifestyle.includes(tag);
-                    return (
-                      <button
-                        key={tag}
-                        onClick={() => toggleLifestyle(tag)}
-                        className={`px-3.5 py-2 rounded-full border text-caption font-medium transition-all ${
-                          active ? "bg-fg text-bg border-fg" : "bg-white text-muted border-line hover:border-fg/30"
-                        }`}
-                      >
-                        {tag}
-                      </button>
-                    );
-                  })}
-                </div>
+                {/* Lifestyle Tags & Routine */}
+                <div className="space-y-4 bg-white p-5 rounded-2xl border border-line shadow-soft">
+                  <span className="text-micro font-bold text-muted uppercase tracking-wider">Hoạt động & Thói quen</span>
+                  
+                  <div className="flex flex-wrap gap-2">
+                    {LIFESTYLE_OPTIONS.map((tag) => {
+                      const active = lifestyle.includes(tag.value);
+                      return (
+                        <button
+                          key={tag.value}
+                          onClick={() => toggleLifestyle(tag.value)}
+                          className={`px-3 py-1.5 rounded-full border text-[11px] font-bold transition-all ${
+                            active ? "bg-fg text-bg border-fg" : "bg-surface text-muted border-line hover:border-fg/30"
+                          }`}
+                        >
+                          {tag.label}
+                        </button>
+                      );
+                    })}
+                  </div>
 
-                <div className="space-y-2 pt-2">
-                  <label className="text-caption font-bold text-muted uppercase tracking-wider block">Routine đã thực hiện</label>
-                  <div className="grid grid-cols-2 gap-3">
-                    <button onClick={() => setAmDone(!amDone)} className={`border rounded-xl p-3.5 flex items-center justify-center gap-2 transition-all ${amDone ? "border-fg bg-fg/[0.04] shadow-soft font-bold" : "border-line bg-white hover:border-fg/30"}`}>
-                      <span>🌅</span><span className="text-caption">AM</span>
+                  <div className="grid grid-cols-2 gap-3 pt-2">
+                    <button onClick={() => setAmDone(!amDone)} className={`border rounded-xl p-2.5 flex items-center justify-center gap-2 transition-all ${amDone ? "border-fg bg-fg/[0.04] font-bold" : "border-line bg-surface hover:border-fg/30 text-muted"}`}>
+                      <span>🌅</span><span className="text-caption">Sáng</span>
                       {amDone && <CheckCircle2 size={14} className="text-success" />}
                     </button>
-                    <button onClick={() => setPmDone(!pmDone)} className={`border rounded-xl p-3.5 flex items-center justify-center gap-2 transition-all ${pmDone ? "border-fg bg-fg/[0.04] shadow-soft font-bold" : "border-line bg-white hover:border-fg/30"}`}>
-                      <span>🌙</span><span className="text-caption">PM</span>
+                    <button onClick={() => setPmDone(!pmDone)} className={`border rounded-xl p-2.5 flex items-center justify-center gap-2 transition-all ${pmDone ? "border-fg bg-fg/[0.04] font-bold" : "border-line bg-surface hover:border-fg/30 text-muted"}`}>
+                      <span>🌙</span><span className="text-caption">Tối</span>
                       {pmDone && <CheckCircle2 size={14} className="text-success" />}
                     </button>
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-2 pt-2">
-                  <div className="flex gap-3">
-                    <button onClick={goBack} className="flex-1 py-3.5 border border-line bg-white rounded-2xl text-caption font-bold text-fg transition-all flex items-center justify-center gap-1">
-                      <ChevronLeft size={16} /> Quay lại
-                    </button>
-                    <button onClick={goNext} className="flex-1 py-3.5 bg-fg text-bg rounded-2xl text-caption font-bold hover:opacity-90 transition-all flex items-center justify-center gap-1">
-                      <Brain size={16} /> Xem dự đoán AI
-                    </button>
+                {/* Diet Tags */}
+                <div className="space-y-4 bg-white p-5 rounded-2xl border border-line shadow-soft">
+                  <span className="text-micro font-bold text-muted uppercase tracking-wider">Dinh dưỡng hôm nay</span>
+                  <div className="flex flex-wrap gap-2">
+                    {DIET_OPTIONS.map((tag) => {
+                      const active = diet.includes(tag.value);
+                      return (
+                        <button
+                          key={tag.value}
+                          type="button"
+                          onClick={() => {
+                            setDiet((prev) =>
+                              prev.includes(tag.value)
+                                ? prev.filter((t) => t !== tag.value)
+                                : [...prev, tag.value]
+                            );
+                          }}
+                          className={`px-3 py-1.5 rounded-full border text-[11px] font-bold transition-all ${
+                            active ? "bg-fg text-bg border-fg" : "bg-surface text-muted border-line hover:border-fg/30"
+                          }`}
+                        >
+                          {tag.label}
+                        </button>
+                      );
+                    })}
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => { setDirection(1); setStep(3); }}
-                    className="w-full py-2.5 text-micro text-muted hover:text-fg font-bold transition-all text-center"
-                  >
-                    Bỏ qua & Xem dự đoán AI →
-                  </button>
                 </div>
-              </motion.div>
-            )}
-
-            {/* ───── STEP 3: AI FORECAST (REWARD) ───── */}
-            {step === 3 && (
-              <motion.div
-                key="forecast"
-                custom={direction}
-                variants={slideVariants}
-                initial="enter" animate="center" exit="exit"
-                transition={{ duration: 0.25, ease: "easeOut" }}
-                className="space-y-6 pt-6"
-              >
-                <div className="flex items-center gap-2">
-                  <Brain size={22} className="text-fg" />
-                  <h2 className="text-[22px] font-bold text-fg">Dự đoán ngày mai</h2>
-                </div>
-
-                <div className="bg-gradient-to-br from-fg to-slate-800 text-bg rounded-2xl p-5">
-                  <div className="text-[10px] font-bold uppercase tracking-wider opacity-60 mb-1">Skin Score hôm nay</div>
-                  <div className="text-3xl font-extrabold">{todayScore}<span className="text-lg opacity-50">/100</span></div>
-                </div>
-
-                {forecast && (
-                  <div className="grid grid-cols-3 gap-3">
-                    <div className="border border-line rounded-2xl p-4 text-center bg-white">
-                      <div className="text-[10px] font-bold text-muted uppercase mb-1">Score</div>
-                      <div className="text-title font-extrabold text-fg">{forecast.score}</div>
-                      <div className={`text-[10px] font-bold mt-0.5 ${forecast.score >= todayScore ? "text-success" : "text-danger"}`}>
-                        {forecast.score >= todayScore ? "↑" : "↓"}{Math.abs(forecast.score - todayScore)}
-                      </div>
-                    </div>
-                    <div className="border border-line rounded-2xl p-4 text-center bg-white">
-                      <div className="text-[10px] font-bold text-muted uppercase mb-1">Mụn</div>
-                      <div className="flex justify-center gap-0.5 my-1.5">
-                        {[1, 2, 3, 4, 5].map((i) => (
-                          <div key={i} className={`w-2.5 h-2.5 rounded-full ${i <= forecast.acne ? "bg-danger" : "bg-line"}`} />
-                        ))}
-                      </div>
-                      <div className="text-[10px] text-muted font-medium">{forecast.acne <= 2 ? "Ổn" : forecast.acne <= 3 ? "Vừa" : "Cao"}</div>
-                    </div>
-                    <div className="border border-line rounded-2xl p-4 text-center bg-white">
-                      <div className="text-[10px] font-bold text-muted uppercase mb-1">Mẩn đỏ</div>
-                      <div className="flex justify-center gap-0.5 my-1.5">
-                        {[1, 2, 3, 4, 5].map((i) => (
-                          <div key={i} className={`w-2.5 h-2.5 rounded-full ${i <= forecast.redness ? "bg-warning" : "bg-line"}`} />
-                        ))}
-                      </div>
-                      <div className="text-[10px] text-muted font-medium">{forecast.redness <= 2 ? "Nhẹ" : forecast.redness <= 3 ? "Vừa" : "Nặng"}</div>
-                    </div>
-                  </div>
-                )}
-
-                {forecast && forecast.riskFactors.length > 0 && (
-                  <div className="border border-warning/30 bg-warning/[0.03] rounded-2xl p-4 space-y-2">
-                    <div className="text-caption font-bold text-warning">⚠️ Lưu ý cho ngày mai</div>
-                    <ul className="space-y-1">
-                      {forecast.riskFactors.map((r, i) => (
-                        <li key={i} className="text-caption text-muted flex items-start gap-1.5">
-                          <span className="text-warning mt-0.5">•</span> {r}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
 
                 <div className="space-y-2">
-                  <label className="text-caption font-bold text-muted uppercase tracking-wider block">Ghi chú thêm (tuỳ chọn)</label>
                   <textarea
                     value={note} onChange={(e) => setNote(e.target.value)}
-                    placeholder="Ví dụ: Vùng cằm hơi đỏ rát sau BHA tối qua..."
-                    className="w-full bg-surface border border-line rounded-2xl p-4 text-caption text-fg outline-none focus:border-fg h-20 resize-none transition-all placeholder:text-muted/60"
+                    placeholder="Ghi chú thêm (tuỳ chọn)..."
+                    className="w-full bg-white border border-line rounded-2xl p-4 text-caption text-fg outline-none focus:border-fg h-20 resize-none transition-all placeholder:text-muted/60 shadow-soft"
                   />
                 </div>
 
@@ -554,15 +648,10 @@ export default function SkinCheckinFlow({
                   </motion.div>
                 )}
 
-                <div className="flex gap-3 pt-2">
-                  <button onClick={goBack} className="py-3.5 px-5 border border-line bg-white rounded-2xl text-caption font-bold text-fg transition-all">
-                    <ChevronLeft size={16} />
-                  </button>
-                  <button onClick={handleFullSave}
-                    className="flex-1 py-3.5 bg-fg text-bg rounded-2xl text-caption font-bold hover:opacity-90 transition-all flex items-center justify-center gap-2 shadow-md">
-                    <CheckCircle2 size={16} /> Hoàn tất
-                  </button>
-                </div>
+                <button onClick={handleFullSave}
+                  className="w-full py-4 bg-fg text-bg rounded-2xl text-caption font-bold hover:opacity-90 transition-all flex items-center justify-center gap-2 shadow-lg mb-8">
+                  <CheckCircle2 size={18} /> Hoàn tất lưu nhật ký
+                </button>
               </motion.div>
             )}
           </AnimatePresence>

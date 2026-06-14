@@ -6,6 +6,7 @@ import { X, Send, Sparkles, User, Bot, AlertCircle, ImageIcon, MonitorIcon, Pape
 import { useUserStore } from "@/store/user-store"
 import { useRoutineStore } from "@/store/routine-store"
 import { cn } from "@/lib/utils"
+import { trackEvent } from "@/lib/tracking"
 
 interface ChatMessage {
   id: string;
@@ -69,6 +70,9 @@ export default function AIChatPanel() {
     setLocalInput("");
     setShowCommandPalette(false);
 
+    // Track user message sent
+    trackEvent("ai_chat_send", { length: submittedText.length });
+
     try {
       // Update local UI optimistic
       const newMsg = { id: Date.now().toString(), role: "user" as const, content: submittedText };
@@ -112,6 +116,12 @@ export default function AIChatPanel() {
         aiText += chunk;
         setFallbackMessages(prev => prev.map(m => m.id === aiId ? { ...m, content: aiText } : m));
       }
+
+      // Track AI response received
+      trackEvent("ai_chat_receive", { 
+        length: aiText.length, 
+        hasAiWarning: aiText.includes("[AI WARNING]") 
+      });
     } catch (err) {
       if (err instanceof DOMException && err.name === 'AbortError') return;
       console.error("Chat submit error:", err);
@@ -158,7 +168,7 @@ export default function AIChatPanel() {
         onClick={() => setIsOpen(!isOpen)}
         className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#0A0A0B] text-white rounded-full flex items-center justify-center shadow-2xl border border-white/10 hover:border-white/20 transition-all font-medium"
       >
-        {isOpen ? <X size={20} /> : <Sparkles size={20} className="text-violet-400" />}
+        {isOpen ? <X size={20} /> : <Sparkles size={20} className="text-accent" />}
       </motion.button>
 
       <AnimatePresence>
@@ -172,7 +182,7 @@ export default function AIChatPanel() {
             {/* Header */}
             <div className="p-6 border-b border-white/5 flex items-center justify-between bg-gradient-to-b from-white/[0.02] to-transparent">
               <div className="flex items-center gap-4">
-                <div className="w-10 h-10 bg-violet-500/10 border border-violet-500/20 text-violet-400 rounded-2xl flex items-center justify-center">
+                <div className="w-10 h-10 bg-accent/10 border border-accent/25 text-accent rounded-2xl flex items-center justify-center">
                   <Sparkles size={20} />
                 </div>
                 <div>
@@ -210,7 +220,7 @@ export default function AIChatPanel() {
                     "w-8 h-8 rounded-xl flex-shrink-0 flex items-center justify-center border",
                     m.role === "user" 
                       ? "bg-white/5 border-white/10 text-white/60" 
-                      : "bg-violet-500/10 border-violet-500/20 text-violet-400"
+                      : "bg-accent/10 border-accent/25 text-accent"
                   )}>
                     {m.role === "user" ? <User size={14} /> : <Bot size={14} />}
                   </div>
@@ -227,7 +237,7 @@ export default function AIChatPanel() {
               
               {showLoading && (
                 <div className="flex gap-4 mr-auto items-center">
-                  <div className="w-8 h-8 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400">
+                  <div className="w-8 h-8 rounded-xl bg-accent/10 border border-accent/25 flex items-center justify-center text-accent">
                     <Loader2 size={14} className="animate-spin" />
                   </div>
                   <div className="flex gap-1.5">
@@ -262,7 +272,7 @@ export default function AIChatPanel() {
                           onClick={() => selectSuggestion(suggestion.prefix)}
                           className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-white/5 rounded-xl transition-all group text-left"
                         >
-                          <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-white/40 group-hover:text-violet-400 group-hover:bg-violet-500/10 transition-colors">
+                          <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-white/40 group-hover:text-accent group-hover:bg-accent/10 transition-colors">
                             {suggestion.icon}
                           </div>
                           <div>
@@ -298,7 +308,7 @@ export default function AIChatPanel() {
                       onClick={() => setShowCommandPalette(!showCommandPalette)}
                       className={cn(
                         "p-2 transition-colors",
-                        showCommandPalette ? "text-violet-400" : "text-white/20 hover:text-white/60"
+                        showCommandPalette ? "text-accent" : "text-white/20 hover:text-white/60"
                       )}
                     >
                       <Command size={16} />

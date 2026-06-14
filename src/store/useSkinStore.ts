@@ -18,6 +18,7 @@ interface SkinState {
   lastCheckinDate: string | null;
   recoveryMode: boolean;
   isHydrated: boolean;
+  calibrationOffsets: Record<string, number>;
 
   addDiaryLog: (log: Omit<DiaryLog, "id">) => void;
   addPartialLog: (mood: DiaryLog["mood"], date: string, dayName: string) => void;
@@ -25,9 +26,12 @@ interface SkinState {
   deleteDiaryLog: (date: string) => void;
   setRange: (range: "day" | "week" | "month") => void;
   setPinnedMetrics: (metrics: string[]) => void;
+  setCalibrationOffset: (metric: string, offset: number) => void;
   clearJournal: () => void;
   setHydrated: () => void;
   setRecoveryMode: (mode: boolean) => void;
+  setDiaryLogs: (logs: DiaryLog[]) => void;
+  toggleRoutineCompleted: (date: string, period: "AM" | "PM") => void;
 }
 
 
@@ -36,6 +40,12 @@ function parseDateStr(dStr: string): Date {
   const parts = dStr.split("/");
   if (parts.length !== 3) return new Date(0);
   return new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0]));
+}
+
+function getDayName(dateStr: string): string {
+  const date = parseDateStr(dateStr);
+  const dayNames = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
+  return dayNames[date.getDay()];
 }
 
 function sortLogs(logs: DiaryLog[]): DiaryLog[] {
@@ -99,7 +109,12 @@ export const useSkinStore = create<SkinState>()(
       checkinStreak: 0,
       lastCheckinDate: null,
       recoveryMode: false,
+      calibrationOffsets: {},
       setRecoveryMode: (mode) => set({ recoveryMode: mode }),
+
+      setCalibrationOffset: (metric, offset) => set((state) => ({
+        calibrationOffsets: { ...state.calibrationOffsets, [metric]: offset }
+      })),
 
       addDiaryLog: (log) => {
         const newLog: DiaryLog = {
@@ -128,6 +143,7 @@ export const useSkinStore = create<SkinState>()(
           source: "manual",
           metrics: { ...defaults },
           lifestyle: [],
+          diet: [],
           note: "",
         };
         const filtered = get().diaryLogs.filter((l) => l.date !== date);
@@ -164,6 +180,44 @@ export const useSkinStore = create<SkinState>()(
         set({ diaryLogs: updated, ...streak });
       },
 
+      toggleRoutineCompleted: (date, period) => {
+        const logs = get().diaryLogs;
+        const existing = logs.find((l) => l.date === date);
+        if (existing) {
+          const updated = logs.map((log) => {
+            if (log.date !== date) return log;
+            const key = period === "AM" ? "amRoutineCompleted" : "pmRoutineCompleted";
+            return {
+              ...log,
+              [key]: !log[key]
+            };
+          });
+          const sorted = sortLogs(updated);
+          const streak = calculateStreakFromLogs(sorted);
+          set({ diaryLogs: sorted, ...streak });
+        } else {
+          const dayName = getDayName(date);
+          const defaults = MOOD_METRIC_DEFAULTS.okay;
+          const newLog: DiaryLog = {
+            id: Date.now(),
+            date,
+            dayName,
+            mood: "okay",
+            isPartial: true,
+            source: "manual",
+            metrics: { ...defaults },
+            lifestyle: [],
+            diet: [],
+            note: "",
+            amRoutineCompleted: period === "AM",
+            pmRoutineCompleted: period === "PM"
+          };
+          const updated = sortLogs([...logs, newLog]);
+          const streak = calculateStreakFromLogs(updated);
+          set({ diaryLogs: updated, ...streak });
+        }
+      },
+
       setRange: (range) => set({ selectedRange: range }),
       
       setPinnedMetrics: (metrics) => {
@@ -172,7 +226,13 @@ export const useSkinStore = create<SkinState>()(
         }
       },
 
-      clearJournal: () => set({ diaryLogs: [], checkinStreak: 0, lastCheckinDate: null }),
+      setDiaryLogs: (logs) => {
+        const sorted = sortLogs(logs);
+        const streak = calculateStreakFromLogs(sorted);
+        set({ diaryLogs: sorted, ...streak });
+      },
+
+      clearJournal: () => set({ diaryLogs: [], checkinStreak: 0, lastCheckinDate: null, calibrationOffsets: {} }),
       setHydrated: () => set({ isHydrated: true }),
     }),
     {

@@ -1,10 +1,13 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import Link from "next/link"
 import ingredientsData from "@/data/ingredients.json"
 import { Ingredient } from "@/types"
 import { SKIN_LABELS } from "@/lib/constants"
+import { trackEvent } from "@/lib/tracking"
+import { supabase } from "@/lib/supabase"
+import { useUserStore } from "@/store/user-store"
 
 const allIngredients = (ingredientsData as { ingredients: Ingredient[] }).ingredients
 
@@ -23,15 +26,59 @@ const CATEGORY_LABELS: Record<string, string> = {
   solvent: "Dung môi",
 }
 
-const CATEGORIES = Array.from(new Set(allIngredients.map((i) => i.category)))
+
 
 export default function IngredientsPage() {
+  const user = useUserStore()
+  const [ingredients, setIngredients] = useState<Ingredient[]>(allIngredients)
   const [search, setSearch] = useState("")
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [expandedId, setExpandedId] = useState<string | null>(null)
 
+  const categories = useMemo(() => {
+    return Array.from(new Set(ingredients.map((i) => i.category)))
+  }, [ingredients])
+
+  // Load ingredients from Supabase
+  useEffect(() => {
+    const loadIngredients = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("ingredients")
+          .select("*");
+        
+        if (!error && data && data.length > 0) {
+          const mapped: Ingredient[] = data.map((i) => ({
+            id: i.id,
+            name: i.name,
+            nameVi: i.name_vi,
+            category: i.category,
+            benefits: i.benefits || [],
+            skinTypes: i.skin_types || [],
+            timeOfDay: i.time_of_day as Ingredient["timeOfDay"],
+            pregnancy: i.pregnancy,
+            conflictsWith: i.conflicts_with || []
+          }));
+          setIngredients(mapped);
+        }
+      } catch (err) {
+        console.warn("Failed to load ingredients from Supabase, using local fallback:", err);
+      }
+    };
+    loadIngredients();
+  }, []);
+
+  // Track search queries with 500ms debounce
+  useEffect(() => {
+    if (!search.trim()) return;
+    const timer = setTimeout(() => {
+      trackEvent("ingredient_search", { query: search });
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [search]);
+
   const filtered = useMemo(() => {
-    return allIngredients.filter((ing) => {
+    return ingredients.filter((ing) => {
       const matchesSearch =
         !search ||
         ing.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -39,7 +86,7 @@ export default function IngredientsPage() {
       const matchesCat = !selectedCategory || ing.category === selectedCategory
       return matchesSearch && matchesCat
     })
-  }, [search, selectedCategory])
+  }, [ingredients, search, selectedCategory])
 
   return (
     <div className="min-h-screen bg-bg">
@@ -49,8 +96,11 @@ export default function IngredientsPage() {
             <p className="text-caption uppercase tracking-[0.2em] text-muted">Bách khoa thành phần</p>
             <h1 className="text-headline font-semibold">Tìm hiểu trước khi bôi lên da</h1>
           </div>
-          <Link href="/quiz" className="text-caption text-muted hover:text-fg transition-colors">
-            ← Quay lại quiz
+          <Link 
+            href={user.quizCompleted ? "/dashboard" : "/quiz"} 
+            className="text-caption text-muted hover:text-fg transition-colors"
+          >
+            {user.quizCompleted ? "← Quay lại Workspace" : "← Quay lại quiz"}
           </Link>
         </div>
       </header>
@@ -73,7 +123,7 @@ export default function IngredientsPage() {
             >
               Tất cả
             </button>
-            {CATEGORIES.map((cat) => (
+            {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
@@ -97,7 +147,7 @@ export default function IngredientsPage() {
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex gap-3">
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg text-white shrink-0 bg-gradient-to-br from-violet-400 to-fuchsia-500 shadow-sm">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg text-white shrink-0 bg-gradient-to-br from-accent-light to-accent shadow-sm">
                       {ing.nameVi[0].toUpperCase()}
                     </div>
                     <div>
@@ -107,7 +157,13 @@ export default function IngredientsPage() {
                     </div>
                   </div>
                   <button
-                    onClick={() => setExpandedId(expanded ? null : ing.id)}
+                    onClick={() => {
+                      const nextState = !expanded;
+                      if (nextState) {
+                        trackEvent("ingredient_click", { ingredientId: ing.id, name: ing.name });
+                      }
+                      setExpandedId(nextState ? ing.id : null);
+                    }}
                     className="text-caption text-muted hover:text-fg transition-colors"
                   >
                     {expanded ? "Thu gọn" : "Chi tiết"}

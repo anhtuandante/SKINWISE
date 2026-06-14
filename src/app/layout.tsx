@@ -32,13 +32,19 @@ export const metadata: Metadata = {
   },
 }
 
+import AuthProvider from "@/components/providers/AuthProvider"
+import TrackingListener from "@/components/ui/TrackingListener"
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="vi" className={`antialiased ${beVietnamPro.variable}`}>
       <body className="font-sans">
-        {children}
-        <AIChatPanel />
-        <ToastContainer />
+        <AuthProvider>
+          <TrackingListener />
+          {children}
+          <AIChatPanel />
+          <ToastContainer />
+        </AuthProvider>
         <Analytics />
         <script
           type="application/ld+json"

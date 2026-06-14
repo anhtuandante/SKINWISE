@@ -24,7 +24,7 @@ import SkinDashboard from "@/components/dashboard/SkinDashboard";
 import SkinProfileCard from "@/components/dashboard/SkinProfileCard";
 import SafetyLabPanel from "@/components/dashboard/SafetyLabPanel";
 import SkinJournalPanel from "@/components/dashboard/SkinJournalPanel";
-import TreatmentCalendarPanel from "@/components/dashboard/TreatmentCalendarPanel";
+
 import ProductCatalog from "@/components/dashboard/ProductCatalog";
 
 import { filterProducts, getProductsByCategory } from "@/lib/quiz-logic";
@@ -179,6 +179,9 @@ export default function DashboardPage() {
             </Link>
             <Link href="/ingredients" className="text-caption text-muted hover:text-fg transition-colors">
               Bách khoa thành phần
+            </Link>
+            <Link href="/admin/tracking" className="text-caption text-muted hover:text-fg transition-colors">
+              Báo cáo Admin
             </Link>
           </div>
         </div>
@@ -418,10 +421,7 @@ export default function DashboardPage() {
                 </div>
               )}
 
-              {/* Weekly Treatment Calendar */}
-              {user.quizCompleted && (
-                <TreatmentCalendarPanel />
-              )}
+
 
               {/* Smart Adjustment Tips */}
               <div className="space-y-3">

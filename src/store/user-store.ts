@@ -6,6 +6,7 @@ interface UserStore extends UserProfile {
   setSkinType: (type: string) => void;
   toggleConcern: (concern: string) => void;
   setBudget: (budget: string) => void;
+  setTotalBudget: (totalBudget: number) => void;
   setAllergies: (allergies: string) => void;
   setQuizCompleted: (completed: boolean) => void;
   setBarrier: (barrier: string) => void;
@@ -13,7 +14,7 @@ interface UserStore extends UserProfile {
   setPreference: (preference: string) => void;
   setProfileMetadata: (title: string, mainGoal: string, barrierStatus: "stable" | "redness" | "flaking" | "stinging") => void;
   setBarrierStatus: (status: "stable" | "redness" | "flaking" | "stinging") => void;
-  setSubscriptionPlan: (plan: "free" | "premium" | "ultimate") => void;
+
   setAge: (age: string) => void;
   setGender: (gender: string) => void;
   setEnvironment: (env: string) => void;
@@ -33,6 +34,7 @@ const initialState: UserProfile & { isHydrated: boolean } = {
   skinType: "",
   concerns: [],
   budget: "",
+  totalBudget: 1500000,
   allergies: "",
   quizCompleted: false,
   barrier: "",
@@ -41,7 +43,7 @@ const initialState: UserProfile & { isHydrated: boolean } = {
   preference: "",
   title: "",
   mainGoal: "",
-  subscriptionPlan: "free",
+
   age: "",
   gender: "",
   environment: "",
@@ -65,6 +67,7 @@ export const useUserStore = create<UserStore>()(
             : [...state.concerns, concern],
         })),
       setBudget: (budget) => set({ budget }),
+      setTotalBudget: (totalBudget) => set({ totalBudget }),
       setAllergies: (allergies) => set({ allergies }),
       setQuizCompleted: (completed) => set({ quizCompleted: completed }),
       setBarrier: (barrier) => set({ barrier }),
@@ -72,7 +75,7 @@ export const useUserStore = create<UserStore>()(
       setPreference: (preference) => set({ preference }),
       setProfileMetadata: (title, mainGoal, barrierStatus) => set({ title, mainGoal, barrierStatus }),
       setBarrierStatus: (status) => set({ barrierStatus: status }),
-      setSubscriptionPlan: (plan) => set({ subscriptionPlan: plan }),
+
       setAge: (age) => set({ age }),
       setGender: (gender) => set({ gender }),
       setEnvironment: (environment) => set({ environment }),

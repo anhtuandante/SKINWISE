@@ -10,13 +10,13 @@ interface ProductAvatarProps {
 // Hàm tạo màu ngẫu nhiên nhưng nhất quán dựa trên tên brand
 const getBrandColor = (brand: string) => {
   const colors = [
-    "from-blue-400 to-indigo-500",
-    "from-emerald-400 to-teal-500",
-    "from-orange-400 to-red-500",
-    "from-pink-400 to-rose-500",
-    "from-violet-400 to-purple-500",
-    "from-cyan-400 to-blue-500",
-    "from-amber-400 to-orange-500",
+    "from-blue-300 to-indigo-400",
+    "from-emerald-300 to-teal-400",
+    "from-orange-300 to-red-400",
+    "from-pink-300 to-rose-400",
+    "from-accent-light to-accent",
+    "from-cyan-300 to-blue-400",
+    "from-amber-300 to-orange-400",
   ];
   
   let hash = 0;

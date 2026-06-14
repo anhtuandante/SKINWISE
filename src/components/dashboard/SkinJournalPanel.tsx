@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { Smile, Meh, Frown, ChevronLeft, ChevronRight, Plus, ArrowUpCircle, Search } from "lucide-react";
+import { Smile, Meh, Frown, ChevronLeft, ChevronRight, Plus, ArrowUpCircle, Search, Edit3 } from "lucide-react";
 import { useSkinStore } from "@/store/useSkinStore";
 import { DiaryLog } from "@/types";
 import { useToastStore } from "@/store/toast-store";
@@ -13,13 +13,49 @@ const MOOD_CONFIG = {
   irritated: { label: "Kích ứng", icon: Frown, colorClass: "bg-danger/10 text-danger" },
 };
 
-const METRIC_SHORT_LABELS: Record<string, string> = {
-  oiliness: "Dầu",
-  dryness: "Khô",
-  redness: "Đỏ",
-  acne: "Mụn",
-  barrierComfort: "Khỏe",
-};
+function getSymptomLabels(metrics: DiaryLog["metrics"]): string[] {
+  const labels: string[] = [];
+  if (!metrics) return labels;
+
+  // Oiliness
+  if (metrics.oiliness <= 1) labels.push("Da khô thoáng");
+  else if (metrics.oiliness === 2) labels.push("Ít dầu");
+  else if (metrics.oiliness === 3 || metrics.oiliness === 4) labels.push("Bóng dầu chữ T");
+  else if (metrics.oiliness >= 5) labels.push("Bóng nhờn toàn mặt");
+
+  // Dryness
+  if (metrics.dryness <= 1) {
+    if (metrics.oiliness <= 2) {
+      labels.push("Da ẩm mịn");
+    }
+  } else if (metrics.dryness >= 2 && metrics.dryness <= 4) {
+    labels.push("Hơi căng nhẹ");
+  } else if (metrics.dryness >= 5) {
+    labels.push("Khô ráp / Bong tróc");
+  }
+
+  // Irritation
+  const redness = metrics.redness || 0;
+  const comfort = metrics.barrierComfort || 5;
+  if (redness >= 4 || comfort <= 2) {
+    labels.push("Đỏ rát, kích ứng");
+  } else if (redness >= 2 || comfort <= 4) {
+    labels.push("Châm chích nhẹ");
+  } else {
+    labels.push("Da êm dịu");
+  }
+
+  // Acne
+  if (metrics.acne <= 1) {
+    labels.push("Không mụn mới");
+  } else if (metrics.acne >= 2 && metrics.acne <= 4) {
+    labels.push("Mụn cám / li ti");
+  } else if (metrics.acne >= 5) {
+    labels.push("Mụn sưng viêm đỏ");
+  }
+
+  return labels;
+}
 
 export default function SkinJournalPanel() {
   const { diaryLogs, deleteDiaryLog, checkinStreak } = useSkinStore();
@@ -201,8 +237,13 @@ export default function SkinJournalPanel() {
               {currentSelectedDayLog.isPartial && (
                 <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-warning/10 text-warning">Ghi nhanh</span>
               )}
-              {currentSelectedDayLog.source === "ai" && (
-                <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-600">AI</span>
+              {currentSelectedDayLog.source === "ai" && !currentSelectedDayLog.userCorrected && (
+                <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-accent/15 text-accent-dark">AI</span>
+              )}
+              {currentSelectedDayLog.userCorrected && (
+                <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-warning/10 text-warning flex items-center gap-1">
+                  <Edit3 size={10} /> Đã sửa
+                </span>
               )}
             </div>
             {(() => {
@@ -231,15 +272,26 @@ export default function SkinJournalPanel() {
 
           {/* Metrics */}
           {!currentSelectedDayLog.isPartial && (
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 bg-surface/50 border border-line rounded-xl p-4">
-              {Object.entries(currentSelectedDayLog.metrics)
-                .filter(([k]) => METRIC_SHORT_LABELS[k])
-                .map(([k, v]) => (
-                  <div key={k} className="text-center">
-                    <span className="text-micro font-bold text-muted uppercase block">{METRIC_SHORT_LABELS[k]}</span>
-                    <span className="text-body font-extrabold text-fg">{v} / 5</span>
-                  </div>
-                ))}
+            <div className="space-y-2">
+              <span className="text-micro font-bold text-muted uppercase tracking-wider block">Tình trạng làn da:</span>
+              <div className="flex flex-wrap gap-2">
+                {getSymptomLabels(currentSelectedDayLog.metrics).map((lbl, idx) => {
+                  let badgeColor = "bg-surface text-muted border-line";
+                  if (lbl.includes("đỏ rát") || lbl.includes("kích ứng") || lbl.includes("Bong tróc") || lbl.includes("sưng viêm") || lbl.includes("Bóng nhờn")) {
+                    badgeColor = "bg-red-500/10 text-red-600 border-red-500/20";
+                  } else if (lbl.includes("châm chích") || lbl.includes("căng nhẹ") || lbl.includes("vùng chữ T") || lbl.includes("li ti")) {
+                    badgeColor = "bg-amber-500/10 text-amber-600 border-amber-500/20";
+                  } else if (lbl.includes("khô thoáng") || lbl.includes("ẩm mịn") || lbl.includes("êm dịu") || lbl.includes("Không mụn")) {
+                    badgeColor = "bg-emerald-500/10 text-emerald-600 border-emerald-500/20";
+                  }
+
+                  return (
+                    <span key={idx} className={`text-caption font-bold px-3 py-1.5 rounded-xl border ${badgeColor}`}>
+                      {lbl}
+                    </span>
+                  );
+                })}
+              </div>
             </div>
           )}
 
@@ -261,6 +313,30 @@ export default function SkinJournalPanel() {
               </div>
             </div>
           )}
+
+          {currentSelectedDayLog.diet && currentSelectedDayLog.diet.length > 0 && (
+            <div className="space-y-1.5">
+              <span className="text-micro font-bold text-muted uppercase">Dinh dưỡng đã dùng:</span>
+              <div className="flex flex-wrap gap-1.5">
+                {currentSelectedDayLog.diet.map((tag) => {
+                  let label = tag;
+                  if (tag === "dairy") label = "🥛 Sữa & phô mai";
+                  else if (tag === "sugar") label = "🍩 Đồ ngọt / đường";
+                  else if (tag === "greasy_spicy") label = "🌶️ Đồ cay / dầu mỡ";
+                  else if (tag === "greens") label = "🥦 Nhiều rau quả";
+                  else if (tag === "water") label = "💧 Đủ nước";
+
+                  return (
+                    <span key={tag} className="text-[10px] bg-emerald-500/[0.04] border border-emerald-500/10 text-emerald-700 px-2 py-0.5 rounded-full font-bold">
+                      {label}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+
 
           {/* Upgrade partial log CTA */}
           {currentSelectedDayLog.isPartial && (
@@ -413,14 +489,23 @@ export default function SkinJournalPanel() {
                         </span>
                       </div>
 
-                      <div className="flex flex-wrap gap-x-3 gap-y-1.5 text-[10px] text-muted font-medium">
-                        {Object.entries(log.metrics)
-                          .filter(([k]) => METRIC_SHORT_LABELS[k])
-                          .map(([k, v]) => (
-                            <span key={k}>
-                              {METRIC_SHORT_LABELS[k]}: <strong>{v}/5</strong>
+                      <div className="flex flex-wrap gap-1.5 pt-0.5">
+                        {getSymptomLabels(log.metrics).map((lbl, idx) => {
+                          let badgeColor = "bg-surface text-muted border-line";
+                          if (lbl.includes("đỏ rát") || lbl.includes("kích ứng") || lbl.includes("Bong tróc") || lbl.includes("sưng viêm") || lbl.includes("Bóng nhờn")) {
+                            badgeColor = "bg-red-500/5 text-red-600/90 border-red-500/10";
+                          } else if (lbl.includes("châm chích") || lbl.includes("căng nhẹ") || lbl.includes("vùng chữ T") || lbl.includes("li ti")) {
+                            badgeColor = "bg-amber-500/5 text-amber-600/90 border-amber-500/10";
+                          } else if (lbl.includes("khô thoáng") || lbl.includes("ẩm mịn") || lbl.includes("êm dịu") || lbl.includes("Không mụn")) {
+                            badgeColor = "bg-emerald-500/5 text-emerald-600/90 border-emerald-500/10";
+                          }
+
+                          return (
+                            <span key={idx} className={`text-[10px] px-2 py-0.5 rounded-lg border ${badgeColor}`}>
+                              {lbl}
                             </span>
-                          ))}
+                          );
+                        })}
                       </div>
                     </>
                   )}
@@ -434,6 +519,25 @@ export default function SkinJournalPanel() {
                           {tag}
                         </span>
                       ))}
+                    </div>
+                  )}
+
+                  {log.diet && log.diet.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {log.diet.map((tag) => {
+                        let label = tag;
+                        if (tag === "dairy") label = "🥛 Sữa";
+                        else if (tag === "sugar") label = "🍩 Đồ ngọt";
+                        else if (tag === "greasy_spicy") label = "🌶️ Đồ cay";
+                        else if (tag === "greens") label = "🥦 Rau xanh";
+                        else if (tag === "water") label = "💧 Đủ nước";
+
+                        return (
+                          <span key={tag} className="text-[9px] bg-emerald-500/[0.03] border border-emerald-500/10 text-emerald-700 px-2 py-0.5 rounded-full font-bold font-sans">
+                            {label}
+                          </span>
+                        );
+                      })}
                     </div>
                   )}
                 </div>

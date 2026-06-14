@@ -190,7 +190,7 @@ export default function ResultsPage() {
                 </span>
               )}
               {cycleInfo && (
-                <span className="text-[10px] font-bold bg-indigo-500/10 text-indigo-600 px-3 py-1.5 rounded-full uppercase tracking-wider border border-indigo-500/10 flex items-center gap-1">
+                <span className="text-[10px] font-bold bg-accent/10 text-accent-dark px-3 py-1.5 rounded-full uppercase tracking-wider border border-accent/20 flex items-center gap-1">
                   📅 {cycleInfo.label}
                 </span>
               )}
@@ -415,7 +415,7 @@ function ProductStepCard({
             <button
               type="button"
               onClick={() => setShowAlts(!showAlts)}
-              className="text-[10px] text-indigo-600 hover:text-indigo-800 font-extrabold transition-colors uppercase tracking-wider"
+              className="text-[10px] text-accent-dark hover:text-accent font-extrabold transition-colors uppercase tracking-wider"
             >
               {showAlts ? "Đóng ✕" : "Thay sản phẩm khác ⇄"}
             </button>
@@ -477,11 +477,11 @@ function ProductStepCard({
               {alternatives.map(({ product: altP, match: altM }) => (
                 <div 
                   key={altP.id} 
-                  className="flex items-center justify-between p-3 border border-line rounded-xl hover:border-indigo-500/20 transition-all bg-surface/30 group gap-3"
+                  className="flex items-center justify-between p-3 border border-line rounded-xl hover:border-accent/20 transition-all bg-surface/30 group gap-3"
                 >
                   <ProductAvatar brand={altP.brand} name={altP.name} className="w-10 h-10" />
                   <div className="min-w-0 flex-1 pr-3">
-                    <div className="text-[13px] font-bold text-fg group-hover:text-indigo-600 transition-colors leading-snug truncate">{altP.name}</div>
+                    <div className="text-[13px] font-bold text-fg group-hover:text-accent-dark transition-colors leading-snug truncate">{altP.name}</div>
                     <div className="text-[11px] text-muted mt-0.5 truncate">
                       {altP.brand} · {formatPrice(altP.price)} · Match {altM.score}%
                     </div>

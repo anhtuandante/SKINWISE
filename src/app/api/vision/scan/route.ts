@@ -4,10 +4,11 @@ import { z } from "zod";
 import { checkConflicts } from "@/lib/conflict-checker";
 import { Product } from "@/types";
 import ingredientsData from "@/data/ingredients.json";
+import { supabase } from "@/lib/supabase";
 
 export const maxDuration = 60;
 
-const KNOWN_INGREDIENT_IDS = ingredientsData.ingredients.map((i) => i.id);
+const LOCAL_KNOWN_INGREDIENT_IDS = ingredientsData.ingredients.map((i) => i.id);
 
 export async function POST(req: Request) {
   try {
@@ -27,6 +28,17 @@ export async function POST(req: Request) {
         status: 400,
         headers: { "Content-Type": "application/json" },
       });
+    }
+
+    // Load active ingredient IDs dynamically from Supabase
+    let knownIngredientIds = LOCAL_KNOWN_INGREDIENT_IDS;
+    try {
+      const { data, error } = await supabase.from("ingredients").select("id");
+      if (!error && data && data.length > 0) {
+        knownIngredientIds = data.map((i) => i.id);
+      }
+    } catch (e) {
+      console.warn("Failed to load known ingredient IDs from Supabase for vision scan, using local fallback:", e);
     }
 
     // Call Gemini to analyze the product label/ingredients image
@@ -60,7 +72,7 @@ export async function POST(req: Request) {
       Nhiệm vụ của bạn là đọc bảng thành phần từ hình ảnh nhãn sản phẩm được cung cấp (OCR), phân loại sản phẩm, và ánh xạ các hoạt chất chính sang danh sách ID thành phần được hệ thống hỗ trợ dưới đây.
       
       DANH SÁCH ID THÀNH PHẦN HỆ THỐNG HỖ TRỢ (KNOWN_INGREDIENT_IDS):
-      ${JSON.stringify(KNOWN_INGREDIENT_IDS)}
+      ${JSON.stringify(knownIngredientIds)}
       
       HÃY CHỈ ÁNH XẠ đúng các ID có trong danh sách trên vào mảng mappedIngredientIds.
       Ví dụ: Nếu thấy "Salicylic Acid" hoặc "BHA", ánh xạ thành "bha". Nếu thấy "Niacinamide", ánh xạ thành "niacinamide".

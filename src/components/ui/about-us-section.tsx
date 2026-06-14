@@ -21,7 +21,7 @@ import {
   TrendingUp,
 } from "lucide-react"
 import { motion, useScroll, useTransform, useInView, useSpring, type Variants } from "framer-motion"
-
+import Image from "next/image"
 export default function AboutUsSection() {
   const router = useRouter()
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -63,7 +63,7 @@ export default function AboutUsSection() {
   const services = [
     {
       icon: <ScanFace className="w-6 h-6" />,
-      secondaryIcon: <Sparkles className="w-4 h-4 absolute -top-1 -right-1 text-violet-400" />,
+      secondaryIcon: <Sparkles className="w-4 h-4 absolute -top-1 -right-1 text-accent" />,
       title: "Trí tuệ nhân tạo (AI)",
       description:
         "Ứng dụng AI tiên tiến để phân tích tình trạng da, đưa ra nhận định cá nhân hóa với độ chính xác cao.",
@@ -71,7 +71,7 @@ export default function AboutUsSection() {
     },
     {
       icon: <BookOpen className="w-6 h-6" />,
-      secondaryIcon: <CheckCircle className="w-4 h-4 absolute -top-1 -right-1 text-violet-400" />,
+      secondaryIcon: <CheckCircle className="w-4 h-4 absolute -top-1 -right-1 text-accent" />,
       title: "Khoa học & Thực chứng",
       description:
         "Mọi công thức và gợi ý đều dựa trên dữ liệu thành phần chuẩn xác, được xác minh từ các chuyên gia da liễu.",
@@ -79,7 +79,7 @@ export default function AboutUsSection() {
     },
     {
       icon: <Search className="w-6 h-6" />,
-      secondaryIcon: <Star className="w-4 h-4 absolute -top-1 -right-1 text-violet-400" />,
+      secondaryIcon: <Star className="w-4 h-4 absolute -top-1 -right-1 text-accent" />,
       title: "Phân tích bảng thành phần",
       description:
         "Phát hiện các tương kỵ (conflicts) giữa các hoạt chất, giúp bạn sử dụng mỹ phẩm an toàn và hiệu quả nhất.",
@@ -87,7 +87,7 @@ export default function AboutUsSection() {
     },
     {
       icon: <Sparkles className="w-6 h-6" />,
-      secondaryIcon: <Sparkles className="w-4 h-4 absolute -top-1 -right-1 text-violet-400" />,
+      secondaryIcon: <Sparkles className="w-4 h-4 absolute -top-1 -right-1 text-accent" />,
       title: "Gợi ý cá nhân hóa",
       description:
         "Xây dựng chu trình dưỡng da (routine) độc bản phù hợp với loại da, vấn đề da và tài chính của riêng bạn.",
@@ -95,7 +95,7 @@ export default function AboutUsSection() {
     },
     {
       icon: <ShieldCheck className="w-6 h-6" />,
-      secondaryIcon: <CheckCircle className="w-4 h-4 absolute -top-1 -right-1 text-violet-400" />,
+      secondaryIcon: <CheckCircle className="w-4 h-4 absolute -top-1 -right-1 text-accent" />,
       title: "Bảo mật & An toàn",
       description:
         "Dữ liệu hình ảnh sinh trắc học của bạn chỉ được xử lý tạm thời và hoàn toàn không lưu trữ trên máy chủ.",
@@ -103,7 +103,7 @@ export default function AboutUsSection() {
     },
     {
       icon: <HeartHandshake className="w-6 h-6" />,
-      secondaryIcon: <Star className="w-4 h-4 absolute -top-1 -right-1 text-violet-400" />,
+      secondaryIcon: <Star className="w-4 h-4 absolute -top-1 -right-1 text-accent" />,
       title: "Đồng hành thấu hiểu",
       description:
         "SkinWise không chỉ là công cụ, mà là người bạn đồng hành theo sát sự tiến bộ của làn da bạn mỗi ngày.",
@@ -126,15 +126,15 @@ export default function AboutUsSection() {
     >
       {/* Decorative background elements */}
       <motion.div
-        className="absolute top-20 left-10 w-64 h-64 rounded-full bg-violet-500/5 blur-3xl"
+        className="absolute top-20 left-10 w-64 h-64 rounded-full bg-accent/5 blur-3xl"
         style={{ y: y1, rotate: rotate1 }}
       />
       <motion.div
-        className="absolute bottom-20 right-10 w-80 h-80 rounded-full bg-indigo-500/5 blur-3xl"
+        className="absolute bottom-20 right-10 w-80 h-80 rounded-full bg-accent-light/10 blur-3xl"
         style={{ y: y2, rotate: rotate2 }}
       />
       <motion.div
-        className="absolute top-1/2 left-1/4 w-4 h-4 rounded-full bg-violet-400/30"
+        className="absolute top-1/2 left-1/4 w-4 h-4 rounded-full bg-accent/20"
         animate={{
           y: [0, -15, 0],
           opacity: [0.5, 1, 0.5],
@@ -146,7 +146,7 @@ export default function AboutUsSection() {
         }}
       />
       <motion.div
-        className="absolute bottom-1/3 right-1/4 w-6 h-6 rounded-full bg-indigo-400/30"
+        className="absolute bottom-1/3 right-1/4 w-6 h-6 rounded-full bg-accent-light/30"
         animate={{
           y: [0, 20, 0],
           opacity: [0.5, 1, 0.5],
@@ -167,7 +167,7 @@ export default function AboutUsSection() {
       >
         <motion.div className="flex flex-col items-center mb-6" variants={itemVariants}>
           <motion.span
-            className="text-violet-600 font-medium mb-2 flex items-center gap-2 tracking-widest text-sm"
+            className="text-accent-dark font-medium mb-2 flex items-center gap-2 tracking-widest text-sm"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -177,7 +177,7 @@ export default function AboutUsSection() {
           </motion.span>
           <h2 className="text-4xl md:text-5xl font-semibold mb-4 text-center">Về SkinWise</h2>
           <motion.div
-            className="w-24 h-1 bg-violet-300"
+            className="w-24 h-1 bg-accent-light"
             initial={{ width: 0 }}
             animate={{ width: 96 }}
             transition={{ duration: 1, delay: 0.5 }}
@@ -219,9 +219,11 @@ export default function AboutUsSection() {
                 transition={{ duration: 0.8, delay: 0.3 }}
                 whileHover={{ scale: 1.03, transition: { duration: 0.3 } }}
               >
-                <img
+                <Image
                   src="https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=3000&auto=format&fit=crop"
                   alt="Healthy Skin Beauty"
+                  width={280}
+                  height={350}
                   className="w-full aspect-[4/5] object-cover"
                 />
                 <motion.div
@@ -241,7 +243,7 @@ export default function AboutUsSection() {
                 </motion.div>
               </motion.div>
               <motion.div
-                className="absolute inset-0 border-[3px] border-violet-200/50 rounded-3xl -m-4 z-[-1]"
+                className="absolute inset-0 border-[3px] border-accent-light/50 rounded-3xl -m-4 z-[-1]"
                 initial={{ opacity: 0, scale: 1.1 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
@@ -249,14 +251,14 @@ export default function AboutUsSection() {
 
               {/* Floating accent elements */}
               <motion.div
-                className="absolute -top-6 -right-6 w-20 h-20 rounded-full bg-violet-100/80 backdrop-blur-3xl z-[-2]"
+                className="absolute -top-6 -right-6 w-20 h-20 rounded-full bg-accent-light/40 backdrop-blur-3xl z-[-2]"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.9 }}
                 style={{ y: y1 }}
               ></motion.div>
               <motion.div
-                className="absolute -bottom-8 -left-8 w-24 h-24 rounded-full bg-indigo-100/60 backdrop-blur-3xl z-[-2]"
+                className="absolute -bottom-8 -left-8 w-24 h-24 rounded-full bg-accent/5 backdrop-blur-3xl z-[-2]"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 1.1 }}
@@ -265,7 +267,7 @@ export default function AboutUsSection() {
 
               {/* Additional decorative elements */}
               <motion.div
-                className="absolute -top-12 left-1/2 -translate-x-1/2 w-4 h-4 flex items-center justify-center text-violet-400"
+                className="absolute -top-12 left-1/2 -translate-x-1/2 w-4 h-4 flex items-center justify-center text-accent"
                 animate={{
                   y: [0, -10, 0],
                   opacity: [0.5, 1, 0.5],
@@ -326,8 +328,8 @@ export default function AboutUsSection() {
           transition={{ duration: 0.8, delay: 0.5 }}
         >
           {/* Abstract background shapes */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-violet-500/10 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2"></div>
+          <div className="absolute top-0 right-0 w-64 h-64 bg-accent/10 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent-light/15 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2"></div>
           
           <div className="flex-1 relative z-10 text-center md:text-left">
             <h3 className="text-3xl font-semibold mb-3">Sẵn sàng nâng tầm làn da bạn?</h3>
@@ -372,13 +374,13 @@ function ServiceItem({ icon, secondaryIcon, title, description, variants, delay,
         transition={{ duration: 0.6, delay: delay + 0.2 }}
       >
         <motion.div
-          className="text-violet-600 bg-violet-50 p-3.5 rounded-2xl transition-all duration-300 group-hover:bg-violet-100 group-hover:scale-110 group-hover:shadow-sm relative"
+          className="text-accent-dark bg-accent-light/20 p-3.5 rounded-2xl transition-all duration-300 group-hover:bg-accent-light/40 group-hover:scale-110 group-hover:shadow-sm relative"
           whileHover={{ rotate: [0, -10, 10, -5, 0], transition: { duration: 0.5 } }}
         >
           {icon}
           {secondaryIcon}
         </motion.div>
-        <h3 className="text-xl font-semibold text-[#1A1A1A] group-hover:text-violet-700 transition-colors duration-300">
+        <h3 className="text-xl font-semibold text-fg group-hover:text-accent-dark transition-colors duration-300">
           {title}
         </h3>
       </motion.div>
@@ -426,7 +428,7 @@ function StatCounter({ icon, value, label, suffix, delay }: StatCounterProps) {
 
   return (
     <motion.div
-      className="bg-white border border-black/5 p-8 rounded-3xl flex flex-col items-center text-center group hover:shadow-xl hover:shadow-violet-500/5 transition-all duration-300"
+      className="bg-white border border-black/5 p-8 rounded-3xl flex flex-col items-center text-center group hover:shadow-xl hover:shadow-accent/5 transition-all duration-300"
       variants={{
         hidden: { opacity: 0, y: 20 },
         visible: {
@@ -438,7 +440,7 @@ function StatCounter({ icon, value, label, suffix, delay }: StatCounterProps) {
       whileHover={{ y: -8, transition: { duration: 0.3 } }}
     >
       <motion.div
-        className="w-16 h-16 rounded-2xl bg-violet-50 flex items-center justify-center mb-5 text-violet-600 group-hover:bg-violet-600 group-hover:text-white transition-colors duration-300"
+        className="w-16 h-16 rounded-2xl bg-accent-light/20 flex items-center justify-center mb-5 text-accent-dark group-hover:bg-accent-dark group-hover:text-white transition-colors duration-300"
         whileHover={{ rotate: 360, transition: { duration: 0.8 } }}
       >
         {icon}
@@ -448,7 +450,7 @@ function StatCounter({ icon, value, label, suffix, delay }: StatCounterProps) {
         <span>{suffix}</span>
       </motion.div>
       <p className="text-[#1A1A1A]/60 font-medium mt-2">{label}</p>
-      <motion.div className="w-12 h-1 bg-violet-200 rounded-full mt-4 group-hover:w-20 group-hover:bg-violet-500 transition-all duration-300" />
+      <motion.div className="w-12 h-1 bg-accent-light rounded-full mt-4 group-hover:w-20 group-hover:bg-accent transition-all duration-300" />
     </motion.div>
   )
 }

@@ -1,29 +1,34 @@
-# 🌟 SkinWise Project Overview
+# 🌟 Tài liệu Dự án SkinWise
 
-SkinWise là ứng dụng cá nhân hóa quy trình chăm sóc da dựa trên trí tuệ nhân tạo (AI-driven) và cơ sở dữ liệu mỹ phẩm chuyên sâu.
-
-## 🏗️ Kiến trúc Hệ thống
-
-- **Frontend**: Next.js 14, Tailwind CSS, Framer Motion.
-- **Backend/Database**: Supabase (PostgreSQL) với RLS (Row Level Security).
-- **State Management**: Zustand.
-- **Design System**: Hệ thống thiết kế tối giản, tập trung vào trải nghiệm người dùng (UX) và tính chuyên nghiệp.
-
-## 📁 Cấu trúc Thư mục Documentation
-
-Toàn bộ tài liệu dự án được tổ chức mới tại đây:
-
-- [docs/architecture/](docs/architecture/): Chi tiết về cấu trúc dữ liệu, sơ đồ hệ thống và các quyết định kỹ thuật.
-- [docs/guides/](docs/guides/): Hướng dẫn cho developer mới, quy trình triển khai (Vercel) và quản lý nội dung.
-- [docs/api/](docs/api/): Tài liệu về cách tương tác với Supabase và các service nội bộ.
-
-## 🚀 Tính năng Chính
-
-1. **Skin Quiz**: Thu thập thông tin da và ngân sách người dùng.
-2. **AI Recommendation**: Gợi ý sản phẩm phù hợp từ Database Supabase.
-3. **Conflict Checker**: Kiểm tra xung đột giữa các thành phần (vd: Retinol vs AHA).
-4. **Routine Builder**: Giúp người dùng xây dựng quy trình sáng/tối tối ưu.
-5. **Advanced Search**: Tìm kiếm sản phẩm thông minh với Expanding Search Dock.
+Chào mừng bạn đến với thư mục tài liệu kỹ thuật của **SkinWise** - ứng dụng cá nhân hóa quy trình chăm sóc da dựa trên trí tuệ nhân tạo (AI-driven) và cơ sở dữ liệu mỹ phẩm chuyên sâu dành riêng cho phụ nữ Việt Nam.
 
 ---
-*Cập nhật lần cuối: 01/04/2026*
+
+## 📁 Sơ đồ Thư mục Tài liệu (Documentation Map)
+
+Để dễ dàng nắm bắt toàn bộ dự án, tài liệu được phân tách thành các danh mục sau:
+
+### 1. 🏗️ Kiến trúc & Hệ thống (Architecture)
+*   [**Kiến trúc Hệ thống & Thuật toán Cốt lõi (System Overview)**](file:///e:/SKINWISE/skinwise-app/docs/architecture/system-overview.md): Chi tiết về luồng dữ liệu, thuật toán tính điểm Match Score, bộ tối ưu ngân sách (Knapsack Solver), bộ quét xung đột hoạt chất và kết cấu, cùng cơ chế tích hợp Gemini AI.
+*   [**Database & Data Flow**](file:///e:/SKINWISE/skinwise-app/docs/architecture/database-and-data-flow.md): Sơ đồ các bảng trong cơ sở dữ liệu Supabase, các chính sách Row Level Security (RLS) và cách thức dữ liệu di chuyển từ Client lên DB.
+*   [**Báo cáo Đánh giá Kỹ thuật (Technical Audit Report)**](file:///e:/SKINWISE/skinwise-app/docs/architecture/audit-report.md): Đánh giá gắt gao chất lượng phần mềm, bảo mật, thuật toán và các khoản nợ kỹ thuật (Tech Debt) hiện có.
+
+### 2. 🔌 Giao tiếp Hệ thống (APIs)
+*   [**Tài liệu chi tiết API Endpoints**](file:///e:/SKINWISE/skinwise-app/docs/api/endpoints.md): Hướng dẫn cấu trúc payload request/response cho Chat (Streaming), Scoring (Tính điểm AI), Skin Analyze (Quét da mặt) và Product Scan (Quét bảng thành phần nhãn chai).
+
+### 3. 🚀 Hướng dẫn Vận hành & Phát triển (Guides)
+*   [**Deployment & Dev Guide**](file:///e:/SKINWISE/skinwise-app/docs/guides/deployment-and-dev-guide.md): Cài đặt môi trường local, các lệnh dev thường dùng, quy trình đóng gói và deploy lên Vercel, cùng quy trình đồng bộ hóa cơ sở dữ liệu từ file JSON tĩnh lên Supabase.
+
+---
+
+## 🛠️ Công nghệ Sử dụng (Tech Stack)
+
+*   **Framework**: Next.js 14 (App Router) + TypeScript
+*   **Database**: Supabase (PostgreSQL)
+*   **State Management**: Zustand (Persisted)
+*   **Styling & UI**: Tailwind CSS + Framer Motion (Luxury Beauty design system)
+*   **AI Engine**: Google Gemini 2.5 Flash / 1.5 Flash (SDK & Vercel AI SDK)
+*   **Font chữ**: Be Vietnam Pro (Tối ưu hóa tiếng Việt)
+
+---
+*Cập nhật lần cuối: Tháng 6 năm 2026*

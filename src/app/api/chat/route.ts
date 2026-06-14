@@ -1,6 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { SYSTEM_PROMPT } from "@/lib/ai/prompts";
 import conflicts from "@/data/conflicts.json";
+import { supabase } from "@/lib/supabase";
 
 export const maxDuration = 60;
 
@@ -31,7 +32,31 @@ export async function POST(req: Request) {
       throw new Error("AI_LoadAPIKeyError: Missing GOOGLE_GENERATIVE_AI_API_KEY");
     }
 
-    const conflictRules = JSON.stringify(conflicts);
+    let conflictRulesData = conflicts;
+    try {
+      const { data, error } = await supabase.from("rules").select("*");
+      if (!error && data && data.length > 0) {
+        conflictRulesData = {
+          ...conflicts,
+          ingredientConflicts: data.filter((r) => r.rule_type === "ingredient").map((r) => ({
+            pair: [r.item_a, r.item_b],
+            severity: r.severity,
+            reason: r.reason,
+            solution: r.solution
+          })),
+          textureConflicts: data.filter((r) => r.rule_type === "texture").map((r) => ({
+            pair: [r.item_a, r.item_b],
+            pillingRisk: r.severity,
+            reason: r.reason,
+            solution: r.solution
+          }))
+        };
+      }
+    } catch (e) {
+      console.warn("Failed to load rules from Supabase for AI advisor, using local fallback:", e);
+    }
+
+    const conflictRules = JSON.stringify(conflictRulesData);
     const systemInstruction = `${SYSTEM_PROMPT}
 
     DỮ LIỆU THỰC TẾ (FACT-CHECK RULES):

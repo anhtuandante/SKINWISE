@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { trackEvent } from "@/lib/tracking"
 import {
   DndContext,
   closestCenter,
@@ -22,6 +23,9 @@ import { CSS } from "@dnd-kit/utilities"
 import { Product } from "@/types"
 import { useRoutineStore } from "@/store/routine-store"
 import { useToastStore } from "@/store/toast-store"
+import { useSkinStore } from "@/store/useSkinStore"
+import { Check } from "lucide-react"
+import { useMemo } from "react"
 import { checkConflicts, getMissingCategories } from "@/lib/conflict-checker"
 import { formatPrice, calculateTotal } from "@/lib/quiz-logic"
 import { CATEGORY_LABELS } from "@/lib/constants"
@@ -68,6 +72,15 @@ function RoutineList({
     if (over && active.id !== over.id) {
       const oldIndex = products.findIndex((p) => p.id === active.id)
       const newIndex = products.findIndex((p) => p.id === over.id)
+      
+      const product = products[oldIndex];
+      trackEvent("routine_reorder", {
+        productId: product?.id,
+        name: product?.name,
+        oldIndex,
+        newIndex
+      });
+
       onReorder(arrayMove(products, oldIndex, newIndex))
     }
   }
@@ -99,11 +112,52 @@ export default function RoutineBuilder() {
   const [tab, setTab] = useState<"AM" | "PM">("AM")
   const store = useRoutineStore()
   const addToast = useToastStore((s) => s.addToast)
+  const { diaryLogs, toggleRoutineCompleted } = useSkinStore()
+
+  const todayStr = useMemo(() => {
+    const d = new Date()
+    return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`
+  }, [])
+
+  const todayLog = useMemo(() => {
+    return diaryLogs.find((log) => log.date === todayStr)
+  }, [diaryLogs, todayStr])
+
+  const isCompleted = tab === "AM" ? !!todayLog?.amRoutineCompleted : !!todayLog?.pmRoutineCompleted
 
   const activeList = tab === "AM" ? store.morningRoutine : store.eveningRoutine
   const total = calculateTotal(activeList)
   const warnings = checkConflicts(activeList)
   const missing = getMissingCategories(activeList)
+
+  const trackedConflictsRef = useRef<Set<string>>(new Set());
+
+  useEffect(() => {
+    const activeKeys = new Set<string>();
+    warnings.forEach((w) => {
+      const itemA = w.items[0] || "unknown";
+      const itemB = w.items[1] || "unknown";
+      const key = `${tab}-${itemA}-${itemB}-${w.type}`;
+      activeKeys.add(key);
+      if (!trackedConflictsRef.current.has(key)) {
+        trackEvent("conflict_detected", {
+          tab,
+          type: w.type,
+          itemA,
+          itemB,
+          severity: w.severity,
+          reason: w.reason
+        });
+        trackedConflictsRef.current.add(key);
+      }
+    });
+
+    for (const key of Array.from(trackedConflictsRef.current)) {
+      if (!activeKeys.has(key)) {
+        trackedConflictsRef.current.delete(key);
+      }
+    }
+  }, [warnings, tab]);
 
   const [showAddCustomModal, setShowAddCustomModal] = useState(false);
   const [customName, setCustomName] = useState("");
@@ -198,6 +252,38 @@ export default function RoutineBuilder() {
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.2 }}
         >
+          {activeList.length > 0 && (
+            <div className="mb-4 flex items-center justify-between p-3.5 border border-line rounded-xl bg-surface/30">
+              <span className="text-caption text-muted font-medium">
+                {isCompleted 
+                  ? `Bạn đã thoa chu trình ${tab === "AM" ? "Sáng 🌅" : "Tối 🌙"} hôm nay!` 
+                  : `Bạn đã thoa xong chu trình ${tab === "AM" ? "Sáng 🌅" : "Tối 🌙"} chưa?`}
+              </span>
+              <button
+                onClick={() => {
+                  toggleRoutineCompleted(todayStr, tab);
+                  const completed = !isCompleted;
+                  addToast(completed ? `Đã xong chu trình ${tab === "AM" ? "sáng" : "tối"}! ✨` : `Đã hủy chu trình ${tab === "AM" ? "sáng" : "tối"}.`, "success");
+                  trackEvent("routine_completed_toggle", { period: tab, completed });
+                }}
+                className={`px-3 py-1.5 rounded-lg text-caption font-bold transition-all flex items-center gap-1.5 select-none ${
+                  isCompleted 
+                    ? "bg-success/15 text-success hover:bg-success/20 border border-success/20" 
+                    : "bg-fg text-bg hover:opacity-90"
+                }`}
+              >
+                {isCompleted ? (
+                  <>
+                    <Check size={12} className="stroke-[3px]" />
+                    Đã xong
+                  </>
+                ) : (
+                  "Đánh dấu xong"
+                )}
+              </button>
+            </div>
+          )}
+
           {activeList.length === 0 ? (
             <div className="py-8 text-center">
               <div className="text-[2rem] mb-2">{tab === "AM" ? "🌅" : "🌙"}</div>
