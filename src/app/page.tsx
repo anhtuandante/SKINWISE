@@ -46,8 +46,9 @@ export default function HomePage() {
       {/* Nav */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-bg/90 backdrop-blur-sm border-b border-line">
         <div className="max-w-screen-lg mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="text-body font-semibold tracking-tight">
-            SkinWise
+          <Link href="/" className="flex items-center gap-2">
+            <img src="/logo.png" alt="SkinWise Logo" className="h-7 w-auto object-contain" />
+            <span className="text-body font-semibold tracking-tight">SkinWise</span>
           </Link>
           <div className="flex items-center gap-4">
             <Link href="/ingredients" className="text-caption text-muted hover:text-fg transition-colors">

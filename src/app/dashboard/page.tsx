@@ -170,7 +170,7 @@ export default function DashboardPage() {
       <header className="sticky top-0 z-40 bg-bg/85 backdrop-blur-xl border-b border-line">
         <div className="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="w-8 h-8 rounded-xl bg-fg text-bg flex items-center justify-center font-bold text-body">SW</span>
+            <img src="/logo.png" alt="SkinWise Logo" className="w-8 h-8 rounded-xl object-contain bg-white border border-line" />
             <span className="text-title font-light tracking-tight">Skin<span className="font-semibold text-accent-dark">Wise</span> Workspace</span>
           </div>
           <div className="flex items-center gap-4">

@@ -344,9 +344,7 @@ export default function TrackingDashboard() {
       <header className="sticky top-0 z-40 bg-[#FDFCFB]/95 backdrop-blur-md border-b border-[#EADFD2] shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-[#C4A882] flex items-center justify-center font-bold text-[#FDFCFB]">
-              SW
-            </div>
+            <img src="/logo.png" alt="SkinWise Logo" className="w-9 h-9 rounded-xl object-contain bg-white border border-line" />
             <div>
               <h1 className="text-body font-bold tracking-tight">SkinWise Analytics</h1>
               <p className="text-[10px] uppercase font-bold tracking-wider text-muted opacity-80 flex items-center gap-1.5 mt-0.5">

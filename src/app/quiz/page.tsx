@@ -99,7 +99,10 @@ export default function QuizPage() {
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-10 bg-bg/90 backdrop-blur-sm border-b border-line">
         <div className="max-w-md mx-auto px-6 h-14 flex items-center justify-between">
-          <span className="text-body font-semibold">SkinWise AI Quiz</span>
+          <div className="flex items-center gap-2">
+            <img src="/logo.png" alt="SkinWise Logo" className="h-6 w-auto object-contain" />
+            <span className="text-body font-semibold">SkinWise AI Quiz</span>
+          </div>
           <span className="text-caption font-medium text-muted">Bước {step}/6</span>
         </div>
         {/* Animated progress bar */}
