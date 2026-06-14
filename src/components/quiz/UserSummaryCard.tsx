@@ -5,7 +5,7 @@ import { useUserStore } from "@/store/user-store"
 import { SKIN_LABELS, CONCERN_LABELS, BUDGET_LABELS } from "@/lib/constants"
 
 export default function UserSummaryCard() {
-  const { skinType, concerns, budget, allergies } = useUserStore()
+  const { skinType, concerns, budget, totalBudget, allergies } = useUserStore()
 
   return (
     <div className="border border-line rounded-xl divide-y divide-line bg-white">
@@ -22,7 +22,9 @@ export default function UserSummaryCard() {
         </div>
         <div>
           <div className="text-caption text-muted">Ngân sách</div>
-          <div className="text-body font-medium mt-0.5">{BUDGET_LABELS[budget] || "-"}</div>
+          <div className="text-body font-medium mt-0.5">
+            {totalBudget ? `${totalBudget.toLocaleString()}đ` : (BUDGET_LABELS[budget] || "-")}
+          </div>
         </div>
       </div>
       <div className="px-5 py-3.5">

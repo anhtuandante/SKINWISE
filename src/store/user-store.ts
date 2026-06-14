@@ -67,7 +67,15 @@ export const useUserStore = create<UserStore>()(
             : [...state.concerns, concern],
         })),
       setBudget: (budget) => set({ budget }),
-      setTotalBudget: (totalBudget) => set({ totalBudget }),
+      setTotalBudget: (totalBudget) => {
+        let budget = "mid-range";
+        if (totalBudget <= 200000) budget = "budget";
+        else if (totalBudget <= 400000) budget = "affordable";
+        else if (totalBudget <= 1000000) budget = "mid-range";
+        else if (totalBudget <= 3000000) budget = "premium";
+        else budget = "luxury";
+        set({ totalBudget, budget });
+      },
       setAllergies: (allergies) => set({ allergies }),
       setQuizCompleted: (completed) => set({ quizCompleted: completed }),
       setBarrier: (barrier) => set({ barrier }),

@@ -47,7 +47,7 @@ export default function SkinProfileCard({
             </span>
           ))}
           <span className="px-3 py-1 bg-white/10 rounded-full text-caption border border-white/5 text-slate-200">
-            {BUDGET_LABELS[user.budget]}
+            Ví: {user.totalBudget ? `${user.totalBudget.toLocaleString()}đ` : BUDGET_LABELS[user.budget]}
           </span>
         </div>
       </div>

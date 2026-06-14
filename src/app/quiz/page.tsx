@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useUserStore } from "@/store/user-store"
 import { useToastStore } from "@/store/toast-store"
 import { 
-  SKIN_TYPES, CONCERNS, BUDGETS,
+  SKIN_TYPES, CONCERNS,
   AGES, BARRIER_STATUS
 } from "@/lib/constants"
 import Button from "@/components/ui/Button"
@@ -62,7 +62,7 @@ export default function QuizPage() {
       case 2: return !!store.skinType;
       case 3: return store.concerns.length > 0;
       case 4: return !!store.barrierStatus;
-      case 5: return !!store.budget;
+      case 5: return !!store.totalBudget && store.totalBudget > 0;
       case 6: return true; // Optional step
       default: return true;
     }
@@ -213,19 +213,73 @@ export default function QuizPage() {
                 />
               ))}
 
-              {/* Step 5: Budget */}
-              {step === 5 && BUDGETS.map((item) => (
-                <OptionButton
-                  key={item.id}
-                  title={item.label}
-                  desc={item.desc}
-                  isActive={store.budget === item.id}
-                  onClick={() => {
-                    trackEvent("quiz_answer", { step: 5, type: "budget", value: item.id });
-                    store.setBudget(item.id);
-                  }}
-                />
-              ))}
+              {/* Step 5: Budget (SkinWallet Input) */}
+              {step === 5 && (
+                <div className="space-y-6 w-full bg-white border border-line rounded-[24px] p-6 shadow-soft animate-in">
+                  <div className="text-center space-y-1">
+                    <span className="text-2xl block">💳</span>
+                    <span className="text-caption font-bold text-fg block">Số tiền bạn muốn chi cho cả chu trình da</span>
+                    <p className="text-[11px] text-muted">Nhập số tiền tối đa bạn sẵn sàng chi tiêu. Thuật toán AI sẽ tự động phân bổ và tối ưu hóa các sản phẩm để không vượt quá ngân sách này.</p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="relative">
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        placeholder="Ví dụ: 1.500.000"
+                        value={store.totalBudget ? store.totalBudget.toLocaleString("vi-VN") : ""}
+                        onChange={(e) => {
+                          const val = e.target.value.replace(/\D/g, "");
+                          const num = parseInt(val) || 0;
+                          store.setTotalBudget(num);
+                          trackEvent("quiz_answer", { step: 5, type: "totalBudget", value: num });
+                        }}
+                        className="w-full bg-surface border-2 border-line hover:border-fg/40 focus:border-fg rounded-2xl px-5 py-4 text-headline font-extrabold text-center text-fg outline-none transition-all pr-12"
+                      />
+                      <span className="absolute right-5 top-1/2 -translate-y-1/2 text-body font-bold text-muted">đ</span>
+                    </div>
+                  </div>
+
+                  {/* Preset Pills */}
+                  <div className="space-y-2">
+                    <span className="text-[10px] font-bold text-muted uppercase tracking-wider block text-center">Gợi ý nhanh</span>
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      {[300000, 500000, 1000000, 1500000, 2500000, 4000000].map((preset) => (
+                        <button
+                          key={preset}
+                          type="button"
+                          onClick={() => {
+                            store.setTotalBudget(preset);
+                            trackEvent("quiz_answer", { step: 5, type: "totalBudget_preset", value: preset });
+                          }}
+                          className={`px-3.5 py-2 rounded-xl text-caption font-bold border transition-all active:scale-95 select-none ${
+                            store.totalBudget === preset
+                              ? "bg-fg text-bg border-fg"
+                              : "bg-bg text-fg border-line hover:border-fg/40"
+                          }`}
+                        >
+                          {preset >= 1000000 ? `${(preset / 1000000).toFixed(1).replace(".0", "")} triệu` : `${preset / 1000}k`}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Dynamic allocation preview */}
+                  {(store.totalBudget || 0) > 0 && (
+                    <div className="p-4 bg-emerald-500/[0.02] border border-emerald-500/10 rounded-2xl space-y-2 text-left">
+                      <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider block text-center">Dự kiến phân bổ từ AI</span>
+                      <div className="grid grid-cols-2 gap-2.5 text-micro text-muted">
+                        <div>🧼 Làm sạch (15%): <span className="font-bold text-fg block">{Math.round((store.totalBudget || 0) * 0.15).toLocaleString()}đ</span></div>
+                        <div>💦 Dưỡng ẩm (25%): <span className="font-bold text-fg block">{Math.round((store.totalBudget || 0) * 0.25).toLocaleString()}đ</span></div>
+                        <div>🧪 Đặc trị (40%): <span className="font-bold text-fg block">{Math.round((store.totalBudget || 0) * 0.40).toLocaleString()}đ</span></div>
+                        <div>☀️ Chống nắng (20%): <span className="font-bold text-fg block">{Math.round((store.totalBudget || 0) * 0.20).toLocaleString()}đ</span></div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Step 6: Menstrual Cycle (Optional) */}
               {step === 6 && (

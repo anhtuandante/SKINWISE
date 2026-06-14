@@ -272,7 +272,7 @@ export default function ResultsPage() {
                 Vấn đề: {user.concerns.map(c => c === 'acne' ? 'Mụn' : c === 'pores' ? 'Lỗ chân lông' : c === 'dark-spots' ? 'Thâm nám' : c === 'aging' ? 'Lão hóa' : c === 'dullness' ? 'Xỉn màu' : c === 'dryness' ? 'Thiếu ẩm' : c).join(', ')}
               </span>
               <span className="text-[10px] font-bold bg-fg/5 text-fg px-3 py-1.5 rounded-full uppercase tracking-wider">
-                Ngân sách: {user.budget === 'budget' ? 'Dưới 200k' : user.budget === 'affordable' ? '200k-400k' : user.budget === 'mid-range' ? '400k-1tr' : 'Cao cấp'}
+                Ngân sách: {user.totalBudget ? `${user.totalBudget.toLocaleString()}đ` : (user.budget === 'budget' ? 'Dưới 200k' : user.budget === 'affordable' ? '200k-400k' : user.budget === 'mid-range' ? '400k-1tr' : 'Cao cấp')}
               </span>
               {barrierIsWeak && (
                 <span className="text-[10px] font-bold bg-red-500/10 text-red-500 px-3 py-1.5 rounded-full uppercase tracking-wider border border-red-500/10 flex items-center gap-1">

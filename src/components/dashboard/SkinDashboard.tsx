@@ -8,12 +8,13 @@ import { SkinPredictorNetwork } from "@/utils/skinPredictor";
 import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Wallet, Sparkles, Camera, Settings, Check, ChevronDown, ChevronUp, Droplets, Sun, Moon, ShieldAlert, Info, Calendar, Sparkle, Brain, Download, Upload, Trash2, Salad, Clock, BookOpen, ArrowRight, Ban, X, Heart } from "lucide-react";
+import { Wallet, Sparkles, Camera, Settings, Check, ChevronDown, ChevronUp, Droplets, Sun, Moon, ShieldAlert, Info, Calendar, Sparkle, Brain, Download, Upload, Trash2, Salad, Clock, BookOpen, ArrowRight, Ban, X, Heart, ShoppingBag, ExternalLink } from "lucide-react";
 import { getCyclePhase } from "@/utils/cyclePredictor";
 import { useToastStore } from "@/store/toast-store";
 import { trackEvent } from "@/lib/tracking";
 import { CATEGORY_LABELS } from "@/lib/constants";
 import { calculateSkinWalletAllocation, calculateSmartSpendScore } from "@/lib/recommendation-engine";
+import { Product } from "@/types";
 import TrendVisualizer from "./TrendVisualizer";
 import VisionLab from "@/components/quiz/VisionLab";
 import SkinCheckinFlow from "./SkinCheckinFlow";
@@ -43,13 +44,15 @@ interface SkinDashboardProps {
   selectedCity: string;
   setSelectedCity: (city: string) => void;
   citiesWeather: Record<string, CityWeather>;
+  recommendedProducts?: Product[];
 }
 
 export default function SkinDashboard({
   onNavigate,
   selectedCity,
   setSelectedCity,
-  citiesWeather
+  citiesWeather,
+  recommendedProducts = []
 }: SkinDashboardProps) {
   const user = useUserStore();
   const routine = useRoutineStore();
@@ -487,14 +490,45 @@ export default function SkinDashboard({
   // --- SkinWallet Calculations ---
   const [walletInput, setWalletInput] = useState((user.totalBudget || 1500000).toString());
   const [isWalletExpanded, setIsWalletExpanded] = useState(false);
+  const [isEditingBudget, setIsEditingBudget] = useState(false);
+
+  useEffect(() => {
+    setWalletInput((user.totalBudget || 1500000).toString());
+  }, [user.totalBudget]);
+
+  const ownedProductIds = useMemo(() => {
+    return routine.ownedProductIds || [];
+  }, [routine.ownedProductIds]);
+
+  const uniqueProducts = useMemo(() => {
+    const all = [...routine.morningRoutine, ...routine.eveningRoutine];
+    return Array.from(new Map(all.map(p => [p.id, p])).values());
+  }, [routine.morningRoutine, routine.eveningRoutine]);
+
+
+  const toBuyProducts = useMemo(() => {
+    return uniqueProducts.filter(p => !ownedProductIds.includes(p.id));
+  }, [uniqueProducts, ownedProductIds]);
+
+  const toBuySpendTotal = useMemo(() => {
+    return toBuyProducts.reduce((sum, p) => sum + p.price, 0);
+  }, [toBuyProducts]);
+
+  const ownedProductsCost = useMemo(() => {
+    return uniqueProducts
+      .filter(p => ownedProductIds.includes(p.id))
+      .reduce((sum, p) => sum + p.price, 0);
+  }, [uniqueProducts, ownedProductIds]);
+
+  const walletBalance = useMemo(() => {
+    return (user.totalBudget || 1500000) - toBuySpendTotal;
+  }, [user.totalBudget, toBuySpendTotal]);
 
   const walletAllocation = useMemo(() => {
     return calculateSkinWalletAllocation(user.totalBudget || 1500000, user);
   }, [user]);
 
   const actualSpend = useMemo(() => {
-    const allProducts = [...routine.morningRoutine, ...routine.eveningRoutine];
-    const uniqueProducts = Array.from(new Map(allProducts.map(p => [p.id, p])).values());
     const allocation = { cleanser: 0, moisturizer: 0, treatment: 0, sunscreen: 0 };
     for (const p of uniqueProducts) {
       if (p.category === "cleanser") allocation.cleanser += p.price;
@@ -503,7 +537,127 @@ export default function SkinDashboard({
       else allocation.moisturizer += p.price;
     }
     return allocation;
-  }, [routine.morningRoutine, routine.eveningRoutine]);
+  }, [uniqueProducts]);
+
+
+  const upgradeSuggestions = useMemo(() => {
+    const suggestions = [];
+    if (walletBalance <= 100000 || recommendedProducts.length === 0) return [];
+
+    for (const p of uniqueProducts) {
+      // Find better alternatives in recommendedProducts of the same category
+      const alternatives = recommendedProducts.filter(alt => 
+        alt.category === p.category && 
+        alt.id !== p.id &&
+        alt.price > p.price && 
+        alt.price - p.price <= walletBalance
+      );
+
+      if (alternatives.length > 0) {
+        // Sort by price to find a premium alternative
+        const bestAlt = alternatives.sort((a, b) => b.price - a.price)[0];
+        if (bestAlt.price > p.price * 1.25) { // at least 25% more premium
+          suggestions.push({
+            currentProduct: p,
+            upgradeProduct: bestAlt,
+            costDiff: bestAlt.price - p.price
+          });
+        }
+      }
+    }
+    return suggestions.slice(0, 2);
+  }, [uniqueProducts, recommendedProducts, walletBalance]);
+
+  const walletSuggestions = useMemo(() => {
+    const allProducts = [...routine.morningRoutine, ...routine.eveningRoutine];
+    const hasCleanser = allProducts.some(p => p.category === "cleanser");
+    const hasMoisturizer = allProducts.some(p => p.category === "toner" || p.category === "moisturizer");
+    const hasSunscreen = allProducts.some(p => p.category === "sunscreen");
+    const hasTreatment = allProducts.some(p => p.category === "serum" || p.category === "exfoliant" || p.category === "mask");
+
+    const suggestions = [];
+
+    // 1. Crucial routine gap check
+    if (!hasSunscreen) {
+      const recommendedSunscreen = recommendedProducts.find(p => p.category === "sunscreen" && p.price <= walletBalance);
+      suggestions.push({
+        type: "danger",
+        title: "Thiếu Kem Chống Nắng ☀️",
+        desc: "Chống nắng là bước tối quan trọng bảo vệ da khỏi tia UV và ung thư da. Hãy bổ sung ngay.",
+        recommendedProduct: recommendedSunscreen || recommendedProducts.find(p => p.category === "sunscreen")
+      });
+    }
+
+    if (!hasCleanser) {
+      const recommendedCleanser = recommendedProducts.find(p => p.category === "cleanser" && p.price <= walletBalance);
+      suggestions.push({
+        type: "danger",
+        title: "Thiếu Sữa Rửa Mặt 🧼",
+        desc: "Bụi bẩn và dầu nhờn tích tụ cả ngày cần được làm sạch để tránh bít tắc gây mụn.",
+        recommendedProduct: recommendedCleanser || recommendedProducts.find(p => p.category === "cleanser")
+      });
+    }
+
+    if (!hasMoisturizer) {
+      const recommendedMoisturizer = recommendedProducts.find(p => (p.category === "moisturizer" || p.category === "toner") && p.price <= walletBalance);
+      suggestions.push({
+        type: "warning",
+        title: "Thiếu Kem Dưỡng Ẩm 💧",
+        desc: "Thiếu khóa ẩm làm tăng thất thoát nước xuyên biểu bì (TEWL), khiến da dễ khô sần hoặc tăng tiết dầu bù.",
+        recommendedProduct: recommendedMoisturizer || recommendedProducts.find(p => p.category === "moisturizer")
+      });
+    }
+
+    // 2. Skin condition check
+    const acne = todayMetrics.acne ?? 1;
+    const redness = todayMetrics.redness ?? 1;
+    const comfort = todayMetrics.barrierComfort ?? 5;
+    const dryness = todayMetrics.dryness ?? 1;
+
+    if ((acne >= 3 || user.concerns.includes("acne")) && !hasTreatment) {
+      const acneProd = recommendedProducts.find(p => 
+        (p.category === "serum" || p.category === "exfoliant") && 
+        p.price <= walletBalance &&
+        (p.concerns.includes("acne") || p.name.toLowerCase().includes("bha") || p.name.toLowerCase().includes("mụn") || p.name.toLowerCase().includes("salicylic"))
+      );
+      suggestions.push({
+        type: "info",
+        title: "Cần Serum Đặc Trị Mụn 🧪",
+        desc: "Da đang gặp tình trạng mụn sưng/mụn ẩn. Một sản phẩm chứa BHA hoặc Niacinamide sẽ giúp cải thiện cồi mụn.",
+        recommendedProduct: acneProd || recommendedProducts.find(p => p.category === "serum" && p.concerns.includes("acne"))
+      });
+    }
+
+    if ((redness >= 3 || comfort <= 3) && !hasTreatment) {
+      const recoveryProd = recommendedProducts.find(p => 
+        (p.category === "serum" || p.category === "moisturizer") && 
+        p.price <= walletBalance &&
+        (p.name.toLowerCase().includes("b5") || p.name.toLowerCase().includes("centella") || p.name.toLowerCase().includes("phục hồi") || p.name.toLowerCase().includes("recovery"))
+      );
+      suggestions.push({
+        type: "info",
+        title: "Tinh Chất Phục Hồi Dịu Da 🛡️",
+        desc: "Hàng rào bảo vệ da đang đỏ rát/kích ứng. Bạn nên bổ sung tinh chất chứa B5, Ceramide hoặc Rau má.",
+        recommendedProduct: recoveryProd || recommendedProducts.find(p => p.name.toLowerCase().includes("b5") || p.name.toLowerCase().includes("phục hồi"))
+      });
+    }
+
+    if (dryness >= 3 && !hasMoisturizer) {
+      const dryProd = recommendedProducts.find(p => 
+        p.category === "moisturizer" && 
+        p.price <= walletBalance &&
+        (p.name.toLowerCase().includes("cấp ẩm") || p.name.toLowerCase().includes("dry") || p.name.toLowerCase().includes("hyaluronic"))
+      );
+      suggestions.push({
+        type: "info",
+        title: "Ưu Tiên Kem Dưỡng Cấp Ẩm Sâu 💧",
+        desc: "Da đang bị khô căng, tróc vảy. Hãy sắm ngay kem dưỡng ẩm chuyên sâu để củng cố độ mềm mại.",
+        recommendedProduct: dryProd || recommendedProducts.find(p => p.category === "moisturizer")
+      });
+    }
+
+    return suggestions;
+  }, [routine.morningRoutine, routine.eveningRoutine, todayMetrics, user.concerns, recommendedProducts, walletBalance]);
 
   const smartSpendResult = useMemo(() => {
     return calculateSmartSpendScore(user.totalBudget || 1500000, actualSpend, user);
@@ -1264,69 +1418,432 @@ export default function SkinDashboard({
               exit={{ height: 0, opacity: 0 }}
               className="border-t border-line p-6 space-y-6"
             >
-              {/* Top part: Budget input */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                  <h4 className="text-caption font-bold text-fg">Tổng ngân sách dưỡng da</h4>
-                  <p className="text-micro text-muted">Nhập số tiền tối đa bạn muốn đầu tư cho quy trình.</p>
+              {/* Glassmorphism Visa-style Card */}
+              <div className="relative w-full max-w-md mx-auto aspect-[1.586/1] rounded-3xl overflow-hidden p-6 text-white shadow-xl border border-white/20 select-none flex flex-col justify-between bg-zinc-950">
+                {/* Glowing Gradients behind */}
+                <div className={cn(
+                  "absolute inset-0 opacity-40 blur-2xl -z-10 bg-gradient-to-br transition-all duration-700",
+                  user.skinType === "oily" ? "from-emerald-500 via-teal-600 to-zinc-950" :
+                  user.skinType === "dry" ? "from-blue-500 via-cyan-600 to-zinc-950" :
+                  user.skinType === "sensitive" ? "from-rose-500 via-amber-600 to-zinc-950" :
+                  "from-zinc-700 via-zinc-800 to-zinc-950"
+                )} />
+                <div className="absolute inset-0 bg-black/10 -z-10" />
+
+                {/* Top of Card */}
+                <div className="flex justify-between items-start">
+                  <div className="space-y-1">
+                    <span className="text-[10px] tracking-[0.2em] font-extrabold text-white/50 block">SKINWISE AI CARD</span>
+                    <span className="text-[11px] font-bold text-white/80 uppercase px-2 py-0.5 bg-white/10 rounded-full border border-white/5">
+                      {user.skinType === "oily" ? "Da dầu" : user.skinType === "dry" ? "Da khô" : user.skinType === "sensitive" ? "Da nhạy cảm" : "Da thường"}
+                    </span>
+                  </div>
+                  <div className="w-8 h-8 rounded-lg bg-yellow-500/20 border border-yellow-500/30 flex items-center justify-center shrink-0">
+                    <div className="w-6 h-4 bg-gradient-to-r from-yellow-500/80 to-yellow-600/90 rounded opacity-90 relative">
+                      <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[1px] bg-yellow-900/40" />
+                      <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[1px] bg-yellow-900/40" />
+                    </div>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="number"
-                    value={walletInput}
-                    onChange={(e) => setWalletInput(e.target.value)}
-                    onBlur={(e) => {
-                      const val = parseInt(e.target.value) || 0;
-                      user.setTotalBudget(val);
-                      addToast("Đã cập nhật ngân sách SkinWallet", "success");
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        const val = parseInt(e.currentTarget.value) || 0;
-                        user.setTotalBudget(val);
-                        e.currentTarget.blur();
-                      }
-                    }}
-                    className="w-32 sm:w-40 bg-surface border border-line rounded-xl px-3 py-2 text-caption text-right outline-none focus:border-fg transition-all font-bold"
-                  />
-                  <span className="text-caption font-bold text-muted">VND</span>
+
+                {/* Center of Card: Available Balance */}
+                <div className="space-y-0.5 text-center sm:text-left">
+                  <span className="text-[10px] tracking-[0.15em] font-bold text-white/50 uppercase block">Số dư khả dụng</span>
+                  <div className="text-3xl font-extrabold tracking-tight tabular-nums flex items-baseline justify-center sm:justify-start gap-1">
+                    {walletBalance.toLocaleString()}
+                    <span className="text-lg font-bold text-white/70">đ</span>
+                  </div>
+                </div>
+
+                {/* Bottom of Card */}
+                <div className="flex justify-between items-end">
+                  <div className="space-y-0.5">
+                    <span className="text-[9px] tracking-wider text-white/40 block">CHỦ THẺ</span>
+                    <span className="text-caption font-extrabold tracking-wide uppercase">{user.title || "SkinWise Member"}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setIsEditingBudget(!isEditingBudget)}
+                      className="px-2.5 py-1.5 bg-white/10 hover:bg-white/20 active:scale-95 border border-white/10 rounded-xl transition-all flex items-center gap-1 text-micro font-bold"
+                    >
+                      <Settings size={12} />
+                      Sửa ví
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              {/* Middle part: Wallet Allocation */}
-              <div className="space-y-3">
-                <h4 className="text-caption font-bold text-fg">Phân bổ chuẩn Y khoa (Invest vs. Save)</h4>
+              {/* Inline Budget Editor Form */}
+              <AnimatePresence>
+                {isEditingBudget && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10, height: 0 }}
+                    animate={{ opacity: 1, y: 0, height: "auto" }}
+                    exit={{ opacity: 0, y: -10, height: 0 }}
+                    className="p-4 bg-surface border border-line rounded-2xl space-y-4 overflow-hidden"
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div>
+                        <h4 className="text-caption font-bold text-fg">Thiết lập ngân sách mới</h4>
+                        <p className="text-micro text-muted font-medium">Nhập số tiền tối đa bạn muốn đầu tư cho cả chu trình da.</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="number"
+                          value={walletInput}
+                          onChange={(e) => setWalletInput(e.target.value)}
+                          onBlur={(e) => {
+                            const val = parseInt(e.target.value) || 0;
+                            user.setTotalBudget(val);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              const val = parseInt(e.currentTarget.value) || 0;
+                              user.setTotalBudget(val);
+                              setIsEditingBudget(false);
+                              addToast("Đã cập nhật ngân sách SkinWallet", "success");
+                            }
+                          }}
+                          className="w-32 bg-white border border-line rounded-xl px-3 py-2 text-caption text-right outline-none focus:border-fg transition-all font-bold"
+                        />
+                        <span className="text-caption font-bold text-muted">VND</span>
+                        <button
+                          onClick={() => {
+                            const val = parseInt(walletInput) || 0;
+                            user.setTotalBudget(val);
+                            setIsEditingBudget(false);
+                            addToast("Đã cập nhật ngân sách SkinWallet", "success");
+                          }}
+                          className="px-3 py-2 bg-fg text-bg rounded-xl text-caption font-bold hover:opacity-90 active:scale-95 transition-all"
+                        >
+                          Lưu
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Quick Suggestions */}
+                    <div className="flex flex-wrap gap-2 items-center">
+                      <span className="text-micro text-muted font-bold uppercase tracking-wider">Chọn nhanh:</span>
+                      {[300000, 500000, 1000000, 1500000, 2500000, 4000000].map((preset) => (
+                        <button
+                          key={preset}
+                          type="button"
+                          onClick={() => {
+                            setWalletInput(preset.toString());
+                            user.setTotalBudget(preset);
+                            addToast("Đã cập nhật ngân sách SkinWallet", "success");
+                          }}
+                          className={`px-2.5 py-1 rounded-lg text-micro font-bold border transition-all ${
+                            user.totalBudget === preset
+                              ? "bg-fg text-bg border-fg"
+                              : "bg-bg text-fg border-line hover:border-fg/40"
+                          }`}
+                        >
+                          {preset >= 1000000 ? `${(preset / 1000000).toFixed(1).replace(".0", "")}tr` : `${preset / 1000}k`}
+                        </button>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Wallet real-time progress bar (3 states: Owned, To buy, Remaining) */}
+              <div className="space-y-3 p-4 bg-line/10 rounded-2xl border border-line/40">
+                <div className="flex justify-between items-center text-caption font-bold">
+                  <span className="text-muted">Tiến trình chi tiêu thực tế</span>
+                  <span className={cn(
+                    walletBalance >= 0 ? "text-emerald-600" : "text-red-500"
+                  )}>
+                    {walletBalance >= 0 
+                      ? `Số dư ví khả dụng: ${walletBalance.toLocaleString()}đ` 
+                      : `Vượt ví: ${Math.abs(walletBalance).toLocaleString()}đ ⚠️`
+                    }
+                  </span>
+                </div>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* 3-State Progress Bar */}
+                <div className="w-full h-3 bg-line/45 rounded-full overflow-hidden flex">
+                  {(() => {
+                    const total = user.totalBudget || 1500000;
+                    
+                    // Owned percentage
+                    const ownedPct = Math.min(100, (ownedProductsCost / total) * 100);
+                    // To Buy percentage
+                    const toBuyPct = Math.min(100 - ownedPct, (toBuySpendTotal / total) * 100);
+                    
+                    const isOver = toBuySpendTotal > total;
+                    if (isOver) {
+                      return <div className="h-full bg-red-500 w-full transition-all duration-500" />;
+                    }
+
+                    return (
+                      <>
+                        <div 
+                          className="h-full bg-green-500 transition-all duration-500"
+                          style={{ width: `${ownedPct}%` }}
+                          title={`Đã sở hữu: ${ownedProductsCost.toLocaleString()}đ`}
+                        />
+                        <div 
+                          className="h-full bg-amber-500 transition-all duration-500"
+                          style={{ width: `${toBuyPct}%` }}
+                          title={`Cần chi thêm: ${toBuySpendTotal.toLocaleString()}đ`}
+                        />
+                      </>
+                    );
+                  })()}
+                </div>
+                
+                <div className="grid grid-cols-3 text-[10px] font-semibold text-muted text-center divide-x divide-line">
+                  <div className="flex flex-col items-center">
+                    <span className="flex items-center gap-1 justify-center"><span className="w-2 h-2 rounded-full bg-green-500" /> Đã sở hữu</span>
+                    <span className="text-fg font-extrabold mt-0.5">{ownedProductsCost.toLocaleString()}đ</span>
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <span className="flex items-center gap-1 justify-center"><span className="w-2 h-2 rounded-full bg-amber-500" /> Cần chi thêm</span>
+                    <span className="text-fg font-extrabold mt-0.5">{toBuySpendTotal.toLocaleString()}đ</span>
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <span className="flex items-center gap-1 justify-center">Tổng ví thiết lập</span>
+                    <span className="text-fg font-extrabold mt-0.5">{(user.totalBudget || 1500000).toLocaleString()}đ</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Real-time Shopping List */}
+              <div className="space-y-3.5 border-t border-line/60 pt-5">
+                <h4 className="text-caption font-extrabold text-fg flex items-center gap-1.5">
+                  <ShoppingBag size={14} className="text-amber-500" />
+                  <span>Danh sách cần mua ({toBuyProducts.length} sản phẩm)</span>
+                </h4>
+
+                {toBuyProducts.length > 0 ? (
+                  <div className="space-y-2 max-h-[220px] overflow-y-auto pr-1">
+                    {toBuyProducts.map((p) => (
+                      <div 
+                        key={p.id} 
+                        className="p-3 bg-surface border border-line rounded-xl flex items-center justify-between gap-3 hover:border-fg/10 transition-all"
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          {/* Checkbox to mark as Owned / Purchased */}
+                          <input 
+                            type="checkbox"
+                            checked={false}
+                            onChange={() => {
+                              routine.toggleProductOwned(p.id);
+                              addToast(`Đã chuyển ${p.name} vào kho tủ đồ cá nhân`, "success");
+                              trackEvent("product_marked_owned", { productId: p.id, name: p.name });
+                            }}
+                            className="w-4 h-4 rounded border-line text-emerald-500 focus:ring-emerald-500 cursor-pointer"
+                          />
+                          <div className="min-w-0">
+                            <span className="text-caption font-bold text-fg block truncate">{p.name}</span>
+                            <span className="text-micro text-muted font-bold block truncate">
+                              {p.brand} · {CATEGORY_LABELS[p.category] || p.category}
+                            </span>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-3 shrink-0">
+                          <span className="text-caption font-extrabold text-fg">{p.price.toLocaleString()}đ</span>
+                          <a 
+                            href={`${p.shopeeUrl}${p.shopeeUrl.includes('?') ? '&' : '?'}utm_source=affiliate&utm_medium=skincare_app&utm_campaign=skinwise_workspace`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-1.5 hover:bg-orange-500/10 border border-orange-500/20 text-[#EE4D2D] rounded-lg transition-all"
+                            title="Mua ngay trên Shopee"
+                          >
+                            <ExternalLink size={12} />
+                          </a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="p-4 bg-green-500/[0.02] border border-green-500/10 rounded-2xl text-[11px] text-green-700 leading-normal flex items-start gap-2">
+                    <span className="text-xs shrink-0">🎉</span>
+                    <span>Tuyệt vời! Bạn đã sở hữu tất cả sản phẩm trong chu trình. Không cần chi tiêu mua sắm thêm tại thời điểm này!</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Medical Category Allocation */}
+              <div className="space-y-3 border-t border-line/60 pt-5">
+                <h4 className="text-caption font-bold text-fg">Hạn mức gợi ý chuẩn Y khoa (Invest vs. Save)</h4>
+                <div className="grid grid-cols-2 gap-3">
                   <div className="bg-surface/50 border border-line rounded-xl p-3 flex justify-between items-center">
                     <div>
-                      <span className="text-micro font-bold text-muted block uppercase">Đặc trị / Serum (⭐ Đầu tư)</span>
+                      <span className="text-micro font-bold text-muted block uppercase">Serum Treatment (Invest)</span>
                       <span className="text-caption font-bold text-fg">{walletAllocation.treatment.toLocaleString()}đ</span>
                     </div>
                     <span className="text-[10px] bg-accent/10 text-accent-dark px-2 py-0.5 rounded-full font-bold">Invest</span>
                   </div>
                   <div className="bg-surface/50 border border-line rounded-xl p-3 flex justify-between items-center">
                     <div>
-                      <span className="text-micro font-bold text-muted block uppercase">Chống nắng (☀️ Đầu tư)</span>
+                      <span className="text-micro font-bold text-muted block uppercase">Chống nắng (Invest)</span>
                       <span className="text-caption font-bold text-fg">{walletAllocation.sunscreen.toLocaleString()}đ</span>
                     </div>
                     <span className="text-[10px] bg-amber-500/10 text-amber-600 px-2 py-0.5 rounded-full font-bold">Invest</span>
                   </div>
                   <div className="bg-surface/50 border border-line rounded-xl p-3 flex justify-between items-center">
                     <div>
-                      <span className="text-micro font-bold text-muted block uppercase">Kem dưỡng ẩm (💧 Vừa phải)</span>
+                      <span className="text-micro font-bold text-muted block uppercase">Dưỡng ẩm (Save)</span>
                       <span className="text-caption font-bold text-fg">{walletAllocation.moisturizer.toLocaleString()}đ</span>
                     </div>
                     <span className="text-[10px] bg-blue-500/10 text-blue-500 px-2 py-0.5 rounded-full font-bold">Save</span>
                   </div>
                   <div className="bg-surface/50 border border-line rounded-xl p-3 flex justify-between items-center">
                     <div>
-                      <span className="text-micro font-bold text-muted block uppercase">Làm sạch (🧼 Tiết kiệm)</span>
+                      <span className="text-micro font-bold text-muted block uppercase">Làm sạch (Save)</span>
                       <span className="text-caption font-bold text-fg">{walletAllocation.cleanser.toLocaleString()}đ</span>
                     </div>
                     <span className="text-[10px] bg-slate-500/10 text-slate-500 px-2 py-0.5 rounded-full font-bold">Save</span>
                   </div>
                 </div>
+              </div>
+
+              {/* Shopping Advice & Upgrades */}
+              <div className="space-y-4 border-t border-line/60 pt-5">
+                <h4 className="text-caption font-extrabold text-fg flex items-center gap-1.5">
+                  <Sparkles size={14} className="text-accent animate-pulse" />
+                  <span>Dự báo & Đề xuất tối ưu hóa AI</span>
+                </h4>
+
+                {/* Routine Gaps (Missing items) */}
+                {walletSuggestions.length > 0 && (
+                  <div className="space-y-2.5">
+                    <span className="text-[10px] font-bold text-red-500 block uppercase tracking-wider">Lỗ hổng chu trình & Đề xuất bù đắp:</span>
+                    {walletSuggestions.map((sug, idx) => {
+                      const prod = sug.recommendedProduct;
+                      return (
+                        <div 
+                          key={idx} 
+                          className={cn(
+                            "p-3 rounded-2xl border transition-all flex flex-col md:flex-row md:items-center justify-between gap-4",
+                            sug.type === "danger" ? "bg-red-500/[0.02] border-red-500/15" :
+                            sug.type === "warning" ? "bg-amber-500/[0.02] border-amber-500/15" :
+                            "bg-blue-500/[0.02] border-blue-500/15"
+                          )}
+                        >
+                          <div className="space-y-1 flex-1 min-w-0">
+                            <span className={cn(
+                              "text-caption font-bold block",
+                              sug.type === "danger" ? "text-red-600" :
+                              sug.type === "warning" ? "text-amber-600" :
+                              "text-blue-600"
+                            )}>{sug.title}</span>
+                            <p className="text-[11px] text-muted leading-relaxed">{sug.desc}</p>
+                          </div>
+
+                          {prod && (
+                            <div className="bg-bg border border-line rounded-xl p-2 flex items-center gap-3 shrink-0 md:max-w-[280px]">
+                              <div className="w-8 h-8 rounded-lg bg-surface flex items-center justify-center shrink-0 text-base">
+                                {prod.category === "cleanser" ? "🧼" :
+                                 prod.category === "sunscreen" ? "☀️" :
+                                 prod.category === "moisturizer" ? "💦" : "🧪"}
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <span className="text-[10px] font-bold text-fg block truncate">{prod.name}</span>
+                                <span className="text-[9px] text-muted block mt-0.5 truncate">{prod.brand} · {prod.price.toLocaleString()}đ</span>
+                              </div>
+                              {prod.price <= walletBalance ? (
+                                <button
+                                  onClick={() => {
+                                    // Add to routine
+                                    if (prod.timeOfDay === "AM") {
+                                      routine.addToMorning(prod);
+                                    } else if (prod.timeOfDay === "PM") {
+                                      routine.addToEvening(prod);
+                                    } else {
+                                      if (prod.category === "sunscreen") {
+                                        routine.addToMorning(prod);
+                                      } else if (prod.category === "cleanser" || prod.category === "moisturizer") {
+                                        routine.addToMorning(prod);
+                                        routine.addToEvening(prod);
+                                      } else {
+                                        routine.addToEvening(prod);
+                                      }
+                                    }
+                                    addToast(`Đã thêm ${prod.name} vào chu trình`, "success");
+                                    trackEvent("wallet_suggestion_add", { productId: prod.id });
+                                  }}
+                                  className="text-[9px] bg-green-500/10 text-green-600 hover:bg-green-500/20 px-2 py-1 rounded font-extrabold shrink-0 uppercase transition-all"
+                                >
+                                  Thêm vào ví
+                                </button>
+                              ) : (
+                                <span className="text-[8px] bg-red-500/10 text-red-500 px-1.5 py-0.5 rounded font-extrabold shrink-0 uppercase">Thiếu ví</span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Upgrade suggestions when budget is healthy */}
+                {upgradeSuggestions.length > 0 && (
+                  <div className="space-y-2.5">
+                    <span className="text-[10px] font-bold text-accent-dark block uppercase tracking-wider">Cơ hội nâng cấp routine (Premium Upgrade):</span>
+                    {upgradeSuggestions.map((up, idx) => (
+                      <div 
+                        key={idx} 
+                        className="p-3 bg-gradient-to-r from-accent/5 to-transparent border border-accent/15 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4"
+                      >
+                        <div className="space-y-1 flex-1 min-w-0">
+                          <span className="text-caption font-bold text-accent-dark block">Nâng cấp {CATEGORY_LABELS[up.currentProduct.category] || up.currentProduct.category} ⚡</span>
+                          <p className="text-[11px] text-muted leading-relaxed">
+                            Ví của bạn dư <strong>{walletBalance.toLocaleString()}đ</strong>. Bạn có thể nâng cấp từ <strong>{up.currentProduct.name}</strong> lên dòng cao cấp hơn <strong>{up.upgradeProduct.name}</strong>.
+                          </p>
+                        </div>
+
+                        <div className="flex items-center gap-2 shrink-0">
+                          <div className="bg-white border border-line rounded-xl p-2 flex items-center gap-2 max-w-[200px]">
+                            <div className="min-w-0">
+                              <span className="text-[9px] font-bold text-fg block truncate">{up.upgradeProduct.name}</span>
+                              <span className="text-[8px] text-muted block truncate">+{up.costDiff.toLocaleString()}đ</span>
+                            </div>
+                          </div>
+                          <button
+                            onClick={() => {
+                              // Swap in routine: remove current, add upgraded
+                              routine.removeFromMorning(up.currentProduct.id);
+                              routine.removeFromEvening(up.currentProduct.id);
+                              
+                              const upgraded = up.upgradeProduct;
+                              if (upgraded.timeOfDay === "AM") {
+                                routine.addToMorning(upgraded);
+                              } else if (upgraded.timeOfDay === "PM") {
+                                routine.addToEvening(upgraded);
+                              } else {
+                                if (upgraded.category === "sunscreen") {
+                                  routine.addToMorning(upgraded);
+                                } else if (upgraded.category === "cleanser" || upgraded.category === "moisturizer") {
+                                  routine.addToMorning(upgraded);
+                                  routine.addToEvening(upgraded);
+                                } else {
+                                  routine.addToEvening(upgraded);
+                                }
+                              }
+                              addToast(`Đã nâng cấp lên ${upgraded.name}`, "success");
+                              trackEvent("wallet_upgrade_swap", { oldId: up.currentProduct.id, newId: upgraded.id });
+                            }}
+                            className="text-[9px] bg-accent text-bg hover:opacity-90 px-2.5 py-1.5 rounded-lg font-bold transition-all whitespace-nowrap"
+                          >
+                            Nâng cấp ngay
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {walletSuggestions.length === 0 && upgradeSuggestions.length === 0 && (
+                  <div className="p-4 bg-emerald-500/[0.02] border border-emerald-500/10 rounded-2xl text-[11px] text-emerald-700 leading-normal flex items-start gap-2">
+                    <span className="text-xs shrink-0">🎉</span>
+                    <span>Tuyệt vời! Chu trình của bạn không có lỗ hổng lớn nào và đã tận dụng ngân sách rất hợp lý.</span>
+                  </div>
+                )}
               </div>
 
               {/* Bottom part: Smart Spend Score Result */}

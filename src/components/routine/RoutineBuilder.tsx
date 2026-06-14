@@ -32,7 +32,17 @@ import { CATEGORY_LABELS } from "@/lib/constants"
 import ProductCard from "./ProductCard"
 import ConflictWarnings from "./ConflictWarnings"
 
-function SortableItem({ product, onRemove }: { product: Product; onRemove: (id: string) => void }) {
+function SortableItem({ 
+  product, 
+  onRemove,
+  isOwned,
+  onToggleOwned
+}: { 
+  product: Product; 
+  onRemove: (id: string) => void;
+  isOwned: boolean;
+  onToggleOwned: (id: string) => void;
+}) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: product.id })
   const style = { transform: CSS.Transform.toString(transform), transition }
 
@@ -47,7 +57,13 @@ function SortableItem({ product, onRemove }: { product: Product; onRemove: (id: 
         ⋮⋮
       </button>
       <div className="flex-1">
-        <ProductCard product={product} onRemove={onRemove} compact />
+        <ProductCard 
+          product={product} 
+          onRemove={onRemove} 
+          compact 
+          isOwned={isOwned}
+          onToggleOwned={onToggleOwned}
+        />
       </div>
     </div>
   )
@@ -57,10 +73,14 @@ function RoutineList({
   products,
   onRemove,
   onReorder,
+  ownedProductIds = [],
+  onToggleOwned,
 }: {
   products: Product[]
   onRemove: (id: string) => void
   onReorder: (p: Product[]) => void
+  ownedProductIds: string[]
+  onToggleOwned: (id: string) => void
 }) {
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -98,7 +118,12 @@ function RoutineList({
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <SortableItem product={p} onRemove={onRemove} />
+                <SortableItem 
+                  product={p} 
+                  onRemove={onRemove} 
+                  isOwned={ownedProductIds.includes(p.id)}
+                  onToggleOwned={onToggleOwned}
+                />
               </motion.div>
             ))}
           </AnimatePresence>
@@ -297,6 +322,8 @@ export default function RoutineBuilder() {
               products={activeList}
               onRemove={handleRemove}
               onReorder={(items) => (tab === "AM" ? store.reorderMorning(items) : store.reorderEvening(items))}
+              ownedProductIds={store.ownedProductIds || []}
+              onToggleOwned={store.toggleProductOwned}
             />
           )}
         </motion.div>

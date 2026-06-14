@@ -7,6 +7,7 @@ const MAX_PRODUCTS = 8;
 interface RoutineState {
   morningRoutine: Product[];
   eveningRoutine: Product[];
+  ownedProductIds: string[];
   addToMorning: (product: Product) => boolean;
   addToEvening: (product: Product) => boolean;
   removeFromMorning: (productId: string) => void;
@@ -14,6 +15,7 @@ interface RoutineState {
   reorderMorning: (products: Product[]) => void;
   reorderEvening: (products: Product[]) => void;
   clearRoutine: () => void;
+  toggleProductOwned: (productId: string) => void;
   isHydrated: boolean;
   setHydrated: () => void;
 }
@@ -24,6 +26,7 @@ export const useRoutineStore = create<RoutineState>()(
       isHydrated: false,
       morningRoutine: [],
       eveningRoutine: [],
+      ownedProductIds: [],
 
       addToMorning: (product) => {
         const { morningRoutine } = get();
@@ -44,17 +47,28 @@ export const useRoutineStore = create<RoutineState>()(
       removeFromMorning: (productId) =>
         set((state) => ({
           morningRoutine: state.morningRoutine.filter((p) => p.id !== productId),
+          ownedProductIds: (state.ownedProductIds || []).filter((id) => id !== productId),
         })),
 
       removeFromEvening: (productId) =>
         set((state) => ({
           eveningRoutine: state.eveningRoutine.filter((p) => p.id !== productId),
+          ownedProductIds: (state.ownedProductIds || []).filter((id) => id !== productId),
         })),
 
       reorderMorning: (products) => set({ morningRoutine: products }),
       reorderEvening: (products) => set({ eveningRoutine: products }),
 
-      clearRoutine: () => set({ morningRoutine: [], eveningRoutine: [] }),
+      clearRoutine: () => set({ morningRoutine: [], eveningRoutine: [], ownedProductIds: [] }),
+      toggleProductOwned: (productId) =>
+        set((state) => {
+          const owned = state.ownedProductIds || [];
+          return {
+            ownedProductIds: owned.includes(productId)
+              ? owned.filter((id) => id !== productId)
+              : [...owned, productId],
+          };
+        }),
       setHydrated: () => set({ isHydrated: true }),
     }),
     {

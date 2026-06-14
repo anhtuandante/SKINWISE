@@ -202,6 +202,7 @@ export default function DashboardPage() {
                 selectedCity={selectedCity}
                 setSelectedCity={(city) => setSelectedCity(city as "hanoi" | "danang" | "hcm")}
                 citiesWeather={citiesWeather}
+                recommendedProducts={recommended}
               />
             </motion.div>
           )}

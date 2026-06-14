@@ -239,7 +239,9 @@ export async function buildInitialRoutine(
     premium: 9000000,
     luxury: Infinity
   }
-  const cap = BUDGET_CAPS[profile.budget] || Infinity
+  const cap = profile.totalBudget && profile.totalBudget > 0 
+    ? profile.totalBudget 
+    : (BUDGET_CAPS[profile.budget] || Infinity)
 
   // Function to calculate unique products in the routines
   const getUniqueProducts = (m: Product[], e: Product[]): Product[] => {

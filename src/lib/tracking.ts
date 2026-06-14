@@ -22,7 +22,10 @@ export type TrackingEventName =
   | "ai_chat_receive"       // AI Advisor responds
   | "ingredient_search"     // User searches for ingredients in the encyclopedia
   | "ingredient_click"     // User clicks a specific ingredient card
-  | "routine_completed_toggle"; // User checks off routine completed
+  | "routine_completed_toggle" // User checks off routine completed
+  | "product_marked_owned"  // User marks a product as owned
+  | "wallet_suggestion_add" // User adds AI suggested product
+  | "wallet_upgrade_swap"; // User upgrades a product in routine
 
 // Generate a random UUID-like string
 function generateSessionId(): string {

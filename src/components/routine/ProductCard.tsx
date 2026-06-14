@@ -17,9 +17,19 @@ interface ProductCardProps {
   onRemove?: (productId: string) => void
   isInRoutine?: boolean
   compact?: boolean
+  isOwned?: boolean
+  onToggleOwned?: (productId: string) => void
 }
 
-export default function ProductCard({ product, onAdd, onRemove, isInRoutine, compact }: ProductCardProps) {
+export default function ProductCard({ 
+  product, 
+  onAdd, 
+  onRemove, 
+  isInRoutine, 
+  compact,
+  isOwned = false,
+  onToggleOwned
+}: ProductCardProps) {
   const profile = useUserStore()
 
   const matchResult = useMemo(() => {
@@ -37,13 +47,30 @@ export default function ProductCard({ product, onAdd, onRemove, isInRoutine, com
             {product.brand} · {formatPrice(product.price)}
           </div>
         </div>
+        
+        {onToggleOwned && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleOwned(product.id);
+            }}
+            className={`text-[10px] font-bold px-2.5 py-1 rounded-lg border transition-all shrink-0 select-none ${
+              isOwned
+                ? "bg-green-500/10 text-green-600 border-green-500/20"
+                : "bg-amber-500/10 text-amber-600 border-amber-500/20 hover:border-amber-500/40"
+            }`}
+          >
+            {isOwned ? "Đang có ✓" : "Cần mua 🛒"}
+          </button>
+        )}
+
         {onRemove && (
           <button
             onClick={() => {
               trackEvent("remove_from_routine", { productId: product.id, name: product.name });
               onRemove(product.id);
             }}
-            className="text-caption text-muted hover:text-danger transition-colors ml-3"
+            className="text-caption text-muted hover:text-danger transition-colors ml-1"
           >
             Xóa
           </button>
@@ -67,7 +94,24 @@ export default function ProductCard({ product, onAdd, onRemove, isInRoutine, com
             <div className="text-caption text-muted font-medium opacity-80 truncate">{product.brand}</div>
           </div>
         </div>
-        <span className="text-caption text-fg font-bold bg-line/10 px-3 py-1 rounded-full whitespace-nowrap">{formatPrice(product.price)}</span>
+        <div className="flex flex-col items-end gap-1">
+          <span className="text-caption text-fg font-bold bg-line/10 px-3 py-1 rounded-full whitespace-nowrap">{formatPrice(product.price)}</span>
+          {onToggleOwned && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleOwned(product.id);
+              }}
+              className={`text-[9px] font-bold px-2 py-0.5 rounded border transition-all select-none ${
+                isOwned
+                  ? "bg-green-500/10 text-green-600 border-green-500/20"
+                  : "bg-amber-500/10 text-amber-600 border-amber-500/20"
+              }`}
+            >
+              {isOwned ? "Đang có" : "Cần mua"}
+            </button>
+          )}
+        </div>
       </div>
 
       {/* AI Compatibility Badge - Premium Style */}
