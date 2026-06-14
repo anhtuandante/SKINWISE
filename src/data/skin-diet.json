@@ -1,0 +1,744 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "note": "Cơ sở dữ liệu dinh dưỡng chuyên sâu cho da và thực đơn 7 ngày phân theo loại da",
+    "totalSuperfoods": 15,
+    "totalAvoidFoods": 12,
+    "totalRecipes": 8
+  },
+  "superfoods": [
+    {
+      "id": "salmon",
+      "name": "Cá hồi",
+      "category": "Protein & Chất béo tốt",
+      "nutrients": ["Omega-3", "Axit béo tự do", "Vitamin D", "Protein"],
+      "skinBenefits": "Kháng viêm mạnh mẽ, hỗ trợ làm dịu mụn trứng cá và mụn đỏ. Cấp ẩm tự nhiên từ bên trong và phục hồi màng lipid bảo vệ da.",
+      "score": 15,
+      "skinTypes": ["dry", "combination", "sensitive", "acne-prone"],
+      "concerns": ["acne", "dryness", "aging"],
+      "tips": "Nên ăn cá hồi áp chảo hoặc hấp 2-3 lần/tuần để giữ trọn vẹn axit béo tốt."
+    },
+    {
+      "id": "avocado",
+      "name": "Quả bơ",
+      "category": "Chất béo tốt & Vitamin",
+      "nutrients": ["Vitamin E", "Vitamin C", "Chất béo không bão hòa đơn", "Lutein"],
+      "skinBenefits": "Cung cấp độ ẩm dồi dào, tăng độ đàn hồi và ngăn ngừa lão hóa sớm. Bảo vệ da khỏi tác hại của tia cực tím.",
+      "score": 15,
+      "skinTypes": ["dry", "normal", "sensitive"],
+      "concerns": ["dryness", "aging"],
+      "tips": "Ăn nửa quả bơ mỗi ngày trong salad hoặc sinh tố không đường."
+    },
+    {
+      "id": "green-tea",
+      "name": "Trà xanh",
+      "category": "Đồ uống kháng oxy hóa",
+      "nutrients": ["EGCG", "Polyphenol", "Vitamin C"],
+      "skinBenefits": "Kháng khuẩn, kiểm soát bã nhờn hiệu quả đối với da dầu mụn. Chống oxy hóa cực mạnh, ngăn chặn gốc tự do phá hủy collagen.",
+      "score": 12,
+      "skinTypes": ["oily", "combination", "acne-prone"],
+      "concerns": ["acne", "pores", "aging"],
+      "tips": "Uống 1-2 tách trà xanh ấm mỗi ngày vào buổi sáng hoặc chiều, không pha đường sữa."
+    },
+    {
+      "id": "tomato",
+      "name": "Cà chua",
+      "category": "Rau quả",
+      "nutrients": ["Lycopene", "Vitamin C", "Kali"],
+      "skinBenefits": "Tăng cường khả năng tự bảo vệ của da trước ánh nắng mặt trời, làm mờ thâm mụn và dưỡng sáng da hồng hào tự nhiên.",
+      "score": 10,
+      "skinTypes": ["all"],
+      "concerns": ["dark-spots", "dullness", "aging"],
+      "tips": "Lycopene được hấp thụ tốt nhất khi cà chua được nấu chín cùng một ít dầu ô liu."
+    },
+    {
+      "id": "blueberries",
+      "name": "Quả việt quất",
+      "category": "Trái cây mọng",
+      "nutrients": ["Anthocyanin", "Vitamin C", "Vitamin K", "Chất xơ"],
+      "skinBenefits": "Kích thích sản sinh collagen, tăng tuần hoàn máu dưới da, làm sáng vùng da xỉn màu và trung hòa gốc tự do gây lão hóa.",
+      "score": 15,
+      "skinTypes": ["all"],
+      "concerns": ["aging", "dullness"],
+      "tips": "Ăn trực tiếp quả tươi hoặc xay cùng sữa chua không đường làm bữa phụ sạch."
+    },
+    {
+      "id": "sweet-potato",
+      "name": "Khoai lang",
+      "category": "Tinh bột hấp thu chậm",
+      "nutrients": ["Beta-carotene", "Vitamin A", "Vitamin C", "Chất xơ"],
+      "skinBenefits": "Beta-carotene chuyển hóa thành Vitamin A (Retinol tự nhiên) giúp đẩy nhanh quá trình tái tạo tế bào, làm mịn da và giảm sần sùi.",
+      "score": 10,
+      "skinTypes": ["dry", "combination", "normal"],
+      "concerns": ["dryness", "aging", "dullness"],
+      "tips": "Nên luộc hoặc hấp khoai lang, tránh ăn khoai lang chiên nhiều dầu mỡ."
+    },
+    {
+      "id": "spinach",
+      "name": "Rau bina (Cải bó xôi)",
+      "category": "Rau lá xanh",
+      "nutrients": ["Folate", "Sắt", "Vitamin A", "Vitamin C", "Vitamin E"],
+      "skinBenefits": "Thúc đẩy phục hồi tổn thương da, hỗ trợ thải độc tế bào, duy trì độ ẩm và cải thiện tone da sáng khỏe rõ rệt.",
+      "score": 12,
+      "skinTypes": ["all"],
+      "concerns": ["acne", "dryness", "dullness"],
+      "tips": "Luộc sơ hoặc làm nước ép rau củ kết hợp cùng táo và dứa."
+    },
+    {
+      "id": "almonds",
+      "name": "Hạt hạnh nhân",
+      "category": "Hạt dinh dưỡng",
+      "nutrients": ["Vitamin E", "Kẽm", "Mangan", "Chất béo lành mạnh"],
+      "skinBenefits": "Nuôi dưỡng màng ẩm da, bảo vệ tế bào khỏi stress oxy hóa, phục hồi nhanh da bị tổn thương do mụn hoặc kem trộn.",
+      "score": 10,
+      "skinTypes": ["dry", "combination", "sensitive"],
+      "concerns": ["dryness", "aging"],
+      "tips": "Ăn 5-7 hạt mỗi ngày như một bữa phụ lành mạnh tốt cho da và tim mạch."
+    },
+    {
+      "id": "yogurt",
+      "name": "Sữa chua không đường",
+      "category": "Thực phẩm lên men",
+      "nutrients": ["Probiotic", "Axit Lactic", "Canxi", "Kẽm"],
+      "skinBenefits": "Bổ sung lợi khuẩn đường ruột, gián tiếp giảm viêm da và mụn trứng cá. Axit lactic hỗ trợ làm mịn bề mặt da.",
+      "score": 10,
+      "skinTypes": ["all", "acne-prone"],
+      "concerns": ["acne", "dullness"],
+      "tips": "Ăn 1 hũ sữa chua không đường mỗi ngày vào bữa xế chiều."
+    },
+    {
+      "id": "orange",
+      "name": "Cam & Trái cây họ cam quýt",
+      "category": "Trái cây giàu Vitamin C",
+      "nutrients": ["Vitamin C", "Hesperidin", "Flavonoid"],
+      "skinBenefits": "Kích thích tổng hợp collagen mạnh mẽ, ức chế melanin giúp mờ thâm mụn, tàn nhang và làm sáng da.",
+      "score": 10,
+      "skinTypes": ["all"],
+      "concerns": ["dark-spots", "dullness", "aging"],
+      "tips": "Ăn nguyên múi thay vì vắt lấy nước ép để giữ lại chất xơ, tránh tăng đường huyết đột ngột."
+    },
+    {
+      "id": "pomegranate",
+      "name": "Quả lựu đỏ",
+      "category": "Trái cây chống oxy hóa",
+      "nutrients": ["Axit Ellagic", "Punicalagin", "Vitamin C"],
+      "skinBenefits": "Được coi là 'thần dược' chống lão hóa, ngăn chặn đứt gãy collagen, bảo vệ sợi elastin và làm mờ các nếp nhăn nhỏ.",
+      "score": 15,
+      "skinTypes": ["all"],
+      "concerns": ["aging", "dullness"],
+      "tips": "Ăn trực tiếp hạt lựu hoặc ép nước nguyên chất không thêm đường."
+    },
+    {
+      "id": "walnuts",
+      "name": "Quả óc chó",
+      "category": "Hạt dinh dưỡng",
+      "nutrients": ["Omega-3 Alpha-linolenic acid (ALA)", "Kẽm", "Vitamin E"],
+      "skinBenefits": "Kẽm đóng vai trò quan trọng trong việc kháng khuẩn gây mụn và phục hồi vết thương. Axit béo giúp da căng bóng.",
+      "score": 12,
+      "skinTypes": ["dry", "sensitive", "acne-prone"],
+      "concerns": ["acne", "dryness"],
+      "tips": "Không nên ăn quá nhiều vì có thể gây đầy bụng, 3-4 quả mỗi ngày là đủ."
+    },
+    {
+      "id": "cucumber",
+      "name": "Dưa chuột",
+      "category": "Rau quả cấp nước",
+      "nutrients": ["Nước (96%)", "Silica", "Vitamin C", "Axit Caffeic"],
+      "skinBenefits": "Cấp nước tức thì cho làn da xỉn màu và mất nước. Silica tự nhiên củng cố các mô liên kết dưới da giúp da săn chắc.",
+      "score": 8,
+      "skinTypes": ["dry", "oily", "combination"],
+      "concerns": ["dryness", "dullness"],
+      "tips": "Ăn tươi trong các bữa ăn chính hoặc ép nước cùng chanh uống giải nhiệt."
+    },
+    {
+      "id": "tofu",
+      "name": "Đậu phụ (Đậu hũ)",
+      "category": "Protein thực vật",
+      "nutrients": ["Isoflavone", "Protein", "Canxi"],
+      "skinBenefits": "Isoflavone tương tự estrogen tự nhiên giúp cân bằng nội tiết tố, giảm mụn nội tiết, làm săn chắc cơ mặt và mịn màng làn da.",
+      "score": 10,
+      "skinTypes": ["all", "acne-prone"],
+      "concerns": ["acne", "aging"],
+      "tips": "Nên luộc, hấp hoặc nấu canh thay vì chiên rán ngập dầu."
+    },
+    {
+      "id": "turmeric",
+      "name": "Nghệ & Tinh bột nghệ",
+      "category": "Gia vị thảo mộc",
+      "nutrients": ["Curcumin", "Vitamin C", "Kẽm"],
+      "skinBenefits": "Chất Curcumin có tác dụng tiêu viêm cực mạnh, làm liền sẹo mụn nhanh chóng, ngăn ngừa sắc tố đen và làm sáng hồng da.",
+      "score": 12,
+      "skinTypes": ["all", "acne-prone"],
+      "concerns": ["acne", "dark-spots", "dullness"],
+      "tips": "Dùng nghệ làm gia vị nấu canh hoặc pha tinh bột nghệ với nước ấm và mật ong uống buổi sáng."
+    }
+  ],
+  "avoidFoods": [
+    {
+      "id": "milk-tea",
+      "name": "Trà sữa",
+      "category": "Đường & Sữa động vật",
+      "skinNegatives": "Chứa lượng đường cực cao gây glycation (lão hóa da đường huyết). Sữa béo làm tăng bã nhờn tắc nghẽn lỗ chân lông sinh mụn viêm.",
+      "score": -20,
+      "concerns": ["acne", "aging", "pores"],
+      "alternatives": "Trà sữa hạt không đường hoặc trà ô long macchiato ít ngọt làm từ kem thực vật."
+    },
+    {
+      "id": "fried-chicken",
+      "name": "Gà rán & Đồ chiên dầu mỡ",
+      "category": "Chất béo chuyển hóa",
+      "skinNegatives": "Chất béo chuyển hóa (Trans fat) kích thích phản ứng viêm toàn cơ thể, làm da tiết nhiều dầu thừa hơn và cản trở hồi phục vết thương.",
+      "score": -15,
+      "concerns": ["acne", "pores", "aging"],
+      "alternatives": "Gà nướng thảo mộc bằng nồi chiên không dầu."
+    },
+    {
+      "id": "sugar-candy",
+      "name": "Kẹo ngọt & Đường cát",
+      "category": "Đường tinh luyện",
+      "skinNegatives": "Làm tăng nồng độ insulin đột ngột, kích hoạt các hormone androgen khiến tuyến bã nhờn hoạt động quá mức, gây mụn trứng cá dữ dội.",
+      "score": -15,
+      "concerns": ["acne", "aging"],
+      "alternatives": "Trái cây tươi ít đường (táo, ổi, dâu tây) hoặc mật ong nguyên chất lượng nhỏ."
+    },
+    {
+      "id": "instant-noodles",
+      "name": "Mì ăn liền",
+      "category": "Thực phẩm chế biến sẵn",
+      "skinNegatives": "Rất nhiều muối và carbohydrate tinh chế nghèo dinh dưỡng. Muối cao giữ nước gây sưng húp mặt, còn tinh bột nhanh kích thích nổi mụn.",
+      "score": -12,
+      "concerns": ["acne", "dryness"],
+      "alternatives": "Mì gạo lứt hoặc miến dong tự nấu với rau xanh và thịt bằm."
+    },
+    {
+      "id": "alcohol-beer",
+      "name": "Rượu bia & Đồ uống có cồn",
+      "category": "Chất kích thích",
+      "skinNegatives": "Làm cơ thể và làn da mất nước nghiêm trọng khiến nếp nhăn lộ rõ. Làm giãn mao mạch gây đỏ da, kích ứng đối với da nhạy cảm.",
+      "score": -18,
+      "concerns": ["dryness", "aging"],
+      "alternatives": "Nước ép trái cây lên men nhẹ (kombucha) hoặc nước soda chanh muối ít ngọt."
+    },
+    {
+      "id": "cow-milk",
+      "name": "Sữa bò nguyên kem",
+      "category": "Sữa động vật",
+      "skinNegatives": "Chứa nội tiết tố IGF-1 kích thích tuyến dầu hoạt động mạnh và tăng sinh keratin tế bào sừng, gây tắc nghẽn nang lông sinh mụn ẩn, mụn bọc.",
+      "score": -12,
+      "concerns": ["acne", "pores"],
+      "alternatives": "Các loại sữa hạt (sữa hạnh nhân, sữa đậu nành, sữa hạt óc chó) không đường."
+    },
+    {
+      "id": "white-bread",
+      "name": "Bánh mì trắng & Bột mì tinh chế",
+      "category": "Carbohydrate GI cao",
+      "skinNegatives": "Chỉ số đường huyết (GI) cao làm tăng nhanh đường máu, kích hoạt viêm hệ thống và đẩy nhanh quá trình hình thành mụn và lão hóa collagen.",
+      "score": -10,
+      "concerns": ["acne", "aging"],
+      "alternatives": "Bánh mì đen nguyên cám, bánh mì lúa mạch hoặc khoai lang luộc."
+    },
+    {
+      "id": "canned-meat",
+      "name": "Thịt hộp & Thịt xông khói",
+      "category": "Thực phẩm chế biến sẵn",
+      "skinNegatives": "Chứa nhiều muối nitrat và chất bảo quản hóa học phá hủy cấu trúc collagen tự nhiên dưới da, thúc đẩy nếp nhăn hình thành nhanh.",
+      "score": -12,
+      "concerns": ["aging", "dryness"],
+      "alternatives": "Thịt lợn nạc tươi, ức gà hoặc cá tươi nấu chín tại nhà."
+    },
+    {
+      "id": "soft-drink",
+      "name": "Nước ngọt có ga",
+      "category": "Đường tinh luyện",
+      "skinNegatives": "Chứa lượng fructose cao và axit phosphoric hủy hoại canxi, làm da xỉn màu nhanh, giảm độ ẩm tự nhiên của biểu bì.",
+      "score": -18,
+      "concerns": ["acne", "aging", "dullness"],
+      "alternatives": "Nước khoáng có ga (Sparkling water) vắt thêm vài giọt chanh tươi."
+    },
+    {
+      "id": "chili-spicy",
+      "name": "Mì cay & Đồ ăn quá cay nóng",
+      "category": "Gia vị kích thích",
+      "skinNegatives": "Làm tăng lưu lượng tuần hoàn máu đột ngột gây nóng trong, kích thích tuyến mồ hôi và bã nhờn, dễ làm bùng phát mụn viêm và đỏ da kích ứng.",
+      "score": -10,
+      "concerns": ["acne"],
+      "alternatives": "Các món ăn nêm nếm thanh đạm, dùng thảo mộc làm thơm thay vì ớt bột hóa học."
+    },
+    {
+      "id": "pizza-fastfood",
+      "name": "Pizza & Hamburger",
+      "category": "Chất béo chuyển hóa & Carbohydrate",
+      "skinNegatives": "Sự kết hợp của phô mai béo, bột mì trắng tinh chế và thịt chiên tạo nên cơn ác mộng về glycation cho các sợi elastin của biểu bì.",
+      "score": -15,
+      "concerns": ["acne", "pores", "aging"],
+      "alternatives": "Pizza đế yến mạch tự làm với topping ức gà và nhiều rau củ."
+    },
+    {
+      "id": "chips",
+      "name": "Snack khoai tây chiên",
+      "category": "Chất béo chuyển hóa & Muối",
+      "skinNegatives": "Chứa lượng muối lớn giữ nước gây sưng bọng mắt và chất béo xấu oxy hóa tế bào da nhanh chóng.",
+      "score": -12,
+      "concerns": ["dryness", "aging"],
+      "alternatives": "Hạt điều sấy khô không muối hoặc snack rong biển nướng."
+    }
+  ],
+  "recipes": [
+    {
+      "id": "salmon-avocado-salad",
+      "name": "Salad Cá Hồi Bơ Sốt Chanh Dây",
+      "description": "Món ăn giàu Omega-3, Vitamin E giúp kháng viêm cực mạnh và cấp ẩm tự nhiên sâu cho da khô nhạy cảm.",
+      "prepTime": "15 phút",
+      "cookTime": "10 phút",
+      "difficulty": "Dễ",
+      "calories": 380,
+      "skinBenefits": "Tăng cường độ ẩm màng lipid, làm dịu da kích ứng đỏ và ngăn ngừa hình thành sẹo thâm sau mụn.",
+      "ingredients": [
+        "150g cá hồi phi lê tươi",
+        "1/2 quả bơ chín (cắt lát/hạt lựu)",
+        "50g xà lách romaine & rau bina baby",
+        "10 quả cà chua bi cắt đôi",
+        "Nước sốt: Cốt chanh dây (1 quả), 1 muỗng mật ong, 1 muỗng dầu ô liu, muối tiêu vừa đủ"
+      ],
+      "steps": [
+        "Rửa sạch các loại rau và cà chua bi, để ráo nước hoàn toàn.",
+        "Áp chảo cá hồi với một ít muối và dầu ô liu cho chín vàng đều hai mặt (mỗi mặt khoảng 3 phút), để nguội bớt rồi xé miếng nhỏ.",
+        "Cắt đôi quả bơ, bỏ vỏ và hạt, thái lát mỏng hoặc cắt hạt lựu vừa ăn.",
+        "Trộn nước cốt chanh dây cùng mật ong, dầu ô liu và một chút muối tiêu tạo hỗn hợp sốt chua ngọt thanh mát.",
+        "Xếp rau xanh xuống đĩa, bày cá hồi và bơ lên trên, rưới sốt chanh dây và trộn nhẹ tay trước khi dùng."
+      ],
+      "expertTips": "Để giữ nhiều Omega-3 nhất, hãy áp chảo cá hồi ở mức chín vừa (medium), thịt cá bên trong vẫn còn giữ màu hồng ẩm mịn."
+    },
+    {
+      "id": "acne-clearing-juice",
+      "name": "Nước Ép Thải Độc & Trị Mụn Xanh",
+      "description": "Thức uống chứa nhiều kẽm và chất diệp lục giúp làm sạch cơ thể, giảm sưng tấy mụn nội tiết nhanh chóng.",
+      "prepTime": "10 phút",
+      "cookTime": "0 phút",
+      "difficulty": "Rất dễ",
+      "calories": 90,
+      "skinBenefits": "Kiểm soát bã nhờn, thải độc gan gián tiếp ngừa mụn ẩn và thanh nhiệt cơ thể từ bên trong.",
+      "ingredients": [
+        "1 nắm rau bina tươi (cải bó xôi)",
+        "1/2 quả dưa chuột lớn",
+        "1 nhánh cần tây rửa sạch",
+        "1/2 quả táo xanh (để tạo vị ngọt tự nhiên nhẹ)",
+        "1/4 quả chanh vắt lấy cốt"
+      ],
+      "steps": [
+        "Ngâm rau bina, cần tây, dưa chuột, táo xanh trong nước muối loãng 10 phút rồi rửa sạch.",
+        "Cắt dưa chuột và táo xanh thành các thanh nhỏ vừa miệng máy ép.",
+        "Lần lượt cho rau bina, cần tây, dưa chuột và táo xanh vào máy ép lấy nước cốt nguyên chất.",
+        "Khuấy đều cùng nước cốt chanh tươi, thêm vài viên đá lạnh nếu thích uống mát và thưởng thức ngay."
+      ],
+      "expertTips": "Nên uống vào buổi sáng trước khi ăn 30 phút để dưỡng chất hấp thụ tốt nhất. Hãy uống ngay sau khi ép để tránh oxy hóa mất vitamin C."
+    },
+    {
+      "id": "collagen-booster-smoothie",
+      "name": "Sinh Tố Kích Thích Collagen Việt Quất Lựu",
+      "description": "Sinh tố siêu thực phẩm giàu polyphenol giúp ngăn chặn nếp nhăn và phục hồi vẻ căng mọng tươi sáng.",
+      "prepTime": "8 phút",
+      "cookTime": "0 phút",
+      "difficulty": "Dễ",
+      "calories": 210,
+      "skinBenefits": "Tái tạo sợi đàn hồi elastin, bảo vệ collagen khỏi đứt gãy do nắng và môi trường, làm sáng vùng da sạm màu.",
+      "ingredients": [
+        "1/2 chén quả việt quất (tươi hoặc đông lạnh)",
+        "1/2 chén hạt lựu chín đỏ",
+        "1 hũ sữa chua không đường",
+        "100ml sữa hạnh nhân không đường",
+        "1 muỗng cà phê hạt chia ngâm nở"
+      ],
+      "steps": [
+        "Ngâm hạt chia trong nước ấm khoảng 5 phút cho nở mềm.",
+        "Tách lấy hạt lựu ép lấy nước cốt hoặc cho trực tiếp vào máy xay nếu dùng máy công suất lớn lọc bã.",
+        "Cho việt quất, sữa chua không đường, sữa hạnh nhân và nước cốt lựu vào máy xay sinh tố.",
+        "Xay ở tốc độ cao cho đến khi hỗn hợp nhuyễn mịn hoàn toàn.",
+        "Rót ra ly, cho hạt chia đã ngâm nở lên trên bề mặt, khuấy nhẹ và thưởng thức."
+      ],
+      "expertTips": "Hạt chia cung cấp omega-3 thực vật tuyệt vời kết hợp cùng vitamin E từ sữa hạnh nhân tăng gấp đôi khả năng phục hồi tế bào biểu bì da."
+    },
+    {
+      "id": "anti-inflammatory-tofu",
+      "name": "Canh Đậu Hũ Rong Biển Thanh Nhiệt Da",
+      "description": "Canh nóng thanh mát giàu kẽm, sắt và isoflavone giúp làm dịu nốt mụn viêm tấy, giảm bốc hỏa gây dầu nhờn.",
+      "prepTime": "10 phút",
+      "cookTime": "15 phút",
+      "difficulty": "Dễ",
+      "calories": 140,
+      "skinBenefits": "Giảm sưng mụn, cấp nước cân bằng độ ẩm cơ thể và chống viêm nhiễm cho da mụn nhạy cảm.",
+      "ingredients": [
+        "1 hộp đậu hũ non (cắt khối vuông nhỏ)",
+        "10g rong biển khô (ngâm nở)",
+        "50g nấm kim châm hoặc nấm đùi gà cắt lát",
+        "700ml nước dùng rau củ ngọt thanh",
+        "Hành lá, gia vị, 1 lát gừng tươi thái sợi mỏng"
+      ],
+      "steps": [
+        "Ngâm rong biển khô trong nước lạnh khoảng 10 phút cho nở mềm, vắt sạch nước, thái khúc vừa ăn.",
+        "Đun sôi nước dùng rau củ cùng lát gừng tươi để tạo mùi thơm dịu ấm bụng.",
+        "Cho nấm kim châm và rong biển vào nồi nấu sôi khoảng 5 phút cho chín ngọt nước.",
+        "Thả nhẹ nhàng các khối đậu hũ non vào để tránh bị nát, đun sôi liu riu thêm 3 phút.",
+        "Nêm nếm chút hạt nêm chay/muối nhạt vừa ăn, rắc hành lá thái nhỏ và tắt bếp."
+      ],
+      "expertTips": "Gừng tươi có tính ấm, kết hợp với tính hàn của rong biển giúp cân bằng tiêu hóa tốt, hỗ trợ cơ thể thanh lọc độc chất thuận lợi."
+    },
+    {
+      "id": "turmeric-chicken-breast",
+      "name": "Ức Gà Áp Chảo Sốt Nghệ Kháng Viêm",
+      "description": "Món ăn giàu protein sạch kết hợp với Curcumin giúp tái tạo các liên kết collagen bị đứt gãy sau sẹo mụn trứng cá.",
+      "prepTime": "15 phút",
+      "cookTime": "15 phút",
+      "difficulty": "Dễ",
+      "calories": 280,
+      "skinBenefits": "Đẩy nhanh tiến trình lành vết thương, mờ vết thâm sẹo mụn, kháng khuẩn sâu từ bên trong.",
+      "ingredients": [
+        "200g ức gà phi lê (rửa sạch, khía nhẹ bề mặt)",
+        "1 muỗng cà phê tinh bột nghệ nguyên chất",
+        "1 củ hành tỏi bằm nhỏ",
+        "1 muỗng mật ong, 1 muỗng nước tương ít muối",
+        "1 muỗng dầu ô liu"
+      ],
+      "steps": [
+        "Ướp ức gà với tinh bột nghệ, mật ong, nước tương, hành tỏi băm trong 15 phút.",
+        "Làm nóng chảo chống dính với dầu ô liu ở lửa vừa.",
+        "Cho ức gà vào áp chảo vàng đều mỗi mặt khoảng 5-6 phút cho chín kỹ nhưng không bị khô dai.",
+        "Rưới phần nước ướp còn dư vào chảo, đun nhỏ lửa cho sốt nghệ keo lại bám đều xung quanh miếng ức gà.",
+        "Thái lát mỏng, bày ra đĩa ăn kèm với súp lơ xanh hấp hoặc dưa chuột lát."
+      ],
+      "expertTips": "Ức gà cung cấp các axit amin cơ bản là khối xây dựng nên collagen. Tinh bột nghệ giúp ức chế enzyme phá hủy elastin giữ da trẻ lâu hơn."
+    },
+    {
+      "id": "brightening-berry-parfait",
+      "name": "Parfait Yến Mạch Sữa Chua Việt Quất",
+      "description": "Bữa sáng tràn đầy chất chống oxy hóa và vitamin C hỗ trợ làm đều màu da và mang lại vẻ rạng rỡ.",
+      "prepTime": "5 phút",
+      "cookTime": "0 phút",
+      "difficulty": "Rất dễ",
+      "calories": 230,
+      "skinBenefits": "Dưỡng sáng da, ức chế sạm nám và giữ lớp màng bảo vệ da săn chắc khỏe mạnh trước tác hại của ô nhiễm.",
+      "ingredients": [
+        "3 muỗng canh yến mạch cán dẹt nướng sơ",
+        "1 hũ sữa chua Hy Lạp không đường",
+        "1 nắm quả mọng (dâu tây thái lát, việt quất, mâm xôi)",
+        "1 muỗng cà phê hạnh nhân lát rang thơm",
+        "1/2 muỗng mật ong rừng nguyên chất"
+      ],
+      "steps": [
+        "Chuẩn bị một ly thủy tinh trong suốt để tạo hiệu ứng lớp đẹp mắt.",
+        "Lớp thứ nhất: Cho 1.5 muỗng yến mạch cán dẹt xuống đáy ly.",
+        "Lớp thứ hai: Múc một nửa lượng sữa chua Hy Lạp phủ lên trên.",
+        "Lớp thứ ba: Rải dâu tây cắt lát và việt quất tươi.",
+        "Lặp lại lớp yến mạch, sữa chua còn lại và rải nốt số quả mọng lên trên cùng. Rắc hạnh nhân lát và rưới chút mật ong ngọt dịu."
+      ],
+      "expertTips": "Yến mạch chứa chất avenanthramides kháng viêm độc quyền giúp làm dịu ngứa ngáy mẩn đỏ da từ bên trong rất tốt cho da khô chàm."
+    },
+    {
+      "id": "detox-artichoke-tea",
+      "name": "Trà Atisô Cam Thảo Thanh Nhiệt Mát Gan",
+      "description": "Nước uống thảo mộc tự nhiên giúp thải độc gan, làm mát cơ thể, giải quyết tận gốc nguyên nhân gây mụn do nóng trong.",
+      "prepTime": "5 phút",
+      "cookTime": "20 phút",
+      "difficulty": "Dễ",
+      "calories": 25,
+      "skinBenefits": "Hỗ trợ điều trị mụn nội tiết, làm dịu da dị ứng, mát gan thải độc giúp da luôn mịn màng, thông thoáng.",
+      "ingredients": [
+        "1 bông Atisô tươi (hoặc 3 túi trà Atisô khô chất lượng túi lọc)",
+        "3 lát cam thảo khô tạo vị ngọt thanh dịu nhẹ tự nhiên",
+        "1 lít nước lọc tinh khiết",
+        "Vài lá bạc hà tươi vò nhẹ"
+      ],
+      "steps": [
+        "Nếu dùng Atisô tươi: rửa sạch bông, cắt bỏ cuống, bổ đôi bông.",
+        "Cho Atisô tươi (hoặc túi lọc) cùng cam thảo khô vào nồi đun cùng 1 lít nước lọc.",
+        "Đun sôi rồi hạ lửa liu riu đun tiếp trong 15-20 phút cho dưỡng chất tan hoàn toàn.",
+        "Tắt bếp, lọc lấy nước trà trong vắt, thả lá bạc hà tươi vào ngâm 2 phút lấy hương thơm.",
+        "Uống ấm cả ngày hoặc trữ lạnh uống mát thay nước lọc thông thường."
+      ],
+      "expertTips": "Cam thảo có hoạt chất glycyrrhizin chống viêm cực mạnh, giúp làm dịu các vùng da đỏ ửng tấy. Tránh uống trà quá muộn sau 8h tối để không ảnh hưởng giấc ngủ."
+    },
+    {
+      "id": "skin-glow-pumpkin-soup",
+      "name": "Súp Bí Đỏ Hạt Sen Cấp Ẩm Trẻ Hóa",
+      "description": "Canh súp bí đỏ mịn màng chứa vitamin A hàm lượng cực cao giúp đẩy nhanh chu kỳ thay da cũ xỉn màu.",
+      "prepTime": "15 phút",
+      "cookTime": "25 phút",
+      "difficulty": "Trung bình",
+      "calories": 180,
+      "skinBenefits": "Tái sinh cấu trúc biểu bì, mờ sần sùi bề mặt da, giúp da bóng khỏe, giữ nước tốt hơn vào mùa đông.",
+      "ingredients": [
+        "200g bí đỏ chín vàng gọt vỏ cắt miếng",
+        "50g hạt sen tươi bỏ tâm sen",
+        "50ml nước cốt dừa tươi (tạo độ béo mịn nhẹ)",
+        "1/2 củ hành tây cắt nhỏ, 1 muỗng dầu bơ/ô liu",
+        "Muối nhạt, tiêu, rau ngò rí thái nhỏ"
+      ],
+      "steps": [
+        "Xào thơm hành tây với dầu bơ/ô liu trong nồi cho đến khi hành trong suốt.",
+        "Cho bí đỏ và hạt sen vào đảo đều khoảng 2 phút cùng một chút muối nhạt.",
+        "Thêm nước lọc ngập mặt nguyên liệu khoảng 2cm, đun sôi rồi đậy vung hạ lửa vừa hầm chín mềm hạt sen và bí đỏ (20 phút).",
+        "Dùng máy xay cầm tay xay nhuyễn mịn súp ngay trong nồi (hoặc múc ra máy xay sinh tố xay mịn).",
+        "Đổ nước cốt dừa vào nồi súp đã xay nhuyễn, đun nhỏ lửa khuấy đều 2 phút nữa, nêm lại vừa ăn, rắc tiêu ngò rí ấm nồng."
+      ],
+      "expertTips": "Bí đỏ chứa dồi dào kẽm và vitamin A, tương đương với liều Retinol tự nhiên dịu nhẹ cho cơ thể. Hạt sen giúp an thần cho giấc ngủ sâu - thời gian vàng tái tạo da."
+    }
+  ],
+  "mealPlans": {
+    "oily": {
+      "day1": {
+        "breakfast": "Cháo yến mạch ức gà xé, rắc tiêu hành lá",
+        "lunch": "Canh đậu hũ rong biển nấu nấm, cá hồi áp chảo thơm nhẹ gừng tỏi",
+        "snack": "1 tách trà xanh ấm nguyên chất không đường, 1 quả táo xanh giòn",
+        "dinner": "Ức gà áp chảo sốt nghệ ăn kèm súp lơ xanh luộc chấm nước tương nhạt"
+      },
+      "day2": {
+        "breakfast": "Sữa chua Hy Lạp trộn hạt chia và dâu tây lát mỏng",
+        "lunch": "Canh bí đao thịt bằm nấu hành lá, thịt heo nạc luộc cuốn rau xà lách chấm mắm nêm loãng",
+        "snack": "1 nắm nhỏ hạt bí đỏ sấy khô sấy thô không muối",
+        "dinner": "Cá chẽm hấp hành gừng tỏi cuốn bánh tráng rau sống, nhiều dưa chuột và dứa trái"
+      },
+      "day3": {
+        "breakfast": "Bánh mì đen phết bơ chín dầm muối tiêu, 1 quả trứng ốp la",
+        "lunch": "Ức gà luộc xé phay trộn bắp cải tím và ngò rí, canh cải xanh nấu tôm khô ngọt thanh",
+        "snack": "1 ly nước ép dưa chuột rau bina vắt cốt chanh tươi mát lạnh",
+        "dinner": "Đậu hũ non sốt cà chua tươi nấu chín kỹ kèm nấm đùi gà xào, cơm gạo lứt"
+      },
+      "day4": {
+        "breakfast": "Sinh tố bơ yến mạch chuối tiêu kết hợp cùng sữa hạnh nhân không đường",
+        "lunch": "Cơm gạo lứt ăn kèm tôm nõn rim nghệ tươi, súp bắp cải luộc lấy nước canh ngọt",
+        "snack": "1 quả cam sành ngọt ăn múi bổ sung nhiều Vitamin C tự nhiên",
+        "dinner": "Cá hồi nướng muối tiêu bằng nồi chiên không dầu kèm măng tây áp chảo"
+      },
+      "day5": {
+        "breakfast": "Cháo gạo lứt nấu thịt bằm rau củ băm nhỏ mịn dễ nuốt",
+        "lunch": "Canh kim chi nấu đậu hũ nấm hương, ức gà xào ớt chuông ba màu rực rỡ",
+        "snack": "1 tách trà ô long nguyên bản mát gan nhẹ nhàng",
+        "dinner": "Cá rô phi hấp xả cuốn rau rừng xà lách dưa leo, canh rau ngót nấu thịt băm"
+      },
+      "day6": {
+        "breakfast": "Sữa chua Hy Lạp không đường trộn yến mạch nướng và việt quất khô",
+        "lunch": "Mì gạo lứt nấu ức gà rau cải cúc súp nóng, canh chua chay đậu hũ non",
+        "snack": "1/2 quả bưởi ngọt bóc vỏ giữ nguyên múi tép nước",
+        "dinner": "Thịt bò nạc xào bông cải xanh tỏi hành, canh bí đỏ nấu hạt sen thanh mát"
+      },
+      "day7": {
+        "breakfast": "2 quả trứng luộc lòng đào chấm muối tiêu, 1 củ khoai lang vàng luộc nhỏ",
+        "lunch": "Salad cá hồi quả bơ sốt chanh dây thanh đạm chống oxy hóa",
+        "snack": "1 ly trà Atisô cam thảo mát gan thải độc nội tiết tố",
+        "dinner": "Canh rong biển đậu hũ nấm kim châm ấm nồng, ức gà áp chảo sốt nghệ tỏi"
+      }
+    },
+    "dry": {
+      "day1": {
+        "breakfast": "Parfait yến mạch sữa chua việt quất hạt chia ngâm nở mịn",
+        "lunch": "Salad cá hồi bơ chín rưới dầu ô liu nguyên chất thơm béo đậm vị",
+        "snack": "1 nắm hạt hạnh nhân sấy giòn bùi (5-7 hạt)",
+        "dinner": "Canh súp bí đỏ hạt sen béo ngậy nước cốt dừa, ăn kèm bánh mì đen nướng giòn"
+      },
+      "day2": {
+        "breakfast": "Bánh mì đen kẹp cá hồi xông khói phết phô mai lát mỏng, quả bơ thái lát",
+        "lunch": "Ức gà nướng dầu ô liu tỏi, salad bắp cải trộn mayonnaise oliu, canh cải ngọt nấu thịt băm",
+        "snack": "Sinh tố việt quất lựu đỏ hạt chia cấp nước đàn hồi cho da khô",
+        "dinner": "Thịt ba chỉ luộc mỏng cuốn rau sống và bơ sáp chấm nước mắm tỏi ớt chua ngọt"
+      },
+      "day3": {
+        "breakfast": "Trứng khuấy bơ (Scrambled eggs with butter), 1 ly sữa hạt hạnh nhân ấm",
+        "lunch": "Cá thu kho tộ rim nước dừa tươi béo, canh rau đay mồng tơi nấu cua đồng mát da",
+        "snack": "1 hũ sữa chua Hy Lạp trộn mật ong và hạt điều rang thơm",
+        "dinner": "Cơm gạo lứt ăn kèm sườn heo nạc ram sả ớt ngọt, salad cà chua bi dầu giấm bơ"
+      },
+      "day4": {
+        "breakfast": "Yến mạch ngâm qua đêm (Overnight oats) với sữa dừa tươi, hạt điều và chuối lát",
+        "lunch": "Tôm sú hấp bia chấm muối tiêu chanh, rau cải bó xôi xào dầu ô liu tỏi thơm",
+        "snack": "1/2 quả bơ sáp dầm thìa với chút sữa đặc ít đường hoặc sữa dừa",
+        "dinner": "Cá hồi áp chảo sốt bơ chanh tỏi, canh khoai tây cà rốt sườn non mềm béo"
+      },
+      "day5": {
+        "breakfast": "Bánh pancake yến mạch chuối phết mật ong rừng nguyên chất ngọt thơm",
+        "lunch": "Canh súp gà nấu nấm hương bắp ngọt bùi, trứng cuộn phô mai mềm mịn",
+        "snack": "1 nắm hạt óc chó giòn bùi cung cấp ALA thực vật tuyệt vời",
+        "dinner": "Thịt bò filet mignon áp chảo rưới dầu oliu tỏi rosemary, salad củ cải đỏ bơ xiên"
+      },
+      "day6": {
+        "breakfast": "Trứng ốp la lòng đào kèm xúc xích ức gà sạch, 1 quả cà chua nướng",
+        "lunch": "Mì Ý sốt kem nấm gà áp chảo béo thơm cung cấp lipid dưỡng ẩm",
+        "snack": "1 cốc sinh tố dâu tây chuối tiêu xay sữa tươi không đường kem béo",
+        "dinner": "Canh bí đỏ hầm xương heo tơi bùi, tôm nõn xào măng tây tỏi thơm ngon"
+      },
+      "day7": {
+        "breakfast": "1 củ khoai lang hấp cỡ vừa phết bơ thực vật thơm lừng, 1 quả trứng luộc",
+        "lunch": "Salad cá hồi bơ chín trộn dầu ô liu và giấm balsamic nho đen",
+        "snack": "1 hũ sữa chua Hy Lạp không đường trộn hạt dẻ cười đập nhỏ",
+        "dinner": "Súp bí đỏ hạt sen cốt dừa béo mịn nồng nàn, ức gà áp chảo sốt nghệ mật ong"
+      }
+    },
+    "combination": {
+      "day1": {
+        "breakfast": "Bánh mì đen phết bơ chín nghiền tỏi tiêu, 1 quả trứng ốp la vừa chín tới",
+        "lunch": "Canh rong biển đậu hũ nấm kim châm, ức gà áp chảo sốt nghệ tỏi kháng viêm",
+        "snack": "1 ly sinh tố collagen việt quất lựu đỏ hạt chia cấp ẩm vùng khô ngừa dầu vùng chữ T",
+        "dinner": "Cá thu sốt cà chua chín kỹ đậm vị tỏi hành, cơm gạo lứt dẻo dai"
+      },
+      "day2": {
+        "breakfast": "Sữa chua Hy Lạp trộn yến mạch cán và quả mâm xôi ngọt chua hài hòa",
+        "lunch": "Mực xào hành tây cần tỏi tiêu thơm lừng, canh mướp đắng nhồi thịt nạc thanh mát da",
+        "snack": "1 quả táo xanh thái lát kẹp một chút bơ đậu phộng tự nhiên ít muối",
+        "dinner": "Cá chẽm nướng giấy bạc hành gừng tỏi ăn kèm bún gạo lứt và nhiều rau thơm dưa leo"
+      },
+      "day3": {
+        "breakfast": "Cháo yến mạch tôm bằm rắc hành ngò tiêu súp ấm bụng buổi sáng",
+        "lunch": "Canh cải ngọt nấu tôm khô thơm, bò nạc né tỏi áp chảo cùng ớt chuông giòn ngọt",
+        "snack": "1 nắm nhỏ hạt hạnh nhân sấy mộc không tẩm gia vị muối đường",
+        "dinner": "Salad cá hồi bơ sốt chanh dây hòa quyện chất béo tốt và vitamin kháng viêm"
+      },
+      "day4": {
+        "breakfast": "Bánh pancake chuối yến mạch rưới một chút mật ong rừng dịu nhẹ ngọt",
+        "lunch": "Đậu hũ dồn thịt nạc hấp chín rưới nước tương nhạt tỏi hành, canh cải xanh nấu nấm",
+        "snack": "1 ly nước ép bưởi cam sành vắt nguyên múi tép nước",
+        "dinner": "Ức gà nướng chanh sả thơm giòn bằng nồi chiên, súp lơ xanh hấp giòn ngọt"
+      },
+      "day5": {
+        "breakfast": "Trứng cuộn hành tây nấm kim châm mềm mại, 1 củ khoai lang luộc nhỏ ngon",
+        "lunch": "Cơm gạo lứt ăn kèm cá hồi áp chảo, canh bí đao sườn non ngọt nước mát da",
+        "snack": "1 ly trà Atisô cam thảo ấm áp thanh nhiệt cơ thể mát gan",
+        "dinner": "Tôm nõn rim nghệ tỏi mặn ngọt thanh nhẹ, đậu cô ve luộc chấm trứng dầm nước tương"
+      },
+      "day6": {
+        "breakfast": "Sữa chua không đường trộn hạt chia quả mọng việt quất ngọt thơm",
+        "lunch": "Mì gạo lứt nước lèo ức gà nấm hương nóng hổi xua bớt bã nhờn, cải thìa luộc",
+        "snack": "1 nắm hạt điều thô rang sấy không muối tốt cho màng lipid da",
+        "dinner": "Canh súp bí đỏ hạt sen cốt dừa ấm cúng phục hồi đàn hồi da xỉn màu"
+      },
+      "day7": {
+        "breakfast": "Bánh mì nguyên cám kẹp trứng chiên hành xắt mỏng, dưa chuột lát giòn",
+        "lunch": "Salad cá hồi bơ chín trộn dầu ô liu sốt chanh dây chống lão hóa",
+        "snack": "1 ly nước ép cần tây táo xanh dưa leo mát lạnh giải độc mụn ẩn",
+        "dinner": "Canh đậu hũ rong biển mát da, ức gà áp chảo nghệ tỏi ăn cùng bông cải luộc"
+      }
+    },
+    "sensitive": {
+      "day1": {
+        "breakfast": "Cháo yến mạch nấu hạt sen tươi nghiền mịn xoa dịu đường ruột và da đỏ",
+        "lunch": "Canh đậu hũ rong biển mát ruột kháng viêm tấy đỏ da nhạy cảm dị ứng",
+        "snack": "1 ly nước ép dưa chuột táo xanh ngọt thanh thanh mát lành lành",
+        "dinner": "Ức gà áp chảo nghệ tỏi ăn kèm bí ngòi hấp chín kỹ mềm mại"
+      },
+      "day2": {
+        "breakfast": "Sinh tố bơ sữa dừa chuối chín sữa hạnh nhân béo ngậy không đường dịu nhẹ",
+        "lunch": "Canh súp khoai tây cà rốt nấu sườn non hầm thật mềm rã xương ngọt mát, cá hấp gừng",
+        "snack": "1 hũ sữa chua Hy Lạp không đường trộn yến mạch cán dẹt mềm",
+        "dinner": "Đậu hũ non hấp hành hoa rưới nước tương nhạt tỏi băm nhuyễn mịn, cơm gạo lứt"
+      },
+      "day3": {
+        "breakfast": "2 quả trứng luộc chín kỹ cắt đôi chấm xíu muối tiêu, 1 ly sữa yến mạch ấm",
+        "lunch": "Cá tuyết hoặc cá lóc hấp hành củ gừng ấm nóng ruột, canh rau bina thịt nạc xay ngọt",
+        "snack": "1 nắm hạt óc chó chín bùi nhỏ chứa nhiều ALA kháng viêm tế bào da",
+        "dinner": "Salad cá hồi áp chảo chín vừa phối quả bơ chín ngậy rưới dầu ô liu nguyên bản"
+      },
+      "day4": {
+        "breakfast": "Bột yến mạch yến sào chưng đường phèn hạt sen bồi bổ màng biểu bì nâng cao đề kháng",
+        "lunch": "Canh bí đỏ hầm xương mềm, thịt lợn nạc vai luộc thái mỏng cuốn lá lốt ăn",
+        "snack": "1 ly trà hoa cúc mật ong ấm dịu ngăn chặn histamine gây ngứa đỏ da",
+        "dinner": "Ức gà hấp hành tỏi thơm rưới dầu mè thơm phức ăn cùng bông cải xanh luộc chín"
+      },
+      "day5": {
+        "breakfast": "Sữa chua không đường trộn dâu tây quả mọng cắt nhỏ ngâm mật ong ngọt nhẹ",
+        "lunch": "Cơm gạo lứt mềm ăn kèm canh mướp nấu tôm bằm, đậu hũ non xào nấm rơm",
+        "snack": "1 ly nước ép lựu đỏ nguyên chất làm giảm sưng tấy mao mạch da",
+        "dinner": "Cá hồi áp chảo vừa chín tới sốt chanh leo ngọt chua, canh cải bó xôi thịt bằm"
+      },
+      "day6": {
+        "breakfast": "Bánh pancake khoai lang vàng yến mạch chiên áp chảo không dầu mỡ",
+        "lunch": "Canh súp gà hạt sen bồi bổ giấc ngủ an thần dịu thần kinh giảm tiết bã nhờn",
+        "snack": "1 nắm nhỏ hạt bí ngô thô bóc vỏ giàu kẽm phục hồi mô liên kết",
+        "dinner": "Thịt bò thăn luộc thái lát mỏng xào súp lơ xanh hành tây, canh bí xanh ngọt mát"
+      },
+      "day7": {
+        "breakfast": "Cháo yến mạch tôm thịt băm nhuyễn mịn rắc ít hành ngò thơm nhẹ dạ dày",
+        "lunch": "Salad cá hồi bơ chín trộn dầu ô liu nhẹ nhàng kháng histamine",
+        "snack": "1 ly trà Atisô cam thảo ngọt mát dịu cổ họng mát gan",
+        "dinner": "Canh rong biển đậu hũ nấm hương thanh khiết phục hồi thể trạng da nhạy cảm"
+      }
+    },
+    "acne-prone": {
+      "day1": {
+        "breakfast": "Cháo yến mạch nấu ức gà xé phay rắc tinh bột nghệ và hành lá",
+        "lunch": "Canh đậu hũ non rong biển nấm kim châm mát da kháng viêm, cá hấp hành",
+        "snack": "1 ly nước ép trị mụn xanh cần tây dưa leo rau bina táo cốt chanh",
+        "dinner": "Ức gà áp chảo sốt nghệ tỏi tiêu ăn kèm súp lơ xanh luộc chấm tương nhạt"
+      },
+      "day2": {
+        "breakfast": "Sữa chua không đường trộn hạt chia và việt quất tươi mọng nước ngọt tự nhiên",
+        "lunch": "Canh mướp đắng nhồi thịt nạc thanh mát bài độc tố gan, cá điêu hồng chiên không dầu",
+        "snack": "1 tách trà xanh ấm ngâm lá bạc hà kháng khuẩn kiểm soát nhờn",
+        "dinner": "Đậu hũ non sốt cà chua tỏi chín kỹ ăn kèm salad dưa leo cà chua bi"
+      },
+      "day3": {
+        "breakfast": "Bánh mì đen phết quả bơ chín dầm nhuyễn tỏi, 1 quả trứng luộc chín",
+        "lunch": "Cơm gạo lứt ăn kèm tôm nõn xào nghệ và hành tây, canh cải bẹ xanh gừng ấm",
+        "snack": "1 ly trà Atisô bông tươi cam thảo thanh lọc giải độc mụn nội tiết",
+        "dinner": "Cá thu áp chảo sả ớt ngọt vừa chín, súp lơ xanh súp lơ trắng luộc chín giòn"
+      },
+      "day4": {
+        "breakfast": "Sinh tố bơ hạt chia sữa hạnh nhân không đường giàu kẽm kháng viêm mụn bọc",
+        "lunch": "Canh cải ngọt nấu tôm khô thanh mát, thịt bò nạc xào sả hành tỏi tiêu cơm gạo lứt",
+        "snack": "1 quả ổi ngọt gọt vỏ ăn trực tiếp giàu vitamin C làm mờ thâm mụn sẹo",
+        "dinner": "Cá hồi hấp nấm và gừng tươi cuốn cải bẹ xanh chấm xíu xì dầu nhạt"
+      },
+      "day5": {
+        "breakfast": "Cháo yến mạch nấu bí đỏ hạt sen xắt nhỏ hạt tiêu thơm ấm lòng bàn tay",
+        "lunch": "Đậu phụ non hấp hành lá gừng, ức gà luộc trộn hành tây ngò gai, canh rau ngót",
+        "snack": "1 ly nước ép dưa leo cần tây nguyên chất không đường",
+        "dinner": "Thịt heo nạc thăn ram sả ớt nhạt cơm gạo lứt, canh chua chay rong biển đậu hũ"
+      },
+      "day6": {
+        "breakfast": "Sữa chua Hy Lạp trộn yến mạch cán dẹt và dâu tây thái lát mỏng mát",
+        "lunch": "Mì gạo lứt nước ức gà hành tây nấm kim châm nóng hổi tiêu viêm, súp cải thìa luộc",
+        "snack": "1 nắm hạt óc chó chín bùi (3-4 hạt) kháng khuẩn vết sẹo mụn",
+        "dinner": "Cơm gạo lứt cá hồi áp chảo sốt nghệ cam tỏi chua ngọt kháng viêm kích thích collagen"
+      },
+      "day7": {
+        "breakfast": "2 quả trứng luộc chấm xíu muối tiêu hạt, 1 củ khoai lang hấp nhỏ bùi ngọt",
+        "lunch": "Salad cá hồi bơ chanh dây thơm ngậy giàu axit béo tốt đẩy cồi mụn ẩn",
+        "snack": "1 ly trà hoa cúc mật ong ấm mát gan giải nhiệt điều hòa nội tiết",
+        "dinner": "Canh rong biển đậu hũ non nấm hương, ức gà áp chảo nghệ tỏi cùng bí ngòi hấp"
+      }
+    }
+  },
+  "loggableFoods": [
+    {"id": "salmon", "name": "Cá hồi", "category": "protein-healthy", "score": 15, "benefits": "Kháng viêm mạnh mẽ nhờ giàu Omega-3, phục hồi màng lipid, rất tốt cho da khô và da mụn."},
+    {"id": "avocado", "name": "Quả bơ", "category": "fat-healthy", "score": 15, "benefits": "Cấp ẩm sâu, giàu vitamin E chống lão hóa và bảo vệ da trước tác hại môi trường."},
+    {"id": "green-tea", "name": "Trà xanh", "category": "beverage-healthy", "score": 12, "benefits": "Chứa EGCG chống oxy hóa cực mạnh, kiểm soát dầu thừa và hỗ trợ gom cồi mụn."},
+    {"id": "tomato", "name": "Cà chua", "category": "veggie-healthy", "score": 10, "benefits": "Giàu Lycopene tăng khả năng chống nắng nội sinh và hỗ trợ làm mờ các vết thâm."},
+    {"id": "blueberries", "name": "Quả việt quất", "category": "fruit-healthy", "score": 15, "benefits": "Chứa lượng Anthocyanin khổng lồ giúp bảo vệ collagen và kích thích trẻ hóa tế bào da."},
+    {"id": "sweet-potato", "name": "Khoai lang", "category": "carb-healthy", "score": 10, "benefits": "Beta-carotene chuyển hóa thành Vitamin A giúp đẩy nhanh tái sinh lớp da sần sùi."},
+    {"id": "spinach", "name": "Rau bina (Cải bó xôi)", "category": "veggie-healthy", "score": 12, "benefits": "Giàu sắt, folate và các vitamin kháng viêm giúp da nhanh liền vết thương sau mụn."},
+    {"id": "almonds", "name": "Hạt hạnh nhân", "category": "fat-healthy", "score": 10, "benefits": "Cung cấp Vitamin E dồi dào củng cố lớp màng dưỡng ẩm tự nhiên chống mất nước."},
+    {"id": "yogurt", "name": "Sữa chua không đường", "category": "dairy-healthy", "score": 10, "benefits": "Bổ sung probiotic tăng đề kháng đường ruột, gián tiếp ngăn ngừa mụn nội tiết tấy đỏ."},
+    {"id": "orange", "name": "Quả cam", "category": "fruit-healthy", "score": 10, "benefits": "Giàu Vitamin C hỗ trợ tổng hợp collagen tự nhiên, dưỡng sáng da và giảm thâm nám."},
+    {"id": "pomegranate", "name": "Quả lựu đỏ", "category": "fruit-healthy", "score": 15, "benefits": "Siêu kháng oxy hóa, duy trì các sợi elastin săn chắc ngăn ngừa chảy xệ cơ mặt."},
+    {"id": "walnuts", "name": "Quả óc chó", "category": "fat-healthy", "score": 12, "benefits": "Nguồn Omega-3 thực vật dồi dào và kẽm hỗ trợ gom cồi mụn trứng cá nhanh chóng."},
+    {"id": "cucumber", "name": "Dưa chuột", "category": "veggie-healthy", "score": 8, "benefits": "Cấp nước biểu bì tức thì nhờ lượng nước cao, làm mát cơ thể giảm tiết dầu thừa."},
+    {"id": "tofu", "name": "Đậu phụ (Đậu hũ)", "category": "protein-healthy", "score": 10, "benefits": "Giàu Isoflavone cân bằng nội tiết tố, ngăn chặn tuyến dầu bùng phát sinh mụn trứng cá."},
+    {"id": "turmeric", "name": "Tinh bột nghệ", "category": "spice-healthy", "score": 12, "benefits": "Curcumin chống viêm tấy mạnh, thúc đẩy liền sẹo mụn trứng cá và làm sáng sắc tố da."},
+    {"id": "water", "name": "Nước lọc tinh khiết", "category": "beverage-healthy", "score": 5, "benefits": "Cần thiết để thải độc tế bào, giữ ẩm tự nhiên và duy trì độ đàn hồi của da."},
+    {"id": "kombucha", "name": "Kombucha ít đường", "category": "beverage-healthy", "score": 8, "benefits": "Trà lên men hỗ trợ tiêu hóa tốt, giảm tải các phản ứng dị ứng kích ứng trên biểu bì da."},
+    {"id": "broccoli", "name": "Bông cải xanh (Súp lơ)", "category": "veggie-healthy", "score": 10, "benefits": "Giàu Vitamin C, K, A giúp giảm đỏ da, hỗ trợ bảo vệ da khỏi tia cực tím."},
+    {"id": "strawberries", "name": "Quả dâu tây", "category": "fruit-healthy", "score": 12, "benefits": "Cung cấp lượng Vitamin C dồi dào, axit ellagic hạn chế phá hủy collagen bởi tia cực tím."},
+    {"id": "chia-seeds", "name": "Hạt chia", "category": "fat-healthy", "score": 10, "benefits": "Giàu Omega-3 thực vật và chất xơ, giúp ổn định đường huyết, gián tiếp ngừa mụn trứng cá."},
+    {"id": "oatmeal", "name": "Yến mạch cán dẹt", "category": "carb-healthy", "score": 10, "benefits": "Chất Avenanthramides giúp giảm sưng viêm, dưỡng ẩm cực tốt đối với da khô, chàm nhẹ."},
+    
+    {"id": "milk-tea", "name": "Trà sữa", "category": "junk-food", "score": -20, "negatives": "Đường tinh luyện cao gây glycation (lão hóa đường), sữa bò kích thích bã nhờn sinh mụn bọc."},
+    {"id": "fried-chicken", "name": "Gà rán", "category": "junk-food", "score": -15, "negatives": "Chất béo chuyển hóa làm gia tăng phản ứng viêm, tắc nghẽn chân lông khiến mụn sưng to hơn."},
+    {"id": "sugar-candy", "name": "Bánh kẹo ngọt / Đường cát", "category": "sugar-excess", "score": -15, "negatives": "Tăng nhanh insulin đột ngột, tăng tiết bã nhờn và tạo môi trường cho vi khuẩn P.acnes sinh sôi."},
+    {"id": "instant-noodles", "name": "Mì ăn liền", "category": "junk-food", "score": -12, "negatives": "Lượng muối cao gây sưng húp mặt và giữ nước, tinh bột GI cao kích thích bùng mụn cám sần."},
+    {"id": "alcohol-beer", "name": "Rượu / Bia / Đồ uống có cồn", "category": "stimulant", "score": -18, "negatives": "Hút nước từ tế bào khiến da khô sạm bong tróc, làm giãn mao mạch gây đỏ da kích ứng nhạy cảm."},
+    {"id": "cow-milk", "name": "Sữa bò nguyên kem / Phô mai béo", "category": "dairy-excess", "score": -12, "negatives": "Nội tiết tố IGF-1 kích hoạt tuyến bã nhờn, kích thích sừng hóa nang lông sinh mụn ẩn bọc."},
+    {"id": "white-bread", "name": "Bánh mì trắng / Bột mì tinh chế", "category": "carb-excess", "score": -10, "negatives": "Làm tăng lượng đường huyết nhanh chóng dẫn đến phản ứng viêm cấp tính, làm mụn sưng đỏ."},
+    {"id": "canned-meat", "name": "Thịt hộp / Thịt xông khói", "category": "junk-food", "score": -12, "negatives": "Nhiều muối nitrat phá hủy liên kết elastin tự nhiên, làm da nhanh chảy xệ và xuất hiện nếp nhăn."},
+    {"id": "soft-drink", "name": "Nước ngọt có ga / Nước ngọt đóng chai", "category": "sugar-excess", "score": -18, "negatives": "Fructose cao phá hủy collagen, giảm độ đàn hồi làm da xỉn màu và mất sức sống."},
+    {"id": "chili-spicy", "name": "Đồ ăn quá cay nóng / Mì cay", "category": "stimulant", "score": -10, "negatives": "Tăng tuần hoàn đột ngột gây nóng trong, kích mồ hôi chất nhờn gây bít tắc sinh mụn viêm tấy."},
+    {"id": "pizza-fastfood", "name": "Pizza / Hamburger", "category": "junk-food", "score": -15, "negatives": "Tổ hợp chất béo bão hòa, sữa béo, tinh bột GI cao thúc đẩy lão hóa da và sinh mụn bọc sưng."},
+    {"id": "chips", "name": "Snack khoai tây chiên", "category": "junk-food", "score": -12, "negatives": "Nhiều muối giữ nước gây bọng mắt xệ má, chất béo xấu oxy hóa thúc đẩy lão hóa sớm."}
+  ]
+}

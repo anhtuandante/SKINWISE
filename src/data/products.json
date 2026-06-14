@@ -1,8 +1,8 @@
 {
   "metadata": {
     "version": "2.1",
-    "note": "Danh sách 65 sản phẩm thực tế hot nhất tại thị trường Việt Nam",
-    "totalProducts": 105
+    "note": "Danh sách 171 sản phẩm thực tế hot nhất tại thị trường Việt Nam",
+    "totalProducts": 171
   },
   "products": [
     {
@@ -2453,6 +2453,1866 @@
       ],
       "shopeeUrl": "https://shopee.vn/search?keyword=laneige%20cica%20sleeping%20mask",
       "image": "/images/products/laneige-cica-sleeping-mask.jpg"
+    },
+    {
+      "id": "la-roche-posay-effaclar-duo-plus-m",
+      "name": "La Roche-Posay Effaclar DUO+M Anti-Acne Corrective Unclogging Care",
+      "brand": "La Roche-Posay",
+      "price": 480000,
+      "type": "skincare",
+      "category": "moisturizer",
+      "skinTypes": [
+        "oily",
+        "acne-prone",
+        "combination"
+      ],
+      "concerns": [
+        "acne",
+        "pores",
+        "dark-spots"
+      ],
+      "texture": "gel-cream",
+      "size": "40ml",
+      "timeOfDay": "both",
+      "phValue": 5.5,
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=La%20Roche-Posay%20Effaclar%20DUO%2BM",
+      "image": "/images/products/la-roche-posay-effaclar-duo-plus-m.jpg",
+      "ingredients": [
+        "niacinamide",
+        "bha",
+        "glycerin"
+      ]
+    },
+    {
+      "id": "la-roche-posay-toleriane-dermo-cleanser",
+      "name": "La Roche-Posay Toleriane Dermo-Cleanser",
+      "brand": "La Roche-Posay",
+      "price": 390000,
+      "type": "skincare",
+      "category": "cleanser",
+      "skinTypes": [
+        "sensitive",
+        "dry",
+        "normal",
+        "combination"
+      ],
+      "concerns": [
+        "dryness"
+      ],
+      "texture": "milk",
+      "size": "200ml",
+      "timeOfDay": "both",
+      "phValue": 5.5,
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=La%20Roche-Posay%20Toleriane%20Dermo-Cleanser",
+      "image": "/images/products/la-roche-posay-toleriane-dermo-cleanser.jpg",
+      "ingredients": [
+        "glycerin"
+      ]
+    },
+    {
+      "id": "la-roche-posay-anthelios-uvmune-400-fluid-spf50",
+      "name": "La Roche-Posay Anthelios UVMune 400 Invisible Fluid SPF50+",
+      "brand": "La Roche-Posay",
+      "price": 580000,
+      "type": "skincare",
+      "category": "sunscreen",
+      "skinTypes": [
+        "all",
+        "sensitive"
+      ],
+      "concerns": [
+        "aging",
+        "dark-spots"
+      ],
+      "texture": "liquid",
+      "size": "50ml",
+      "timeOfDay": "AM",
+      "spf": 50,
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=La%20Roche-Posay%20Anthelios%20UVMune%20400%20Invisible%20Fluid%20SPF50%2B",
+      "image": "/images/products/la-roche-posay-anthelios-uvmune-400-fluid-spf50.jpg",
+      "ingredients": [
+        "titanium-dioxide",
+        "zinc-oxide",
+        "glycerin",
+        "dimethicone"
+      ]
+    },
+    {
+      "id": "la-roche-posay-cicaplast-baum-b5",
+      "name": "La Roche-Posay Cicaplast Baume B5 Soothing Repairing Balm",
+      "brand": "La Roche-Posay",
+      "price": 350000,
+      "type": "skincare",
+      "category": "moisturizer",
+      "skinTypes": [
+        "sensitive",
+        "dry",
+        "all"
+      ],
+      "concerns": [
+        "dryness"
+      ],
+      "texture": "balm",
+      "size": "40ml",
+      "timeOfDay": "both",
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=La%20Roche-Posay%20Cicaplast%20Baume%20B5",
+      "image": "/images/products/la-roche-posay-cicaplast-baum-b5.jpg",
+      "ingredients": [
+        "glycerin",
+        "dimethicone"
+      ]
+    },
+    {
+      "id": "cerave-hydrating-cleanser",
+      "name": "CeraVe Hydrating Cleanser for Normal to Dry Skin",
+      "brand": "CeraVe",
+      "price": 320000,
+      "type": "skincare",
+      "category": "cleanser",
+      "skinTypes": [
+        "normal",
+        "dry",
+        "sensitive",
+        "combination"
+      ],
+      "concerns": [
+        "dryness"
+      ],
+      "texture": "cream",
+      "size": "236ml",
+      "timeOfDay": "both",
+      "phValue": 5.5,
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=CeraVe%20Hydrating%20Cleanser",
+      "image": "/images/products/cerave-hydrating-cleanser.jpg",
+      "ingredients": [
+        "ceramide",
+        "hyaluronic-acid",
+        "glycerin"
+      ]
+    },
+    {
+      "id": "cerave-sa-cleanser",
+      "name": "CeraVe SA Cleanser for Rough & Bumpy Skin",
+      "brand": "CeraVe",
+      "price": 300000,
+      "type": "skincare",
+      "category": "cleanser",
+      "skinTypes": [
+        "oily",
+        "acne-prone",
+        "combination"
+      ],
+      "concerns": [
+        "acne",
+        "pores",
+        "dullness"
+      ],
+      "texture": "gel",
+      "size": "236ml",
+      "timeOfDay": "both",
+      "phValue": 5,
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=CeraVe%20SA%20Cleanser",
+      "image": "/images/products/cerave-sa-cleanser.jpg",
+      "ingredients": [
+        "bha",
+        "ceramide",
+        "hyaluronic-acid"
+      ]
+    },
+    {
+      "id": "cerave-pm-facial-moisturizing-lotion",
+      "name": "CeraVe PM Facial Moisturizing Lotion",
+      "brand": "CeraVe",
+      "price": 380000,
+      "type": "skincare",
+      "category": "moisturizer",
+      "skinTypes": [
+        "normal",
+        "oily",
+        "combination",
+        "sensitive"
+      ],
+      "concerns": [
+        "dryness",
+        "aging"
+      ],
+      "texture": "lotion",
+      "size": "89ml",
+      "timeOfDay": "PM",
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=CeraVe%20PM%20Facial%20Moisturizing%20Lotion",
+      "image": "/images/products/cerave-pm-facial-moisturizing-lotion.jpg",
+      "ingredients": [
+        "niacinamide",
+        "hyaluronic-acid",
+        "ceramide",
+        "glycerin",
+        "dimethicone"
+      ]
+    },
+    {
+      "id": "cocoon-turmeric-cleansing-mask",
+      "name": "Cocoon Turmeric Cleansing Mask",
+      "brand": "Cocoon",
+      "price": 185000,
+      "type": "skincare",
+      "category": "mask",
+      "skinTypes": [
+        "oily",
+        "combination",
+        "acne-prone",
+        "normal"
+      ],
+      "concerns": [
+        "acne",
+        "dark-spots",
+        "dullness"
+      ],
+      "texture": "clay",
+      "size": "100ml",
+      "timeOfDay": "PM",
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Cocoon%20Turmeric%20Cleansing%20Mask",
+      "image": "/images/products/cocoon-turmeric-cleansing-mask.jpg",
+      "ingredients": [
+        "turmeric",
+        "glycerin"
+      ]
+    },
+    {
+      "id": "cocoon-daklak-coffee-body-polish",
+      "name": "Cocoon Dak Lak Coffee Body Polish",
+      "brand": "Cocoon",
+      "price": 155000,
+      "type": "skincare",
+      "category": "exfoliant",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "dullness",
+        "dryness"
+      ],
+      "texture": "scrub",
+      "size": "200ml",
+      "timeOfDay": "PM",
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Cocoon%20Dak%20Lak%20Coffee%20Body%20Polish",
+      "image": "/images/products/cocoon-daklak-coffee-body-polish.jpg",
+      "ingredients": [
+        "glycerin",
+        "vitamin-e"
+      ]
+    },
+    {
+      "id": "cocoon-grapefruit-facial-cleanser",
+      "name": "Cocoon Grapefruit Facial Cleanser",
+      "brand": "Cocoon",
+      "price": 170000,
+      "type": "skincare",
+      "category": "cleanser",
+      "skinTypes": [
+        "oily",
+        "combination"
+      ],
+      "concerns": [
+        "pores",
+        "acne"
+      ],
+      "texture": "gel",
+      "size": "140ml",
+      "timeOfDay": "both",
+      "phValue": 5.5,
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Cocoon%20Grapefruit%20Facial%20Cleanser",
+      "image": "/images/products/cocoon-grapefruit-facial-cleanser.jpg",
+      "ingredients": [
+        "vitamin-c",
+        "glycerin"
+      ]
+    },
+    {
+      "id": "cocoon-rose-water-toner",
+      "name": "Cocoon Rose Water Toner",
+      "brand": "Cocoon",
+      "price": 195000,
+      "type": "skincare",
+      "category": "toner",
+      "skinTypes": [
+        "normal",
+        "dry",
+        "sensitive"
+      ],
+      "concerns": [
+        "dryness",
+        "dullness"
+      ],
+      "texture": "liquid",
+      "size": "140ml",
+      "timeOfDay": "both",
+      "phValue": 5.5,
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Cocoon%20Rose%20Water%20Toner",
+      "image": "/images/products/cocoon-rose-water-toner.jpg",
+      "ingredients": [
+        "glycerin"
+      ]
+    },
+    {
+      "id": "the-ordinary-aha-30-bha-2-peeling-solution",
+      "name": "The Ordinary AHA 30% + BHA 2% Peeling Solution",
+      "brand": "The Ordinary",
+      "price": 220000,
+      "type": "skincare",
+      "category": "exfoliant",
+      "skinTypes": [
+        "oily",
+        "combination",
+        "acne-prone"
+      ],
+      "concerns": [
+        "acne",
+        "pores",
+        "dullness"
+      ],
+      "texture": "liquid",
+      "size": "30ml",
+      "timeOfDay": "PM",
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=The%20Ordinary%20AHA%2030%25%20%2B%20BHA%202%25%20Peeling%20Solution",
+      "image": "/images/products/the-ordinary-aha-30-bha-2-peeling-solution.jpg",
+      "ingredients": [
+        "aha",
+        "bha",
+        "glycerin"
+      ]
+    },
+    {
+      "id": "the-ordinary-retinol-0-5-in-squalane",
+      "name": "The Ordinary Retinol 0.5% in Squalane",
+      "brand": "The Ordinary",
+      "price": 250000,
+      "type": "skincare",
+      "category": "serum",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "aging",
+        "dark-spots"
+      ],
+      "texture": "oil",
+      "size": "30ml",
+      "timeOfDay": "PM",
+      "isSiliconeBased": false,
+      "isWaterBased": false,
+      "shopeeUrl": "https://shopee.vn/search?keyword=The%20Ordinary%20Retinol%200.5%25%20in%20Squalane",
+      "image": "/images/products/the-ordinary-retinol-0-5-in-squalane.jpg",
+      "ingredients": [
+        "retinol",
+        "squalane"
+      ]
+    },
+    {
+      "id": "paulas-choice-niacinamide-20-treatment",
+      "name": "Paula's Choice Clinical Niacinamide 20% Treatment",
+      "brand": "Paula's Choice",
+      "price": 1100000,
+      "type": "skincare",
+      "category": "serum",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "pores",
+        "dark-spots"
+      ],
+      "texture": "liquid",
+      "size": "20ml",
+      "timeOfDay": "PM",
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Paula%27s%20Choice%20Clinical%20Niacinamide%2020%25%20Treatment",
+      "image": "/images/products/paulas-choice-niacinamide-20-treatment.jpg",
+      "ingredients": [
+        "niacinamide",
+        "glycerin",
+        "dimethicone"
+      ]
+    },
+    {
+      "id": "obagi-professional-c-serum-15",
+      "name": "Obagi Professional-C Serum 15%",
+      "brand": "Obagi",
+      "price": 1200000,
+      "type": "skincare",
+      "category": "serum",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "dark-spots",
+        "aging",
+        "dullness"
+      ],
+      "texture": "serum",
+      "size": "30ml",
+      "timeOfDay": "AM",
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Obagi%20Professional-C%20Serum%2015%25",
+      "image": "/images/products/obagi-professional-c-serum-15.jpg",
+      "ingredients": [
+        "vitamin-c"
+      ]
+    },
+    {
+      "id": "obagi-retinol-0-5-cream",
+      "name": "Obagi360 Retinol 0.5 Cream",
+      "brand": "Obagi",
+      "price": 950000,
+      "type": "skincare",
+      "category": "serum",
+      "skinTypes": [
+        "normal",
+        "oily",
+        "combination"
+      ],
+      "concerns": [
+        "aging",
+        "acne",
+        "dark-spots"
+      ],
+      "texture": "cream",
+      "size": "28g",
+      "timeOfDay": "PM",
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Obagi360%20Retinol%200.5%20Cream",
+      "image": "/images/products/obagi-retinol-0-5-cream.jpg",
+      "ingredients": [
+        "retinol",
+        "dimethicone",
+        "glycerin"
+      ]
+    },
+    {
+      "id": "obagi-nu-derm-foaming-gel",
+      "name": "Obagi Nu-Derm Foaming Gel Cleanser",
+      "brand": "Obagi",
+      "price": 700000,
+      "type": "skincare",
+      "category": "cleanser",
+      "skinTypes": [
+        "oily",
+        "normal"
+      ],
+      "concerns": [
+        "pores",
+        "acne"
+      ],
+      "texture": "gel",
+      "size": "200ml",
+      "timeOfDay": "both",
+      "phValue": 6,
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Obagi%20Nu-Derm%20Foaming%20Gel%20Cleanser",
+      "image": "/images/products/obagi-nu-derm-foaming-gel.jpg",
+      "ingredients": [
+        "glycerin"
+      ]
+    },
+    {
+      "id": "vichy-mineral-89-daily-booster",
+      "name": "Vichy Mineral 89 Daily Skin Booster",
+      "brand": "Vichy",
+      "price": 550000,
+      "type": "skincare",
+      "category": "serum",
+      "skinTypes": [
+        "all",
+        "sensitive"
+      ],
+      "concerns": [
+        "dryness",
+        "dullness"
+      ],
+      "texture": "gel",
+      "size": "50ml",
+      "timeOfDay": "both",
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Vichy%20Mineral%2089%20Daily%20Skin%20Booster",
+      "image": "/images/products/vichy-mineral-89-daily-booster.jpg",
+      "ingredients": [
+        "hyaluronic-acid",
+        "glycerin"
+      ]
+    },
+    {
+      "id": "vichy-capital-soleil-uv-age-daily-spf50",
+      "name": "Vichy Capital Soleil UV Age Daily SPF50+",
+      "brand": "Vichy",
+      "price": 620000,
+      "type": "skincare",
+      "category": "sunscreen",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "aging",
+        "dark-spots"
+      ],
+      "texture": "fluid",
+      "size": "40ml",
+      "timeOfDay": "AM",
+      "spf": 50,
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Vichy%20Capital%20Soleil%20UV%20Age%20Daily%20SPF50%2B",
+      "image": "/images/products/vichy-capital-soleil-uv-age-daily-spf50.jpg",
+      "ingredients": [
+        "niacinamide",
+        "vitamin-e",
+        "glycerin",
+        "dimethicone"
+      ]
+    },
+    {
+      "id": "vichy-normaderm-phytosolution-daily-care",
+      "name": "Vichy Normaderm Phytosolution Double-Correction Daily Care Moisturizer",
+      "brand": "Vichy",
+      "price": 490000,
+      "type": "skincare",
+      "category": "moisturizer",
+      "skinTypes": [
+        "oily",
+        "acne-prone"
+      ],
+      "concerns": [
+        "acne",
+        "pores"
+      ],
+      "texture": "gel-cream",
+      "size": "50ml",
+      "timeOfDay": "both",
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Vichy%20Normaderm%20Phytosolution%20Double-Correction%20Daily%20Care",
+      "image": "/images/products/vichy-normaderm-phytosolution-daily-care.jpg",
+      "ingredients": [
+        "bha",
+        "hyaluronic-acid",
+        "glycerin"
+      ]
+    },
+    {
+      "id": "anessa-perfect-uv-sunscreen-skincare-milk-spf50",
+      "name": "Anessa Perfect UV Sunscreen Skincare Milk SPF50+ PA++++",
+      "brand": "Anessa",
+      "price": 490000,
+      "type": "skincare",
+      "category": "sunscreen",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "dark-spots",
+        "aging"
+      ],
+      "texture": "milk",
+      "size": "60ml",
+      "timeOfDay": "AM",
+      "spf": 50,
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Anessa%20Perfect%20UV%20Sunscreen%20Skincare%20Milk",
+      "image": "/images/products/anessa-perfect-uv-sunscreen-skincare-milk-spf50.jpg",
+      "ingredients": [
+        "zinc-oxide",
+        "titanium-dioxide",
+        "glycerin",
+        "dimethicone",
+        "vitamin-e"
+      ]
+    },
+    {
+      "id": "anessa-mild-uv-sunscreen-gel-spf50",
+      "name": "Anessa Mild UV Sunscreen Gel SPF50+ PA++++",
+      "brand": "Anessa",
+      "price": 450000,
+      "type": "skincare",
+      "category": "sunscreen",
+      "skinTypes": [
+        "sensitive",
+        "dry",
+        "normal"
+      ],
+      "concerns": [
+        "dark-spots",
+        "aging"
+      ],
+      "texture": "gel",
+      "size": "90g",
+      "timeOfDay": "AM",
+      "spf": 50,
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Anessa%20Mild%20UV%20Sunscreen%20Gel",
+      "image": "/images/products/anessa-mild-uv-sunscreen-gel-spf50.jpg",
+      "ingredients": [
+        "glycerin",
+        "hyaluronic-acid",
+        "dimethicone"
+      ]
+    },
+    {
+      "id": "loreal-revitalift-hyaluronic-acid-serum",
+      "name": "L'Oréal Paris Revitalift 1.5% Hyaluronic Acid Serum",
+      "brand": "L'Oreal",
+      "price": 400000,
+      "type": "skincare",
+      "category": "serum",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "dryness",
+        "aging"
+      ],
+      "texture": "serum",
+      "size": "30ml",
+      "timeOfDay": "both",
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=L%27Or%C3%A9al%20Revitalift%20Hyaluronic%20Acid%20Serum",
+      "image": "/images/products/loreal-revitalift-hyaluronic-acid-serum.jpg",
+      "ingredients": [
+        "hyaluronic-acid",
+        "glycerin"
+      ]
+    },
+    {
+      "id": "loreal-glycolic-bright-serum",
+      "name": "L'Oréal Paris Glycolic-Bright Instant Glowing Serum",
+      "brand": "L'Oreal",
+      "price": 380000,
+      "type": "skincare",
+      "category": "serum",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "dark-spots",
+        "dullness"
+      ],
+      "texture": "serum",
+      "size": "30ml",
+      "timeOfDay": "PM",
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=L%27Or%C3%A9al%20Glycolic-Bright%20Instant%20Glowing%20Serum",
+      "image": "/images/products/loreal-glycolic-bright-serum.jpg",
+      "ingredients": [
+        "aha",
+        "niacinamide",
+        "glycerin"
+      ]
+    },
+    {
+      "id": "loreal-infallible-fresh-wear-foundation-24h",
+      "name": "L'Oréal Paris Infallible 24HR Fresh Wear Foundation",
+      "brand": "L'Oreal",
+      "price": 320000,
+      "type": "makeup",
+      "category": "base-makeup",
+      "skinTypes": [
+        "oily",
+        "combination",
+        "normal"
+      ],
+      "concerns": [
+        "dark-spots",
+        "pores"
+      ],
+      "texture": "liquid",
+      "size": "30ml",
+      "timeOfDay": "both",
+      "spf": 25,
+      "isSiliconeBased": true,
+      "isWaterBased": false,
+      "shopeeUrl": "https://shopee.vn/search?keyword=L%27Or%C3%A9al%20Infallible%20Fresh%20Wear%20Foundation",
+      "image": "/images/products/loreal-infallible-fresh-wear-foundation-24h.jpg",
+      "ingredients": [
+        "titanium-dioxide",
+        "dimethicone"
+      ]
+    },
+    {
+      "id": "bioderma-atoderm-intensive-baum",
+      "name": "Bioderma Atoderm Intensive Baume",
+      "brand": "Bioderma",
+      "price": 480000,
+      "type": "skincare",
+      "category": "moisturizer",
+      "skinTypes": [
+        "dry",
+        "sensitive"
+      ],
+      "concerns": [
+        "dryness"
+      ],
+      "texture": "balm",
+      "size": "200ml",
+      "timeOfDay": "both",
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Bioderma%20Atoderm%20Intensive%20Baume",
+      "image": "/images/products/bioderma-atoderm-intensive-baum.jpg",
+      "ingredients": [
+        "glycerin",
+        "squalane"
+      ]
+    },
+    {
+      "id": "klairs-freshly-juiced-vitamin-drop",
+      "name": "Klairs Freshly Juiced Vitamin Drop",
+      "brand": "Klairs",
+      "price": 420000,
+      "type": "skincare",
+      "category": "serum",
+      "skinTypes": [
+        "all",
+        "sensitive"
+      ],
+      "concerns": [
+        "dark-spots",
+        "dullness"
+      ],
+      "texture": "oil-like serum",
+      "size": "35ml",
+      "timeOfDay": "PM",
+      "isSiliconeBased": true,
+      "isWaterBased": false,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Klairs%20Freshly%20Juiced%20Vitamin%20Drop",
+      "image": "/images/products/klairs-freshly-juiced-vitamin-drop.jpg",
+      "ingredients": [
+        "vitamin-c",
+        "centella",
+        "glycerin"
+      ]
+    },
+    {
+      "id": "klairs-supple-preparation-unscented-toner",
+      "name": "Klairs Supple Preparation Unscented Toner",
+      "brand": "Klairs",
+      "price": 380000,
+      "type": "skincare",
+      "category": "toner",
+      "skinTypes": [
+        "all",
+        "sensitive"
+      ],
+      "concerns": [
+        "dryness"
+      ],
+      "texture": "liquid",
+      "size": "180ml",
+      "timeOfDay": "both",
+      "phValue": 6,
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Klairs%20Supple%20Preparation%20Unscented%20Toner",
+      "image": "/images/products/klairs-supple-preparation-unscented-toner.jpg",
+      "ingredients": [
+        "hyaluronic-acid",
+        "centella",
+        "glycerin"
+      ]
+    },
+    {
+      "id": "some-by-mi-yuja-niacin-30-days-blemish-care-serum",
+      "name": "Some By Mi Yuja Niacin 30 Days Blemish Care Serum",
+      "brand": "Some By Mi",
+      "price": 350000,
+      "type": "skincare",
+      "category": "serum",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "dark-spots",
+        "dullness"
+      ],
+      "texture": "serum",
+      "size": "50ml",
+      "timeOfDay": "both",
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Some%20By%20Mi%20Yuja%20Niacin%2030%20Days%20Blemish%20Care%20Serum",
+      "image": "/images/products/some-by-mi-yuja-niacin-30-days-blemish-care-serum.jpg",
+      "ingredients": [
+        "niacinamide",
+        "vitamin-c",
+        "glycerin"
+      ]
+    },
+    {
+      "id": "some-by-mi-snail-truecica-miracle-repair-serum",
+      "name": "Some By Mi Snail Truecica Miracle Repair Serum",
+      "brand": "Some By Mi",
+      "price": 380000,
+      "type": "skincare",
+      "category": "serum",
+      "skinTypes": [
+        "all",
+        "acne-prone",
+        "sensitive"
+      ],
+      "concerns": [
+        "acne",
+        "dark-spots"
+      ],
+      "texture": "serum",
+      "size": "50ml",
+      "timeOfDay": "both",
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Some%20By%20Mi%20Snail%20Truecica%20Miracle%20Repair%20Serum",
+      "image": "/images/products/some-by-mi-snail-truecica-miracle-repair-serum.jpg",
+      "ingredients": [
+        "snail-mucin",
+        "centella",
+        "niacinamide"
+      ]
+    },
+    {
+      "id": "skin1004-madagascar-centella-toning-toner",
+      "name": "SKIN1004 Madagascar Centella Toning Toner",
+      "brand": "Skin1004",
+      "price": 300000,
+      "type": "skincare",
+      "category": "toner",
+      "skinTypes": [
+        "all",
+        "sensitive",
+        "acne-prone"
+      ],
+      "concerns": [
+        "dryness",
+        "dullness"
+      ],
+      "texture": "liquid",
+      "size": "210ml",
+      "timeOfDay": "both",
+      "phValue": 5.5,
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=SKIN1004%20Madagascar%20Centella%20Toning%20Toner",
+      "image": "/images/products/skin1004-madagascar-centella-toning-toner.jpg",
+      "ingredients": [
+        "centella",
+        "pha",
+        "hyaluronic-acid",
+        "niacinamide"
+      ]
+    },
+    {
+      "id": "hada-labo-gokujyun-hydrating-lotion",
+      "name": "Hada Labo Gokujyun Hydrating Lotion (Toner)",
+      "brand": "Hada Labo",
+      "price": 220000,
+      "type": "skincare",
+      "category": "toner",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "dryness"
+      ],
+      "texture": "liquid",
+      "size": "170ml",
+      "timeOfDay": "both",
+      "phValue": 5.5,
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Hada%20Labo%20Gokujyun%20Hydrating%20Lotion",
+      "image": "/images/products/hada-labo-gokujyun-hydrating-lotion.jpg",
+      "ingredients": [
+        "hyaluronic-acid",
+        "glycerin"
+      ]
+    },
+    {
+      "id": "hada-labo-gokujyun-premium-hydrating-lotion",
+      "name": "Hada Labo Gokujyun Premium Hydrating Lotion (Toner)",
+      "brand": "Hada Labo",
+      "price": 280000,
+      "type": "skincare",
+      "category": "toner",
+      "skinTypes": [
+        "dry",
+        "normal",
+        "sensitive"
+      ],
+      "concerns": [
+        "dryness",
+        "aging"
+      ],
+      "texture": "liquid",
+      "size": "170ml",
+      "timeOfDay": "both",
+      "phValue": 5,
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Hada%20Labo%20Gokujyun%20Premium%20Hydrating%20Lotion",
+      "image": "/images/products/hada-labo-gokujyun-premium-hydrating-lotion.jpg",
+      "ingredients": [
+        "hyaluronic-acid",
+        "glycerin"
+      ]
+    },
+    {
+      "id": "eucerin-hyaluron-filler-day-cream-spf30",
+      "name": "Eucerin Hyaluron-Filler Day Cream SPF30",
+      "brand": "Eucerin",
+      "price": 900000,
+      "type": "skincare",
+      "category": "moisturizer",
+      "skinTypes": [
+        "normal",
+        "dry"
+      ],
+      "concerns": [
+        "aging",
+        "dryness"
+      ],
+      "texture": "cream",
+      "size": "50ml",
+      "timeOfDay": "AM",
+      "spf": 30,
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Eucerin%20Hyaluron-Filler%20Day%20Cream%20SPF30",
+      "image": "/images/products/eucerin-hyaluron-filler-day-cream-spf30.jpg",
+      "ingredients": [
+        "hyaluronic-acid",
+        "glycerin",
+        "dimethicone"
+      ]
+    },
+    {
+      "id": "innisfree-jeju-volcanic-pore-clay-mask",
+      "name": "Innisfree Jeju Volcanic Pore Clay Mask",
+      "brand": "Innisfree",
+      "price": 280000,
+      "type": "skincare",
+      "category": "mask",
+      "skinTypes": [
+        "oily",
+        "combination",
+        "acne-prone"
+      ],
+      "concerns": [
+        "pores",
+        "acne"
+      ],
+      "texture": "clay",
+      "size": "100ml",
+      "timeOfDay": "PM",
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Innisfree%20Jeju%20Volcanic%20Pore%20Clay%20Mask",
+      "image": "/images/products/innisfree-jeju-volcanic-pore-clay-mask.jpg",
+      "ingredients": [
+        "glycerin",
+        "titanium-dioxide"
+      ]
+    },
+    {
+      "id": "neutrogena-rapid-clear-stubborn-acne-cleanser",
+      "name": "Neutrogena Rapid Clear Stubborn Acne Cleanser",
+      "brand": "Neutrogena",
+      "price": 250000,
+      "type": "skincare",
+      "category": "cleanser",
+      "skinTypes": [
+        "oily",
+        "acne-prone",
+        "combination"
+      ],
+      "concerns": [
+        "acne"
+      ],
+      "texture": "cream",
+      "size": "150ml",
+      "timeOfDay": "both",
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Neutrogena%20Rapid%20Clear%20Stubborn%20Acne%20Cleanser",
+      "image": "/images/products/neutrogena-rapid-clear-stubborn-acne-cleanser.jpg",
+      "ingredients": [
+        "bha",
+        "glycerin"
+      ]
+    },
+    {
+      "id": "paulas-choice-resist-youth-extending-daily-hydrating-fluid-spf-50",
+      "name": "Paula's Choice Resist Youth-Extending Daily Hydrating Fluid SPF 50",
+      "brand": "Paula's Choice",
+      "price": 850000,
+      "type": "skincare",
+      "category": "sunscreen",
+      "skinTypes": [
+        "normal",
+        "oily",
+        "combination"
+      ],
+      "concerns": [
+        "aging",
+        "dark-spots"
+      ],
+      "texture": "fluid",
+      "size": "60ml",
+      "timeOfDay": "AM",
+      "spf": 50,
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Paula%27s%20Choice%20Resist%20Youth-Extending%20Daily%20Hydrating%20Fluid%20SPF%2050",
+      "image": "/images/products/paulas-choice-resist-youth-extending-daily-hydrating-fluid-spf-50.jpg",
+      "ingredients": [
+        "titanium-dioxide",
+        "zinc-oxide",
+        "niacinamide",
+        "glycerin",
+        "dimethicone"
+      ]
+    },
+    {
+      "id": "loreal-revitalift-laser-x3-anti-aging-serum",
+      "name": "L'Oréal Paris Revitalift Laser X3 Anti-Aging Serum",
+      "brand": "L'Oreal",
+      "price": 500000,
+      "type": "skincare",
+      "category": "serum",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "aging",
+        "dullness"
+      ],
+      "texture": "serum",
+      "size": "30ml",
+      "timeOfDay": "both",
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=L%27Or%C3%A9al%20Revitalift%20Laser%20X3%20Anti-Aging%20Serum",
+      "image": "/images/products/loreal-revitalift-laser-x3-anti-aging-serum.jpg",
+      "ingredients": [
+        "glycerin",
+        "hyaluronic-acid",
+        "dimethicone"
+      ]
+    },
+    {
+      "id": "bioderma-sebium-pore-refiner",
+      "name": "Bioderma Sébium Pore Refiner",
+      "brand": "Bioderma",
+      "price": 400000,
+      "type": "skincare",
+      "category": "moisturizer",
+      "skinTypes": [
+        "oily",
+        "combination"
+      ],
+      "concerns": [
+        "pores"
+      ],
+      "texture": "gel-cream",
+      "size": "30ml",
+      "timeOfDay": "AM",
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Bioderma%20S%C3%A9bium%20Pore%20Refiner",
+      "image": "/images/products/bioderma-sebium-pore-refiner.jpg",
+      "ingredients": [
+        "glycerin",
+        "dimethicone"
+      ]
+    },
+    {
+      "id": "some-by-mi-aha-bha-pha-30-days-miracle-cream",
+      "name": "Some By Mi AHA BHA PHA 30 Days Miracle Cream",
+      "brand": "Some By Mi",
+      "price": 380000,
+      "type": "skincare",
+      "category": "moisturizer",
+      "skinTypes": [
+        "oily",
+        "acne-prone",
+        "combination"
+      ],
+      "concerns": [
+        "acne",
+        "pores",
+        "dark-spots"
+      ],
+      "texture": "cream",
+      "size": "50ml",
+      "timeOfDay": "both",
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Some%20By%20Mi%20AHA%20BHA%20PHA%2030%20Days%20Miracle%20Cream",
+      "image": "/images/products/some-by-mi-aha-bha-pha-30-days-miracle-cream.jpg",
+      "ingredients": [
+        "aha",
+        "bha",
+        "pha",
+        "tea-tree",
+        "centella",
+        "glycerin"
+      ]
+    },
+    {
+      "id": "skin1004-madagascar-centella-soothing-cream",
+      "name": "SKIN1004 Madagascar Centella Soothing Cream",
+      "brand": "Skin1004",
+      "price": 390000,
+      "type": "skincare",
+      "category": "moisturizer",
+      "skinTypes": [
+        "all",
+        "sensitive"
+      ],
+      "concerns": [
+        "dryness",
+        "acne"
+      ],
+      "texture": "gel-cream",
+      "size": "75ml",
+      "timeOfDay": "both",
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=SKIN1004%20Madagascar%20Centella%20Soothing%20Cream",
+      "image": "/images/products/skin1004-madagascar-centella-soothing-cream.jpg",
+      "ingredients": [
+        "centella",
+        "ceramide",
+        "glycerin"
+      ]
+    },
+    {
+      "id": "cosrx-propolis-light-ampoule",
+      "name": "Cosrx Full Fit Propolis Light Ampoule",
+      "brand": "Cosrx",
+      "price": 420000,
+      "type": "skincare",
+      "category": "serum",
+      "skinTypes": [
+        "all",
+        "sensitive"
+      ],
+      "concerns": [
+        "dryness",
+        "dullness"
+      ],
+      "texture": "ampoule",
+      "size": "30ml",
+      "timeOfDay": "both",
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Cosrx%20Full%20Fit%20Propolis%20Light%20Ampoule",
+      "image": "/images/products/cosrx-propolis-light-ampoule.jpg",
+      "ingredients": [
+        "glycerin",
+        "hyaluronic-acid"
+      ]
+    },
+    {
+      "id": "hada-labo-shirojyun-premium-lotion",
+      "name": "Hada Labo Shirojyun Premium Whitening Lotion (Toner)",
+      "brand": "Hada Labo",
+      "price": 270000,
+      "type": "skincare",
+      "category": "toner",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "dark-spots",
+        "dullness"
+      ],
+      "texture": "liquid",
+      "size": "170ml",
+      "timeOfDay": "both",
+      "phValue": 5.5,
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Hada%20Labo%20Shirojyun%20Premium%20Whitening%20Lotion",
+      "image": "/images/products/hada-labo-shirojyun-premium-lotion.jpg",
+      "ingredients": [
+        "hyaluronic-acid",
+        "vitamin-c"
+      ]
+    },
+    {
+      "id": "eucerin-ultra-white-spotless-double-booster-serum",
+      "name": "Eucerin UltraWhite Spotless Double Booster Serum",
+      "brand": "Eucerin",
+      "price": 1000000,
+      "type": "skincare",
+      "category": "serum",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "dark-spots",
+        "dullness"
+      ],
+      "texture": "serum",
+      "size": "30ml",
+      "timeOfDay": "both",
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Eucerin%20UltraWhite%20Spotless%20Double%20Booster%20Serum",
+      "image": "/images/products/eucerin-ultra-white-spotless-double-booster-serum.jpg",
+      "ingredients": [
+        "glycerin",
+        "dimethicone"
+      ]
+    },
+    {
+      "id": "innisfree-blemish-care-sunscreen-spf50",
+      "name": "Innisfree Blemish Care Sunscreen SPF50+ PA++++",
+      "brand": "Innisfree",
+      "price": 350000,
+      "type": "skincare",
+      "category": "sunscreen",
+      "skinTypes": [
+        "acne-prone",
+        "oily"
+      ],
+      "concerns": [
+        "acne",
+        "dark-spots"
+      ],
+      "texture": "cream",
+      "size": "50ml",
+      "timeOfDay": "AM",
+      "spf": 50,
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Innisfree%20Blemish%20Care%20Sunscreen%20SPF50%2B",
+      "image": "/images/products/innisfree-blemish-care-sunscreen-spf50.jpg",
+      "ingredients": [
+        "titanium-dioxide",
+        "zinc-oxide",
+        "niacinamide",
+        "glycerin",
+        "dimethicone"
+      ]
+    },
+    {
+      "id": "neutrogena-hydro-boost-gel-cream-extra-dry-skin",
+      "name": "Neutrogena Hydro Boost Gel-Cream for Extra-Dry Skin",
+      "brand": "Neutrogena",
+      "price": 390000,
+      "type": "skincare",
+      "category": "moisturizer",
+      "skinTypes": [
+        "dry",
+        "sensitive"
+      ],
+      "concerns": [
+        "dryness"
+      ],
+      "texture": "gel-cream",
+      "size": "50g",
+      "timeOfDay": "both",
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Neutrogena%20Hydro%20Boost%20Gel-Cream%20for%20Extra-Dry%20Skin",
+      "image": "/images/products/neutrogena-hydro-boost-gel-cream-extra-dry-skin.jpg",
+      "ingredients": [
+        "hyaluronic-acid",
+        "glycerin"
+      ]
+    },
+    {
+      "id": "cocoon-rose-lip-balm",
+      "name": "Cocoon Rose Lip Balm",
+      "brand": "Cocoon",
+      "price": 95000,
+      "type": "makeup",
+      "category": "lip",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "dryness"
+      ],
+      "texture": "balm",
+      "size": "5g",
+      "timeOfDay": "both",
+      "isSiliconeBased": false,
+      "isWaterBased": false,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Cocoon%20Rose%20Lip%20Balm",
+      "image": "/images/products/cocoon-rose-lip-balm.jpg",
+      "ingredients": [
+        "vitamin-e",
+        "squalane"
+      ]
+    },
+    {
+      "id": "the-ordinary-caffeine-solution-5-egcg",
+      "name": "The Ordinary Caffeine Solution 5% + EGCG",
+      "brand": "The Ordinary",
+      "price": 200000,
+      "type": "skincare",
+      "category": "eye",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "dark-spots",
+        "aging"
+      ],
+      "texture": "serum",
+      "size": "30ml",
+      "timeOfDay": "both",
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=The%20Ordinary%20Caffeine%20Solution%205%25%20%2B%20EGCG",
+      "image": "/images/products/the-ordinary-caffeine-solution-5-egcg.jpg",
+      "ingredients": [
+        "glycerin",
+        "green-tea"
+      ]
+    },
+    {
+      "id": "paulas-choice-c25-super-booster",
+      "name": "Paula's Choice C25 Super Booster",
+      "brand": "Paula's Choice",
+      "price": 1050000,
+      "type": "skincare",
+      "category": "serum",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "dark-spots",
+        "aging",
+        "dullness"
+      ],
+      "texture": "cream",
+      "size": "15ml",
+      "timeOfDay": "PM",
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Paula%27s%20Choice%20C25%20Super%20Booster",
+      "image": "/images/products/paulas-choice-c25-super-booster.jpg",
+      "ingredients": [
+        "vitamin-c",
+        "glycerin",
+        "dimethicone"
+      ]
+    },
+    {
+      "id": "obagi-elastiderm-facial-serum",
+      "name": "Obagi ELASTIderm Facial Serum",
+      "brand": "Obagi",
+      "price": 1200000,
+      "type": "skincare",
+      "category": "serum",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "aging"
+      ],
+      "texture": "serum",
+      "size": "30ml",
+      "timeOfDay": "both",
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Obagi%20ELASTIderm%20Facial%20Serum",
+      "image": "/images/products/obagi-elastiderm-facial-serum.jpg",
+      "ingredients": [
+        "glycerin",
+        "dimethicone"
+      ]
+    },
+    {
+      "id": "loreal-revitalift-filler-eye-cream",
+      "name": "L'Oréal Paris Revitalift Filler Eye Cream with Hyaluronic Acid",
+      "brand": "L'Oreal",
+      "price": 420000,
+      "type": "skincare",
+      "category": "eye",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "aging",
+        "dryness"
+      ],
+      "texture": "cream",
+      "size": "15ml",
+      "timeOfDay": "both",
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=L%27Or%C3%A9al%20Revitalift%20Filler%20Eye%20Cream",
+      "image": "/images/products/loreal-revitalift-filler-eye-cream.jpg",
+      "ingredients": [
+        "hyaluronic-acid",
+        "glycerin",
+        "dimethicone"
+      ]
+    },
+    {
+      "id": "bioderma-atoderm-gel-douche-shower-gel",
+      "name": "Bioderma Atoderm Gel douche Shower Gel",
+      "brand": "Bioderma",
+      "price": 300000,
+      "type": "skincare",
+      "category": "cleanser",
+      "skinTypes": [
+        "dry",
+        "sensitive",
+        "all"
+      ],
+      "concerns": [
+        "dryness"
+      ],
+      "texture": "gel",
+      "size": "500ml",
+      "timeOfDay": "both",
+      "phValue": 5.5,
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Bioderma%20Atoderm%20Gel%20douche%20Shower%20Gel",
+      "image": "/images/products/bioderma-atoderm-gel-douche-shower-gel.jpg",
+      "ingredients": [
+        "glycerin"
+      ]
+    },
+    {
+      "id": "klairs-fundamental-watery-oil-drop",
+      "name": "Klairs Fundamental Watery Oil Drop",
+      "brand": "Klairs",
+      "price": 400000,
+      "type": "skincare",
+      "category": "serum",
+      "skinTypes": [
+        "all",
+        "dry"
+      ],
+      "concerns": [
+        "dryness",
+        "dullness"
+      ],
+      "texture": "light-oil",
+      "size": "50ml",
+      "timeOfDay": "both",
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Klairs%20Fundamental%20Watery%20Oil%20Drop",
+      "image": "/images/products/klairs-fundamental-watery-oil-drop.jpg",
+      "ingredients": [
+        "green-tea",
+        "hyaluronic-acid",
+        "glycerin"
+      ]
+    },
+    {
+      "id": "some-by-mi-retinol-intense-repair-serum",
+      "name": "Some By Mi Retinol Intense Advanced Triple Action Eye Cream",
+      "brand": "Some By Mi",
+      "price": 280000,
+      "type": "skincare",
+      "category": "eye",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "aging",
+        "dark-spots"
+      ],
+      "texture": "cream",
+      "size": "30ml",
+      "timeOfDay": "PM",
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Some%20By%20Mi%20Retinol%20Intense%20Advanced%20Triple%20Action%20Eye%20Cream",
+      "image": "/images/products/some-by-mi-retinol-intense-repair-serum.jpg",
+      "ingredients": [
+        "retinol",
+        "niacinamide",
+        "centella",
+        "glycerin",
+        "dimethicone"
+      ]
+    },
+    {
+      "id": "skin1004-hyalu-cica-water-fit-sun-serum-spf50",
+      "name": "SKIN1004 Hyalu-Cica Water-Fit Sun Serum SPF50+ PA++++",
+      "brand": "Skin1004",
+      "price": 380000,
+      "type": "skincare",
+      "category": "sunscreen",
+      "skinTypes": [
+        "all",
+        "sensitive"
+      ],
+      "concerns": [
+        "dryness"
+      ],
+      "texture": "serum",
+      "size": "50ml",
+      "timeOfDay": "AM",
+      "spf": 50,
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=SKIN1004%20Hyalu-Cica%20Water-Fit%20Sun%20Serum%20SPF50%2B",
+      "image": "/images/products/skin1004-hyalu-cica-water-fit-sun-serum-spf50.jpg",
+      "ingredients": [
+        "hyaluronic-acid",
+        "centella",
+        "glycerin",
+        "dimethicone",
+        "zinc-oxide"
+      ]
+    },
+    {
+      "id": "cosrx-the-aha-2-bha-2-exfoliating-toner",
+      "name": "Cosrx The AHA 2 BHA 2 Exfoliating Treatment Toner",
+      "brand": "Cosrx",
+      "price": 290000,
+      "type": "skincare",
+      "category": "toner",
+      "skinTypes": [
+        "oily",
+        "combination",
+        "acne-prone"
+      ],
+      "concerns": [
+        "acne",
+        "pores",
+        "dullness"
+      ],
+      "texture": "liquid",
+      "size": "150ml",
+      "timeOfDay": "PM",
+      "phValue": 4,
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Cosrx%20The%20AHA%202%20BHA%202%20Exfoliating%20Treatment%20Toner",
+      "image": "/images/products/cosrx-the-aha-2-bha-2-exfoliating-toner.jpg",
+      "ingredients": [
+        "aha",
+        "bha",
+        "glycerin"
+      ]
+    },
+    {
+      "id": "eucerin-aquaphor-healing-ointment",
+      "name": "Eucerin Aquaphor Healing Ointment",
+      "brand": "Eucerin",
+      "price": 280000,
+      "type": "skincare",
+      "category": "moisturizer",
+      "skinTypes": [
+        "dry",
+        "sensitive",
+        "all"
+      ],
+      "concerns": [
+        "dryness"
+      ],
+      "texture": "ointment",
+      "size": "110g",
+      "timeOfDay": "PM",
+      "isSiliconeBased": true,
+      "isWaterBased": false,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Eucerin%20Aquaphor%20Healing%20Ointment",
+      "image": "/images/products/eucerin-aquaphor-healing-ointment.jpg",
+      "ingredients": [
+        "glycerin",
+        "squalane"
+      ]
+    },
+    {
+      "id": "innisfree-cherry-blossom-jelly-cream",
+      "name": "Innisfree Jeju Cherry Blossom Jelly Cream",
+      "brand": "Innisfree",
+      "price": 320000,
+      "type": "skincare",
+      "category": "moisturizer",
+      "skinTypes": [
+        "normal",
+        "oily",
+        "combination"
+      ],
+      "concerns": [
+        "dullness",
+        "dryness"
+      ],
+      "texture": "jelly-cream",
+      "size": "50ml",
+      "timeOfDay": "both",
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Innisfree%20Jeju%20Cherry%20Blossom%20Jelly%20Cream",
+      "image": "/images/products/innisfree-cherry-blossom-jelly-cream.jpg",
+      "ingredients": [
+        "niacinamide",
+        "glycerin"
+      ]
+    },
+    {
+      "id": "neutrogena-bright-boost-illuminating-serum",
+      "name": "Neutrogena Bright Boost Illuminating Serum",
+      "brand": "Neutrogena",
+      "price": 370000,
+      "type": "skincare",
+      "category": "serum",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "dullness",
+        "dark-spots"
+      ],
+      "texture": "serum",
+      "size": "30ml",
+      "timeOfDay": "both",
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Neutrogena%20Bright%20Boost%20Illuminating%20Serum",
+      "image": "/images/products/neutrogena-bright-boost-illuminating-serum.jpg",
+      "ingredients": [
+        "niacinamide",
+        "glycerin",
+        "dimethicone"
+      ]
+    },
+    {
+      "id": "la-roche-posay-siero-hyalu-b5",
+      "name": "La Roche-Posay Hyalu B5 Anti-Aging Serum",
+      "brand": "La Roche-Posay",
+      "price": 850000,
+      "type": "skincare",
+      "category": "serum",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "aging",
+        "dryness"
+      ],
+      "texture": "serum",
+      "size": "30ml",
+      "timeOfDay": "both",
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=La%20Roche-Posay%20Hyalu%20B5%20Anti-Aging%20Serum",
+      "image": "/images/products/la-roche-posay-siero-hyalu-b5.jpg",
+      "ingredients": [
+        "hyaluronic-acid",
+        "glycerin"
+      ]
+    },
+    {
+      "id": "cerave-resurfacing-retinol-serum",
+      "name": "CeraVe Resurfacing Retinol Serum",
+      "brand": "CeraVe",
+      "price": 400000,
+      "type": "skincare",
+      "category": "serum",
+      "skinTypes": [
+        "acne-prone",
+        "oily",
+        "combination"
+      ],
+      "concerns": [
+        "acne",
+        "dark-spots",
+        "aging"
+      ],
+      "texture": "serum",
+      "size": "30ml",
+      "timeOfDay": "PM",
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=CeraVe%20Resurfacing%20Retinol%20Serum",
+      "image": "/images/products/cerave-resurfacing-retinol-serum.jpg",
+      "ingredients": [
+        "retinol",
+        "niacinamide",
+        "ceramide",
+        "glycerin",
+        "dimethicone"
+      ]
+    },
+    {
+      "id": "cocoon-saffron-mask",
+      "name": "Cocoon Saffron Mask",
+      "brand": "Cocoon",
+      "price": 220000,
+      "type": "skincare",
+      "category": "mask",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "dullness",
+        "dryness"
+      ],
+      "texture": "cream",
+      "size": "75ml",
+      "timeOfDay": "PM",
+      "isSiliconeBased": false,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Cocoon%20Saffron%20Mask",
+      "image": "/images/products/cocoon-saffron-mask.jpg",
+      "ingredients": [
+        "glycerin",
+        "hyaluronic-acid"
+      ]
+    },
+    {
+      "id": "paulas-choice-c5-super-boost-eye-cream",
+      "name": "Paula's Choice C5 Super Boost Eye Cream",
+      "brand": "Paula's Choice",
+      "price": 900000,
+      "type": "skincare",
+      "category": "eye",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "dark-spots",
+        "aging"
+      ],
+      "texture": "cream",
+      "size": "15ml",
+      "timeOfDay": "both",
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Paula%27s%20Choice%20C5%20Super%20Boost%20Eye%20Cream",
+      "image": "/images/products/paulas-choice-c5-super-boost-eye-cream.jpg",
+      "ingredients": [
+        "vitamin-c",
+        "hyaluronic-acid",
+        "glycerin",
+        "dimethicone"
+      ]
+    },
+    {
+      "id": "obagi-daily-hydro-drops-facial-serum",
+      "name": "Obagi Daily Hydro-Drops Facial Serum",
+      "brand": "Obagi",
+      "price": 1150000,
+      "type": "skincare",
+      "category": "serum",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "dryness",
+        "aging"
+      ],
+      "texture": "serum",
+      "size": "30ml",
+      "timeOfDay": "both",
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Obagi%20Daily%20Hydro-Drops%20Facial%20Serum",
+      "image": "/images/products/obagi-daily-hydro-drops-facial-serum.jpg",
+      "ingredients": [
+        "niacinamide",
+        "glycerin",
+        "squalane",
+        "dimethicone"
+      ]
+    },
+    {
+      "id": "vichy-liftactiv-collagen-specialist-day-cream",
+      "name": "Vichy Liftactiv Collagen Specialist Day Cream",
+      "brand": "Vichy",
+      "price": 800000,
+      "type": "skincare",
+      "category": "moisturizer",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "aging",
+        "dullness"
+      ],
+      "texture": "cream",
+      "size": "50ml",
+      "timeOfDay": "AM",
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Vichy%20Liftactiv%20Collagen%20Specialist%20Day%20Cream",
+      "image": "/images/products/vichy-liftactiv-collagen-specialist-day-cream.jpg",
+      "ingredients": [
+        "vitamin-c",
+        "niacinamide",
+        "glycerin",
+        "dimethicone"
+      ]
+    },
+    {
+      "id": "anessa-perfect-uv-skincare-gel-spf50",
+      "name": "Anessa Perfect UV Skincare Gel SPF50+ PA++++",
+      "brand": "Anessa",
+      "price": 470000,
+      "type": "skincare",
+      "category": "sunscreen",
+      "skinTypes": [
+        "all"
+      ],
+      "concerns": [
+        "dark-spots",
+        "aging"
+      ],
+      "texture": "gel",
+      "size": "90g",
+      "timeOfDay": "AM",
+      "spf": 50,
+      "isSiliconeBased": true,
+      "isWaterBased": true,
+      "shopeeUrl": "https://shopee.vn/search?keyword=Anessa%20Perfect%20UV%20Skincare%20Gel",
+      "image": "/images/products/anessa-perfect-uv-skincare-gel-spf50.jpg",
+      "ingredients": [
+        "hyaluronic-acid",
+        "glycerin",
+        "dimethicone",
+        "green-tea",
+        "vitamin-e"
+      ]
     }
   ]
 }
