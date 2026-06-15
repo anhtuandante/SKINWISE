@@ -27,6 +27,7 @@ import SafetyLabPanel from "@/components/dashboard/SafetyLabPanel";
 import SkinJournalPanel from "@/components/dashboard/SkinJournalPanel";
 import TrendVisualizer from "@/components/dashboard/TrendVisualizer";
 import SkinWallet from "@/components/routine/SkinWallet";
+import { useAuth } from "@/components/providers/AuthProvider";
 
 import ProductCatalog from "@/components/dashboard/ProductCatalog";
 
@@ -145,6 +146,13 @@ export default function DashboardPage() {
   const routine = useRoutineStore();
   const { recoveryMode, setRecoveryMode } = useSkinStore();
   const { handleAddToRoutine } = useAddToRoutine();
+  const { user: authUser } = useAuth();
+
+  const userName = useMemo(() => {
+    if (!authUser || !authUser.email) return "bạn 🌸";
+    const prefix = authUser.email.split("@")[0];
+    return prefix.charAt(0).toUpperCase() + prefix.slice(1);
+  }, [authUser]);
 
   // Recommended Products State
   const [recommended, setRecommended] = useState<Product[]>([]);
@@ -261,6 +269,7 @@ export default function DashboardPage() {
                 selectedCity={selectedCity}
                 setSelectedCity={(city) => setSelectedCity(city as "hanoi" | "danang" | "hcm")}
                 citiesWeather={citiesWeather}
+                userName={userName}
               />
             </motion.div>
           )}

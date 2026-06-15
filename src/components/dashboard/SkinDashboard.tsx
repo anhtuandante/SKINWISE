@@ -43,17 +43,56 @@ interface SkinDashboardProps {
   selectedCity: string;
   setSelectedCity: (city: string) => void;
   citiesWeather: Record<string, CityWeather>;
+  userName?: string;
 }
 
 export default function SkinDashboard({
   onNavigate,
   selectedCity,
   setSelectedCity,
-  citiesWeather
+  citiesWeather,
+  userName
 }: SkinDashboardProps) {
   const user = useUserStore();
   const routine = useRoutineStore();
-  const { diaryLogs, pinnedMetrics, setPinnedMetrics, toggleRoutineCompleted } = useSkinStore();
+  const { 
+    diaryLogs, pinnedMetrics, setPinnedMetrics, toggleRoutineCompleted,
+    recoveryMode, setRecoveryMode 
+  } = useSkinStore();
+
+  // Greeting based on time of day
+  const greeting = useMemo(() => {
+    const hours = new Date().getHours();
+    if (hours >= 5 && hours < 12) return "Chào buổi sáng";
+    if (hours >= 12 && hours < 18) return "Chào buổi chiều";
+    return "Chào buổi tối";
+  }, []);
+
+  // Heuristic for auto-suggesting Recovery Mode
+  const shouldSuggestRecovery = useMemo(() => {
+    if (recoveryMode || diaryLogs.length < 2) return false;
+
+    // Helper to parse date
+    const parseDateStrLocal = (dStr: string): Date => {
+      const parts = dStr.split("/");
+      if (parts.length !== 3) return new Date(0);
+      return new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0]));
+    };
+
+    // Sort logs descending by date
+    const sorted = [...diaryLogs].sort(
+      (a, b) => parseDateStrLocal(b.date).getTime() - parseDateStrLocal(a.date).getTime()
+    );
+
+    const lastTwoLogs = sorted.slice(0, 2);
+    if (lastTwoLogs.length < 2) return false;
+
+    // Check if both of the last 2 entries show redness >= 4 or barrierComfort <= 2
+    const isRednessHigh = lastTwoLogs.every(l => l.metrics.redness !== undefined && l.metrics.redness >= 4);
+    const isBarrierLow = lastTwoLogs.every(l => l.metrics.barrierComfort !== undefined && l.metrics.barrierComfort <= 2);
+
+    return isRednessHigh || isBarrierLow;
+  }, [recoveryMode, diaryLogs]);
 
   const [showVisionModal, setShowVisionModal] = useState(false);
   const [showCheckinModal, setShowCheckinModal] = useState(false);
@@ -520,6 +559,42 @@ export default function SkinDashboard({
 
   return (
     <div className="space-y-6">
+      {/* Dynamic Personal Greeting Header */}
+      <div className="flex items-baseline justify-between mb-4 mt-2">
+        <h1 className="text-[28px] font-light text-fg leading-none tracking-tight">
+          {greeting}, <span className="font-semibold text-accent-dark">{userName || "bạn 🌸"}</span>
+        </h1>
+        <span className="text-[11px] text-muted font-bold tracking-wider uppercase">
+          {todayStr}
+        </span>
+      </div>
+
+      {/* Intelligent Recovery Prompt */}
+      {shouldSuggestRecovery && (
+        <div className="p-5 bg-red-500/[0.03] border border-red-500/25 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-top-3 duration-300">
+          <div className="flex items-start gap-3">
+            <div className="w-10 h-10 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center shrink-0 mt-0.5 animate-pulse">
+              <ShieldAlert size={18} />
+            </div>
+            <div className="text-left space-y-0.5">
+              <p className="text-caption font-bold text-red-600">Da bạn đang có dấu hiệu kích ứng liên tục ⚠️</p>
+              <p className="text-[11px] text-muted leading-relaxed">
+                Nhật ký 2 ngày qua cho thấy hàng rào bảo vệ da yếu hoặc mẩn đỏ cao. Bạn nên kích hoạt **Chế độ Phục hồi (Recovery Mode)** để tạm treo treatment và làm dịu da.
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => {
+              setRecoveryMode(true);
+              addToast("Đã kích hoạt Recovery Mode!", "info");
+            }}
+            className="w-full sm:w-auto shrink-0 bg-red-500 hover:bg-red-600 text-white px-4 py-2.5 rounded-xl text-[11px] font-bold active:scale-[0.98] transition-all text-center shadow-sm"
+          >
+            Kích hoạt ngay
+          </button>
+        </div>
+      )}
+
       {/* 1. Daily Health & Environmental Briefing */}
       <div className="bg-gradient-to-br from-slate-950 to-slate-900 rounded-[32px] p-8 text-white relative overflow-hidden shadow-xl border border-white/5">
         <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
@@ -578,15 +653,22 @@ export default function SkinDashboard({
                   </motion.div>
                 )}
               </AnimatePresence>
-              <div className="flex items-baseline gap-2">
-                <motion.span
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="text-6xl font-extrabold tracking-tight text-white inline-block animate-pulse-slow"
-                >
-                  {displayScore}
-                </motion.span>
-                <span className="text-body text-slate-400">/100</span>
+              <div className="flex items-center gap-4 flex-wrap">
+                <div className="flex items-baseline gap-2">
+                  <motion.span
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="text-6xl font-extrabold tracking-tight text-white inline-block animate-pulse-slow"
+                  >
+                    {displayScore}
+                  </motion.span>
+                  <span className="text-body text-slate-400">/100</span>
+                </div>
+                {recoveryMode && (
+                  <span className="inline-flex items-center gap-1.5 bg-red-500/20 text-red-400 border border-red-500/35 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                    🛡️ SOS Phục hồi
+                  </span>
+                )}
               </div>
               <p className="text-caption text-slate-300 mt-2">
                 Trạng thái:{" "}
