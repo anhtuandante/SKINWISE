@@ -7,12 +7,13 @@ import {
   CheckCircle2, Sparkles, Flame,
   ChevronRight, Loader2, Copy,
   Droplet, Sun, ShieldAlert, AlertCircle,
-  TrendingUp, TrendingDown, BarChart3
+  TrendingUp, TrendingDown, BarChart3, Heart
 } from "lucide-react";
 import { useSkinStore } from "@/store/useSkinStore";
 import { useToastStore } from "@/store/toast-store";
 import { calculateSkinScore } from "@/utils/trendAnalysis";
 import { DiaryLog } from "@/types";
+import { trackEvent } from "@/lib/tracking";
 
 interface SkinCheckinFlowProps {
   onComplete: () => void;
@@ -131,6 +132,25 @@ export default function SkinCheckinFlow({
     biggestChange: { metric: string; delta: number } | null;
     recommendation: string;
   } | null>(null);
+
+  const [surveyDismissed, setSurveyDismissed] = useState(false);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setSurveyDismissed(localStorage.getItem("skinwise_survey_dismissed") === "true");
+    }
+  }, []);
+
+  const handleDismissSurvey = () => {
+    localStorage.setItem("skinwise_survey_dismissed", "true");
+    setSurveyDismissed(true);
+    trackEvent("survey_dismissed");
+  };
+
+  const handleCompleteSurvey = () => {
+    localStorage.setItem("skinwise_survey_dismissed", "true");
+    setSurveyDismissed(true);
+    trackEvent("survey_click");
+  };
 
   const [lifestyle, setLifestyle] = useState<string[]>([]);
   const [diet, setDiet] = useState<string[]>([]);
@@ -910,6 +930,43 @@ export default function SkinCheckinFlow({
                   </div>
                   <p className="text-caption text-fg leading-relaxed">{completionData.recommendation}</p>
                 </motion.div>
+
+                {/* 1-Minute Survey Card */}
+                {!surveyDismissed && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    className="bg-accent/[0.04] border border-accent/20 rounded-2xl p-4 flex items-center justify-between gap-4"
+                  >
+                    <div className="flex gap-2.5 items-start">
+                      <Heart size={16} className="text-accent-dark shrink-0 mt-0.5" />
+                      <div className="text-left">
+                        <span className="text-caption font-bold text-fg block">Giúp tụi mình cải thiện SkinWise!</span>
+                        <span className="text-[11px] text-muted leading-relaxed block mt-0.5">
+                          Cho chúng mình xin 1 phút góp ý để nâng cấp AI và phục vụ bạn tốt hơn nhé.
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-1.5 shrink-0">
+                      <a
+                        href="https://docs.google.com/forms/d/1m8GuSjkyuvKsIryVfr6okucPgHmId6je6fFZLTUKOvs/viewform?usp=sf_link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={handleCompleteSurvey}
+                        className="bg-fg text-bg px-3 py-1.5 rounded-xl text-[10px] font-bold text-center hover:opacity-90 transition-all whitespace-nowrap"
+                      >
+                        Làm khảo sát
+                      </a>
+                      <button
+                        onClick={handleDismissSurvey}
+                        className="text-muted hover:text-fg text-[9px] font-medium text-center transition-colors"
+                      >
+                        Để sau
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
 
                 {/* Action Buttons */}
                 <motion.div

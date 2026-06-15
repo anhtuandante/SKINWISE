@@ -120,6 +120,36 @@ export default function AuthProvider({
             cycleStartDate: profile.cycle_start_date || "",
             cycleLength: profile.cycle_length || 28,
           });
+       } else {
+          // Cloud profile does not exist (new guest registration)
+          // Upsert local store values if they exist
+          const userState = useUserStore.getState();
+          if (userState.quizCompleted) {
+             const profileData = {
+               id: userId,
+               skin_type: userState.skinType,
+               concerns: userState.concerns,
+               budget: userState.budget,
+               allergies: userState.allergies,
+               quiz_completed: userState.quizCompleted,
+               barrier: userState.barrier,
+               barrier_status: userState.barrierStatus,
+               lifestyle: userState.lifestyle,
+               preference: userState.preference,
+               title: userState.title,
+               main_goal: userState.mainGoal,
+               age: userState.birthYear ? String(userState.birthYear) : "",
+               gender: userState.gender,
+               environment: userState.environment,
+               makeup_frequency: userState.makeupFrequency,
+               texture_preference: userState.texturePreference,
+               active_ingredients: userState.activeIngredients,
+               avoided_ingredients: userState.avoidedIngredients,
+               cycle_start_date: userState.cycleStartDate,
+               cycle_length: userState.cycleLength,
+             };
+             await supabase.from("profiles").upsert(profileData);
+          }
        }
 
        // Fetch Diary Logs
@@ -143,6 +173,28 @@ export default function AuthProvider({
             pmRoutineCompleted: log.pm_routine_completed,
           }));
           useSkinStore.getState().setDiaryLogs(formattedLogs);
+       } else {
+          // Cloud logs do not exist, sync local ones if they exist
+          const skinState = useSkinStore.getState();
+          if (skinState.diaryLogs.length > 0) {
+             const logsToInsert = skinState.diaryLogs.map(log => ({
+                user_id: userId,
+                date: log.date,
+                day_name: log.dayName,
+                mood: log.mood,
+                is_partial: log.isPartial || false,
+                source: log.source || 'manual',
+                metrics: log.metrics,
+                ai_original_metrics: log.aiOriginalMetrics || null,
+                user_corrected: log.userCorrected || false,
+                lifestyle: log.lifestyle || [],
+                note: log.note || '',
+                image: (log.images && log.images.length > 0) ? log.images[0] : null,
+                am_routine_completed: log.amRoutineCompleted || false,
+                pm_routine_completed: log.pmRoutineCompleted || false,
+             }));
+             await supabase.from("diary_logs").upsert(logsToInsert, { onConflict: 'user_id,date' });
+          }
        }
     } finally {
        setTimeout(() => { syncingRef.current = false; }, 1000);

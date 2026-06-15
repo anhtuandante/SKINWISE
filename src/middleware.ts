@@ -36,7 +36,8 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   // Protect the dashboard route
-  if (!user && request.nextUrl.pathname.startsWith("/dashboard")) {
+  const isGuest = request.cookies.get("skinwise-guest")?.value === "true";
+  if (!user && !isGuest && request.nextUrl.pathname.startsWith("/dashboard")) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);

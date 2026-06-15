@@ -43,6 +43,7 @@ export default function LoginPage() {
       if (isLogin) {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
+        document.cookie = "skinwise-guest=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
         addToast("Đăng nhập thành công!", "success");
         router.push("/dashboard");
       } else {
@@ -54,6 +55,7 @@ export default function LoginPage() {
         
         // Check if user session was automatically established (email confirmation disabled)
         if (data.session) {
+          document.cookie = "skinwise-guest=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
           addToast("Đăng ký thành công và đã tự động đăng nhập!", "success");
           
           // Push local data to cloud (Guest to Member migration)
@@ -89,6 +91,7 @@ export default function LoginPage() {
   const handleOAuthLogin = async (provider: "google" | "facebook") => {
     setIsLoading(true);
     try {
+      document.cookie = "skinwise-guest=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {

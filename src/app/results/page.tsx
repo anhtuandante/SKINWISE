@@ -13,6 +13,7 @@ import { useRoutineStore } from "@/store/routine-store"
 import { useToastStore } from "@/store/toast-store"
 import ProductAvatar from "@/components/ui/ProductAvatar"
 import skinDietData from "@/data/skin-diet.json"
+import { useAuth } from "@/components/providers/AuthProvider"
 
 // Step labels and tips per category
 const STEP_INFO: Record<string, { label: string, tip: string }> = {
@@ -30,9 +31,12 @@ export default function ResultsPage() {
   const isHydrated = useUserStore((s) => s.isHydrated)
   const routine = useRoutineStore()
   const addToast = useToastStore((s) => s.addToast)
+  const { user: authUser } = useAuth()
   
+  const [showAuthModal, setShowAuthModal] = useState(false)
+  const [pendingAction, setPendingAction] = useState<"apply" | "skip" | null>(null)
   const [isAnalyzing, setIsAnalyzing] = useState(true)
-  const [analyzeStep] = useState(0)
+  const [analyzeStep, setAnalyzeStep] = useState(0)
   const [allProducts, setAllProducts] = useState<Product[]>([])
   const [morningRoutine, setMorningRoutine] = useState<Product[]>([])
   const [eveningRoutine, setEveningRoutine] = useState<Product[]>([])
@@ -136,13 +140,34 @@ export default function ResultsPage() {
 
         const prods = await getAllProducts()
         setAllProducts(prods)
-      } finally {
-        setIsAnalyzing(false)
+      } catch (err) {
+        console.error("Failed to load routine data", err)
       }
     }
 
     loadResults()
   }, [user, router, isHydrated])
+
+  // Sequential loading step animation
+  useEffect(() => {
+    if (!isHydrated || !user.quizCompleted || !isAnalyzing) return;
+
+    const interval = setInterval(() => {
+      setAnalyzeStep((prev) => {
+        if (prev >= 3) {
+          clearInterval(interval)
+          // Hold the final completed state for a moment before transition
+          setTimeout(() => {
+            setIsAnalyzing(false)
+          }, 600)
+          return 3
+        }
+        return prev + 1
+      })
+    }, 900)
+
+    return () => clearInterval(interval)
+  }, [isHydrated, user.quizCompleted, isAnalyzing])
 
   if (!isHydrated) {
     return (
@@ -165,6 +190,49 @@ export default function ResultsPage() {
     });
 
     addToast("Đã lưu toàn bộ Routine của bạn!", "success");
+    router.push("/dashboard")
+  }
+
+  const handleApplyClick = () => {
+    if (!authUser) {
+      setPendingAction("apply")
+      setShowAuthModal(true)
+    } else {
+      handleApplyEntireRoutine()
+    }
+  }
+
+  const handleSkipClick = () => {
+    if (!authUser) {
+      setPendingAction("skip")
+      setShowAuthModal(true)
+    } else {
+      router.push("/dashboard")
+    }
+  }
+
+  const handleSignupRedirect = () => {
+    if (pendingAction === "apply") {
+      routine.clearRoutine()
+      morningRoutine.forEach(p => routine.addToMorning(p))
+      eveningRoutine.forEach(p => routine.addToEvening(p))
+    }
+    user.setGuest(false)
+    router.push("/login?mode=signup")
+  }
+
+  const handleContinueAsGuest = () => {
+    document.cookie = "skinwise-guest=true; path=/; max-age=604800"
+    user.setGuest(true)
+    
+    if (pendingAction === "apply") {
+      routine.clearRoutine()
+      morningRoutine.forEach(p => routine.addToMorning(p))
+      eveningRoutine.forEach(p => routine.addToEvening(p))
+      addToast("Đã lưu Routine vào bộ nhớ tạm!", "success")
+    }
+    
+    setShowAuthModal(false)
     router.push("/dashboard")
   }
 
@@ -376,6 +444,34 @@ export default function ResultsPage() {
               </div>
             </motion.div>
 
+            {/* 4. Quiz Satisfaction Survey Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9 }}
+              className="bg-accent/5 border border-accent/20 rounded-[24px] p-6 shadow-soft space-y-4 mt-8 flex flex-col sm:flex-row items-center justify-between gap-6"
+            >
+              <div className="flex gap-4 items-start text-left">
+                <div className="w-10 h-10 rounded-xl bg-accent-light text-accent-dark flex items-center justify-center shrink-0">
+                  <Sparkles size={18} />
+                </div>
+                <div className="space-y-1">
+                  <h4 className="text-body font-bold text-fg">Đánh giá kết quả từ AI 💖</h4>
+                  <p className="text-caption text-muted leading-relaxed">
+                    Bạn thấy routine do AI đề xuất có phù hợp với thực tế không? Cho chúng mình xin 1 phút khảo sát ngắn để tiếp tục tối ưu hóa thuật toán nhé.
+                  </p>
+                </div>
+              </div>
+              <a
+                href="https://docs.google.com/forms/d/1m8GuSjkyuvKsIryVfr6okucPgHmId6je6fFZLTUKOvs/viewform?usp=sf_link"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto shrink-0 bg-fg hover:bg-slate-900 text-bg py-3 px-6 rounded-xl text-caption font-bold text-center transition-all active:scale-[0.98]"
+              >
+                Khảo sát ngay
+              </a>
+            </motion.div>
+
             {/* Floating Bottom Bar */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -385,19 +481,62 @@ export default function ResultsPage() {
             >
               <div className="max-w-2xl mx-auto pointer-events-auto flex flex-col sm:flex-row gap-3">
                 <button 
-                  onClick={handleApplyEntireRoutine}
+                  onClick={handleApplyClick}
                   className="flex-1 bg-fg text-bg rounded-2xl py-4 font-bold text-body shadow-2xl hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                 >
                   <PlusCircle size={20} /> Lưu Routine & Vào Workspace
                 </button>
                 <button 
-                  onClick={() => router.push("/dashboard")}
+                  onClick={handleSkipClick}
                   className="bg-white text-fg border border-line rounded-2xl py-4 px-6 font-bold text-caption shadow-lg hover:bg-surface active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                 >
                   Tự chọn <ArrowRight size={16} />
                 </button>
               </div>
             </motion.div>
+
+            {/* Premium Conversion Modal */}
+            <AnimatePresence>
+              {showAuthModal && (
+                <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-md flex items-center justify-center p-4">
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: 15 }}
+                    transition={{ type: "spring", duration: 0.5 }}
+                    className="bg-fg/5 border border-line/10 p-2 rounded-[2rem] max-w-sm w-full shadow-2xl"
+                  >
+                    <div className="bg-white border border-line rounded-[calc(2rem-0.5rem)] p-6 space-y-6 text-center">
+                      <div className="w-12 h-12 bg-accent/10 text-accent-dark rounded-full flex items-center justify-center mx-auto">
+                        <Sparkles size={22} className="animate-pulse" />
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <h3 className="text-title font-bold text-fg">🔑 Lưu chu trình của bạn</h3>
+                        <p className="text-[12px] text-muted leading-relaxed">
+                          Tạo tài khoản miễn phí để đồng bộ hóa Routine lên Cloud, nhận thông báo nhắc nhở bôi thoa sáng/tối và theo dõi biểu đồ cải thiện da hàng ngày.
+                        </p>
+                      </div>
+
+                      <div className="space-y-2">
+                        <button
+                          onClick={handleSignupRedirect}
+                          className="w-full bg-fg text-bg rounded-xl py-3 text-caption font-bold hover:opacity-90 active:scale-[0.98] transition-all"
+                        >
+                          Đăng ký tài khoản (Khuyên dùng)
+                        </button>
+                        <button
+                          onClick={handleContinueAsGuest}
+                          className="w-full text-center text-caption text-muted hover:text-fg font-bold py-2 transition-colors"
+                        >
+                          Trải nghiệm chế độ khách
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              )}
+            </AnimatePresence>
           </motion.div>
         )}
       </AnimatePresence>

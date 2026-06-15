@@ -31,6 +31,7 @@ export default function HomePage() {
   const store = useUserStore()
 
   const handleGuest = () => {
+    document.cookie = "skinwise-guest=true; path=/; max-age=604800";
     store.setGuest(true)
     store.setQuizCompleted(true)
     // Default some minimum fields for guest mode so UI doesn't break

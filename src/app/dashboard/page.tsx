@@ -225,6 +225,28 @@ export default function DashboardPage() {
       </header>
 
       <main className="max-w-4xl mx-auto px-6 pt-8">
+        {user.isGuest && (
+          <div className="mb-6 p-4 bg-amber-500/[0.03] border border-amber-500/25 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-top-3 duration-300">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-full bg-amber-500/10 text-amber-600 flex items-center justify-center shrink-0">
+                <Info size={16} />
+              </div>
+              <div>
+                <p className="text-[13px] font-bold text-fg leading-snug">Chế độ trải nghiệm khách</p>
+                <p className="text-[11px] text-muted leading-relaxed">
+                  Lưu ý: Dữ liệu của bạn đang được lưu tạm thời. Hãy đăng ký tài khoản để đồng bộ hóa và bảo mật vĩnh viễn trên Cloud.
+                </p>
+              </div>
+            </div>
+            <Link
+              href="/login?mode=signup"
+              className="w-full sm:w-auto shrink-0 bg-fg text-bg px-4 py-2 rounded-xl text-[11px] font-bold hover:opacity-90 active:scale-[0.98] transition-all text-center"
+            >
+              Đăng ký tài khoản
+            </Link>
+          </div>
+        )}
+
         <AnimatePresence mode="wait">
           {/* TAB 1: DASHBOARD (TỔNG QUAN) */}
           {activeTab === "dashboard" && (

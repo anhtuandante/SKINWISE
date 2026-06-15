@@ -79,10 +79,26 @@ export default function SkinDashboard({
   const [mounted, setMounted] = useState(false);
   const isSkinStoreHydrated = useSkinStore((s) => s.isHydrated);
   const isUserStoreHydrated = useUserStore((s) => s.isHydrated);
+  const [surveyDismissed, setSurveyDismissed] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    if (typeof window !== "undefined") {
+      setSurveyDismissed(localStorage.getItem("skinwise_survey_dismissed") === "true");
+    }
   }, []);
+
+  const handleDismissSurvey = () => {
+    localStorage.setItem("skinwise_survey_dismissed", "true");
+    setSurveyDismissed(true);
+    trackEvent("survey_dismissed");
+  };
+
+  const handleCompleteSurvey = () => {
+    localStorage.setItem("skinwise_survey_dismissed", "true");
+    setSurveyDismissed(true);
+    trackEvent("survey_click");
+  };
 
   const [checkinStartStep, setCheckinStartStep] = useState(0);
   const [checkinInitialMood, setCheckinInitialMood] = useState<"great" | "okay" | "irritated" | null>(null);
@@ -930,6 +946,45 @@ export default function SkinDashboard({
           </div>
         </div>
       </div>
+
+      {/* 3.5 Survey Bento Card */}
+      {!surveyDismissed && (
+        <div className="bg-gradient-to-r from-accent/[0.04] via-[#C4A882]/5 to-bg border border-line rounded-[28px] p-6 shadow-soft flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden animate-in fade-in slide-in-from-top-3 duration-300">
+          <div className="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none">
+            <Heart size={120} className="text-accent-dark" />
+          </div>
+          
+          <div className="flex gap-4 items-start relative z-10">
+            <div className="w-12 h-12 rounded-2xl bg-accent/10 text-accent-dark flex items-center justify-center shrink-0 shadow-sm">
+              <Heart size={22} className="fill-accent-dark text-accent-dark" />
+            </div>
+            <div className="space-y-1 text-left">
+              <h4 className="text-body font-bold text-fg">Đóng góp ý kiến cho SkinWise 💬</h4>
+              <p className="text-caption text-muted leading-relaxed max-w-xl">
+                Cảm ơn bạn đã đồng hành cùng SkinWise! Hãy dành ra 1 phút để thực hiện bản khảo sát ngắn này giúp tụi mình cải thiện AI và mang đến nhiều tính năng hữu ích hơn nữa nhé.
+              </p>
+            </div>
+          </div>
+          
+          <div className="flex sm:flex-col items-center gap-3 w-full sm:w-auto shrink-0 relative z-10">
+            <a
+              href="https://docs.google.com/forms/d/1m8GuSjkyuvKsIryVfr6okucPgHmId6je6fFZLTUKOvs/viewform?usp=sf_link"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleCompleteSurvey}
+              className="flex-1 sm:w-full bg-fg hover:bg-slate-900 text-bg py-2.5 px-5 rounded-xl text-caption font-bold text-center transition-all active:scale-[0.98] whitespace-nowrap"
+            >
+              Làm khảo sát
+            </a>
+            <button
+              onClick={handleDismissSurvey}
+              className="text-muted hover:text-fg text-micro font-bold py-2 px-3 transition-colors"
+            >
+              Ẩn thông báo này ✕
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* 4. AI Insights Hub (Tabbed) */}
       <div className="bg-white border border-line rounded-[28px] p-6 shadow-soft space-y-6 animate-in">
