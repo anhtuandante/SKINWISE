@@ -142,6 +142,13 @@ export default function DashboardPage() {
     user.activeIngredients, user.avoidedIngredients
   ]);
 
+  // Redirect to quiz if user hasn't completed it
+  useEffect(() => {
+    if (user.isHydrated && !user.quizCompleted) {
+      router.replace("/quiz");
+    }
+  }, [user.isHydrated, user.quizCompleted, router]);
+
   const filteredRecommended = useMemo(() => {
     let list = recommended;
     if (routineFilterType !== "all") {
