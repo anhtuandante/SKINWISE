@@ -7,20 +7,20 @@ import { useUserStore } from "@/store/user-store"
 import { useToastStore } from "@/store/toast-store"
 import { 
   SKIN_TYPES, CONCERNS,
-  AGES, BARRIER_STATUS
+  BARRIER_STATUS, AVOID_INGREDIENTS
 } from "@/lib/constants"
 import Button from "@/components/ui/Button"
 import VisionLab from "@/components/quiz/VisionLab"
-import { Sparkles, Check } from "lucide-react"
+import { Sparkles, Check, Info } from "lucide-react"
 import { trackEvent } from "@/lib/tracking"
 
 const STEPS = [
-  { title: "Độ tuổi", sub: "Xác định chu kỳ tái tạo da" },
+  { title: "Năm sinh", sub: "Xác định chu kỳ tái tạo da" },
   { title: "Loại da", sub: "Cốt lõi của mọi quy trình" },
   { title: "Vấn đề da", sub: "Có thể chọn nhiều" },
+  { title: "Thành phần cần tránh", sub: "Dị ứng hoặc không hợp (Tùy chọn)" },
   { title: "Da bạn có nhạy cảm không?", sub: "Ảnh hưởng đến sản phẩm được gợi ý" },
   { title: "Ngân sách", sub: "Cho mỗi sản phẩm" },
-  { title: "Chu kỳ kinh nguyệt (Tùy chọn)", sub: "Tối ưu hóa sản phẩm theo nội tiết tố" },
 ]
 
 const stepVariants = {
@@ -46,6 +46,13 @@ export default function QuizPage() {
   const addToast = useToastStore((s) => s.addToast)
   const [showVision, setShowVision] = useState(false)
 
+  // Sync step from store on hydrate
+  useEffect(() => {
+    if (store.isHydrated && store.quizStep > 1 && store.quizStep <= 6) {
+      setStep(store.quizStep)
+    }
+  }, [store.isHydrated, store.quizStep])
+
   // Track quiz load
   useEffect(() => {
     trackEvent("quiz_start");
@@ -58,12 +65,12 @@ export default function QuizPage() {
 
   const canNext = () => {
     switch (step) {
-      case 1: return !!store.age;
+      case 1: return !!store.birthYear && store.birthYear > 1900 && store.birthYear <= new Date().getFullYear();
       case 2: return !!store.skinType;
       case 3: return store.concerns.length > 0;
-      case 4: return !!store.barrierStatus;
-      case 5: return !!store.totalBudget && store.totalBudget > 0;
-      case 6: return true; // Optional step
+      case 4: return true; // Optional allergies
+      case 5: return !!store.barrierStatus;
+      case 6: return !!store.totalBudget && store.totalBudget > 0;
       default: return true;
     }
   }
@@ -72,17 +79,19 @@ export default function QuizPage() {
     if (step < 6) {
       setDirection(1)
       setStep(step + 1)
+      store.setQuizStep(step + 1)
     } else {
       trackEvent("quiz_complete", {
-        age: store.age,
+        birthYear: store.birthYear,
         skinType: store.skinType,
         concerns: store.concerns,
         barrierStatus: store.barrierStatus,
-        budget: store.budget,
-        cycleLength: store.cycleLength,
-        hasCycleDate: !!store.cycleStartDate
+        totalBudget: store.totalBudget,
+        budgetStrategy: store.budgetStrategy
       });
       store.setQuizCompleted(true)
+      store.setGuest(false)
+      store.setQuizStep(1)
       router.push("/results")
     }
   }
@@ -91,7 +100,16 @@ export default function QuizPage() {
     if (step > 1) {
       setDirection(-1)
       setStep(step - 1)
+      store.setQuizStep(step - 1)
     }
+  }
+
+  const handleGuest = () => {
+    store.setGuest(true)
+    store.setQuizCompleted(true)
+    if (!store.birthYear) store.setBirthYear(2000)
+    if (!store.skinType) store.setSkinType("combination")
+    router.push("/dashboard")
   }
 
   return (
@@ -136,18 +154,26 @@ export default function QuizPage() {
 
             <div className="space-y-3">
               {/* Step 1: Age */}
-              {step === 1 && AGES.map((item) => (
-                <OptionButton
-                  key={item.id}
-                  title={item.label}
-                  desc={item.desc}
-                  isActive={store.age === item.id}
-                  onClick={() => {
-                    trackEvent("quiz_answer", { step: 1, type: "age", value: item.id });
-                    store.setAge(item.id);
-                  }}
-                />
-              ))}
+              {step === 1 && (
+                <div className="space-y-6 w-full bg-white border border-line rounded-[24px] p-6 shadow-soft animate-in">
+                  <div className="text-center space-y-1">
+                    <span className="text-caption font-bold text-fg block">Nhập năm sinh của bạn</span>
+                    <p className="text-[11px] text-muted">Giúp AI xác định chính xác chu kỳ tái tạo da và ưu tiên dưỡng chất chống lão hóa nếu cần thiết.</p>
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      placeholder="VD: 1995"
+                      value={store.birthYear || ""}
+                      onChange={(e) => {
+                        const val = parseInt(e.target.value);
+                        store.setBirthYear(val || undefined);
+                      }}
+                      className="w-full bg-surface border-2 border-line hover:border-fg/40 focus:border-fg rounded-2xl px-5 py-4 text-headline font-extrabold text-center text-fg outline-none transition-all"
+                    />
+                  </div>
+                </div>
+              )}
 
               {/* Step 2: Skin Type */}
               {step === 2 && (
@@ -184,11 +210,12 @@ export default function QuizPage() {
                 </>
               )}
 
-              {/* Step 3: Concerns */}
               {step === 3 && CONCERNS.map((item) => (
                 <OptionButton
                   key={item.id}
                   title={item.label}
+                  desc={item.desc}
+                  tooltip={'tooltip' in item ? (item as { tooltip: string }).tooltip : undefined}
                   isActive={store.concerns.includes(item.id)}
                   onClick={() => {
                     const active = store.concerns.includes(item.id);
@@ -199,22 +226,42 @@ export default function QuizPage() {
                 />
               ))}
 
-              {/* Step 4: Barrier Status (Sensitivity) */}
-              {step === 4 && BARRIER_STATUS.map((item) => (
+              {/* Step 4: Allergies / Avoided Ingredients */}
+              {step === 4 && (
+                <div className="space-y-3">
+                  <p className="text-caption text-muted px-2">Bỏ qua nếu bạn không bị dị ứng với thành phần nào.</p>
+                  {AVOID_INGREDIENTS.map((item) => (
+                    <OptionButton
+                      key={item.id}
+                      title={item.label}
+                      desc={item.desc}
+                      isActive={store.allergies.includes(item.id)}
+                      onClick={() => {
+                        trackEvent("quiz_answer", { step: 4, type: "allergy", value: item.id });
+                        store.toggleAllergy(item.id);
+                      }}
+                      isMulti
+                    />
+                  ))}
+                </div>
+              )}
+
+              {/* Step 5: Barrier Status (Sensitivity) */}
+              {step === 5 && BARRIER_STATUS.map((item) => (
                 <OptionButton
                   key={item.id}
                   title={item.label}
                   desc={item.desc}
                   isActive={store.barrierStatus === item.id}
                   onClick={() => {
-                    trackEvent("quiz_answer", { step: 4, type: "barrierStatus", value: item.id });
+                    trackEvent("quiz_answer", { step: 5, type: "barrierStatus", value: item.id });
                     store.setBarrierStatus(item.id as "stable" | "redness" | "flaking" | "stinging");
                   }}
                 />
               ))}
 
-              {/* Step 5: Budget (SkinWallet Input) */}
-              {step === 5 && (
+              {/* Step 6: Budget (SkinWallet Input) */}
+              {step === 6 && (
                 <div className="space-y-6 w-full bg-white border border-line rounded-[24px] p-6 shadow-soft animate-in">
                   <div className="text-center space-y-1">
                     <span className="text-2xl block">💳</span>
@@ -266,66 +313,38 @@ export default function QuizPage() {
                     </div>
                   </div>
 
-                  {/* Dynamic allocation preview */}
+                  {/* Budget Strategy */}
                   {(store.totalBudget || 0) > 0 && (
-                    <div className="p-4 bg-emerald-500/[0.02] border border-emerald-500/10 rounded-2xl space-y-2 text-left">
-                      <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider block text-center">Dự kiến phân bổ từ AI</span>
-                      <div className="grid grid-cols-2 gap-2.5 text-micro text-muted">
-                        <div>🧼 Làm sạch (15%): <span className="font-bold text-fg block">{Math.round((store.totalBudget || 0) * 0.15).toLocaleString()}đ</span></div>
-                        <div>💦 Dưỡng ẩm (25%): <span className="font-bold text-fg block">{Math.round((store.totalBudget || 0) * 0.25).toLocaleString()}đ</span></div>
-                        <div>🧪 Đặc trị (40%): <span className="font-bold text-fg block">{Math.round((store.totalBudget || 0) * 0.40).toLocaleString()}đ</span></div>
-                        <div>☀️ Chống nắng (20%): <span className="font-bold text-fg block">{Math.round((store.totalBudget || 0) * 0.20).toLocaleString()}đ</span></div>
+                    <div className="pt-2 border-t border-line">
+                      <span className="text-[11px] font-bold text-fg uppercase tracking-wider block mb-3">Chiến lược phân bổ AI</span>
+                      <div className="grid gap-2">
+                        {[
+                          { id: "even", label: "Chia đều ngân sách", desc: "Phân bổ đồng đều cho mọi bước" },
+                          { id: "serum", label: "Đầu tư Treatment/Serum", desc: "Dành phần lớn tiền cho đặc trị, mua làm sạch rẻ" },
+                          { id: "save", label: "Tiết kiệm tối đa", desc: "Ưu tiên chọn các sản phẩm rẻ nhất có thể" }
+                        ].map(strategy => (
+                          <button
+                            key={strategy.id}
+                            onClick={() => store.setBudgetStrategy(strategy.id as "even" | "serum" | "save")}
+                            className={`flex flex-col text-left px-4 py-3 border rounded-xl transition-all ${
+                              store.budgetStrategy === strategy.id ? "bg-fg/[0.03] border-fg" : "bg-surface border-line hover:border-fg/40"
+                            }`}
+                          >
+                            <div className="flex items-center gap-2">
+                              <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 ${
+                                store.budgetStrategy === strategy.id ? "border-fg" : "border-line"
+                              }`}>
+                                {store.budgetStrategy === strategy.id && <div className="w-2.5 h-2.5 rounded-full bg-fg" />}
+                              </div>
+                              <span className={`text-caption font-bold ${store.budgetStrategy === strategy.id ? "text-fg" : "text-fg/80"}`}>{strategy.label}</span>
+                            </div>
+                            <span className="text-[10px] text-muted ml-6 mt-1">{strategy.desc}</span>
+                          </button>
+                        ))}
                       </div>
+                      <p className="text-[10px] text-muted italic mt-4 text-center">* Bạn có thể tinh chỉnh chi tiết trong SkinWallet sau khi hoàn thành quiz.</p>
                     </div>
                   )}
-                </div>
-              )}
-
-              {/* Step 6: Menstrual Cycle (Optional) */}
-              {step === 6 && (
-                <div className="space-y-5 bg-white border border-line rounded-2xl p-5 shadow-soft">
-                  <p className="text-caption text-muted">
-                    Bỏ qua nếu bạn là nam giới hoặc không có nhu cầu theo dõi da theo chu kỳ nội tiết.
-                  </p>
-                  
-                  <div className="space-y-2">
-                    <label className="text-caption font-bold text-fg block" htmlFor="period-date">Ngày bắt đầu kỳ kinh gần nhất</label>
-                    <input
-                      id="period-date"
-                      type="date"
-                      value={store.cycleStartDate || ""}
-                      onChange={(e) => store.setCycleStartDate(e.target.value)}
-                      className="w-full bg-surface border border-line rounded-xl px-4 py-3 text-body outline-none focus:border-fg transition-all"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-caption font-bold text-fg block" htmlFor="cycle-len">Chu kỳ kinh trung bình (ngày)</label>
-                    <div className="flex gap-2">
-                      {[25, 28, 30, 32].map((l) => (
-                        <button
-                          key={l}
-                          type="button"
-                          onClick={() => store.setCycleLength(l)}
-                          className={`flex-1 py-2 rounded-xl text-caption font-bold border transition-all ${
-                            store.cycleLength === l ? "bg-fg text-bg border-fg" : "bg-white text-muted border-line hover:border-fg/40"
-                          }`}
-                        >
-                          {l} ngày
-                        </button>
-                      ))}
-                    </div>
-                    <input
-                      id="cycle-len"
-                      type="number"
-                      min={15}
-                      max={45}
-                      value={store.cycleLength || 28}
-                      onChange={(e) => store.setCycleLength(parseInt(e.target.value) || 28)}
-                      placeholder="Số ngày khác..."
-                      className="w-full bg-surface border border-line rounded-xl px-4 py-2.5 text-caption outline-none focus:border-fg transition-all mt-1"
-                    />
-                  </div>
                 </div>
               )}
             </div>
@@ -334,35 +353,58 @@ export default function QuizPage() {
 
         {/* Floating Controls */}
         <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-bg via-bg to-transparent pointer-events-none z-10">
-          <div className="max-w-md mx-auto pointer-events-auto flex items-center justify-between gap-4">
-            <Button 
-              variant="outline" 
-              onClick={handleBack} 
-              disabled={step === 1}
-              className="bg-white shrink-0"
-            >
-              Quay lại
-            </Button>
-            {step === 6 ? (
-              <div className="flex gap-2 flex-1">
-                <Button 
-                  onClick={() => {
-                    store.setCycleStartDate(""); // Xóa nếu bỏ qua
-                    handleNext();
-                  }} 
-                  variant="outline" 
-                  className="bg-white flex-1"
-                >
-                  Bỏ qua
-                </Button>
-                <Button onClick={handleNext} disabled={!canNext()} className="flex-1">
-                  Hoàn thành
-                </Button>
-              </div>
-            ) : (
-              <Button onClick={handleNext} disabled={!canNext()} className="flex-1">
-                Tiếp tục
+          <div className="max-w-md mx-auto pointer-events-auto flex flex-col gap-3">
+            <div className="flex items-center justify-between gap-4">
+              <Button 
+                variant="outline" 
+                onClick={handleBack} 
+                disabled={step === 1}
+                className="bg-white shrink-0"
+              >
+                Quay lại
               </Button>
+              {step === 4 ? (
+                <div className="flex gap-2 flex-1">
+                  <Button 
+                    onClick={() => {
+                      handleNext();
+                    }} 
+                    variant="outline" 
+                    className="bg-white flex-1"
+                  >
+                    Bỏ qua
+                  </Button>
+                  <Button onClick={handleNext} disabled={!canNext()} className="flex-1">
+                    Tiếp tục
+                  </Button>
+                </div>
+              ) : step === 6 ? (
+                <div className="flex gap-2 flex-1">
+                  <Button 
+                    variant="outline" 
+                    onClick={handleBack} 
+                    className="bg-white"
+                  >
+                    Quay lại
+                  </Button>
+                  <Button onClick={handleNext} disabled={!canNext()} className="flex-1">
+                    Hoàn thành
+                  </Button>
+                </div>
+              ) : (
+                <Button onClick={handleNext} disabled={!canNext()} className="flex-1">
+                  Tiếp tục
+                </Button>
+              )}
+            </div>
+            
+            {step === 1 && (
+              <button 
+                onClick={handleGuest}
+                className="text-[11px] font-bold text-muted hover:text-fg underline underline-offset-2 transition-colors mx-auto mt-2"
+              >
+                Khám phá ngay (Chế độ Khách)
+              </button>
             )}
           </div>
         </div>
@@ -385,21 +427,37 @@ export default function QuizPage() {
   )
 }
 
-function OptionButton({ title, desc, isActive, onClick, isMulti = false }: { title: string, desc?: string, isActive: boolean, onClick: () => void, isMulti?: boolean }) {
+function OptionButton({ title, desc, tooltip, isActive, onClick, isMulti = false }: { title: string, desc?: string, tooltip?: string, isActive: boolean, onClick: () => void, isMulti?: boolean }) {
+  const [showTooltip, setShowTooltip] = useState(false)
+
   return (
-    <motion.button
-      whileTap={{ scale: 0.98 }}
-      onClick={onClick}
-      className={`w-full text-left border rounded-2xl px-5 py-4 transition-all relative overflow-hidden group ${
-        isActive ? "border-fg bg-fg/[0.03] shadow-soft" : "border-line bg-white hover:border-fg/40 hover:bg-fg/[0.01]"
-      }`}
-    >
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex-1">
-          <div className={`text-body font-bold transition-colors ${isActive ? "text-fg" : "text-fg/80"}`}>{title}</div>
-          {desc && <div className="text-caption text-muted font-medium mt-1">{desc}</div>}
-        </div>
-        {isMulti ? (
+    <div className="relative w-full">
+      <motion.button
+        whileTap={{ scale: 0.98 }}
+        onClick={onClick}
+        className={`w-full text-left border rounded-2xl px-5 py-4 transition-all relative overflow-hidden group ${
+          isActive ? "border-fg bg-fg/[0.03] shadow-soft" : "border-line bg-white hover:border-fg/40 hover:bg-fg/[0.01]"
+        }`}
+      >
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex-1 pr-6">
+            <div className="flex items-center gap-2">
+              <div className={`text-body font-bold transition-colors ${isActive ? "text-fg" : "text-fg/80"}`}>{title}</div>
+              {tooltip && (
+                <div 
+                  className="p-1 -m-1 text-muted hover:text-fg transition-colors"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setShowTooltip(!showTooltip)
+                  }}
+                >
+                  <Info size={14} />
+                </div>
+              )}
+            </div>
+            {desc && <div className="text-caption text-muted font-medium mt-1">{desc}</div>}
+          </div>
+          {isMulti ? (
           <div className={`w-6 h-6 shrink-0 rounded-[6px] border flex items-center justify-center transition-all ${
             isActive ? "bg-fg border-fg text-bg" : "border-line text-transparent"
           }`}>
@@ -418,5 +476,20 @@ function OptionButton({ title, desc, isActive, onClick, isMulti = false }: { tit
         )}
       </div>
     </motion.button>
+    <AnimatePresence>
+      {showTooltip && (
+        <motion.div
+          initial={{ opacity: 0, height: 0, marginTop: 0 }}
+          animate={{ opacity: 1, height: "auto", marginTop: 8 }}
+          exit={{ opacity: 0, height: 0, marginTop: 0 }}
+          className="overflow-hidden"
+        >
+          <div className="bg-surface border border-line p-3 rounded-xl text-caption text-muted">
+            {tooltip}
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+    </div>
   )
 }

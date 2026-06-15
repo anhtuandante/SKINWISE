@@ -39,14 +39,14 @@ export const SKIN_TYPES = [
 ] as const
 
 export const CONCERNS = [
-  { id: "acne", label: "Mụn" },
-  { id: "pores", label: "Lỗ chân lông" },
-  { id: "dark-spots", label: "Thâm nám" },
-  { id: "aging", label: "Lão hóa" },
-  { id: "dullness", label: "Xỉn màu" },
-  { id: "dryness", label: "Thiếu ẩm" },
-  { id: "sensitivity", label: "Nhạy cảm" },
-  { id: "oiliness", label: "Dầu thừa" },
+  { id: "acne", label: "Mụn", desc: "Mụn viêm, mụn ẩn, mụn đầu đen", tooltip: "Các nốt mụn sưng đỏ có mủ (viêm) hoặc các nốt sần nhỏ dưới da không viêm (ẩn/đầu đen)." },
+  { id: "pores", label: "Lỗ chân lông", desc: "Lỗ chân lông to, bít tắc", tooltip: "Bề mặt da kém mịn màng do cổ nang lông nở rộng, thường đi kèm tuyến bã nhờn hoạt động mạnh." },
+  { id: "dark-spots", label: "Thâm nám", desc: "Đốm nâu, tàn nhang, thâm mụn", tooltip: "Sự tăng sắc tố melanin tạo thành các mảng/đốm sậm màu hơn vùng da xung quanh." },
+  { id: "aging", label: "Lão hóa", desc: "Nếp nhăn, da chảy xệ, thiếu đàn hồi", tooltip: "Da bắt đầu xuất hiện rãnh cười sâu, vết chân chim và kém săn chắc." },
+  { id: "dullness", label: "Xỉn màu", desc: "Da không đều màu, thiếu sức sống", tooltip: "Bề mặt da xám xịt, thô ráp, mất đi độ bóng khỏe tự nhiên." },
+  { id: "dryness", label: "Thiếu ẩm", desc: "Da khô căng, sần sùi", tooltip: "Lớp màng bảo vệ da thiếu nước hoặc dầu, dẫn đến cảm giác khô rít, dễ tróc vảy." },
+  { id: "sensitivity", label: "Nhạy cảm", desc: "Dễ kích ứng, mẩn đỏ, rát", tooltip: "Hàng rào bảo vệ da yếu, dễ phản ứng với thời tiết, bụi bẩn hoặc mỹ phẩm mới." },
+  { id: "oiliness", label: "Dầu thừa", desc: "Da bóng nhờn, nhanh trôi lớp dưỡng", tooltip: "Tuyến bã nhờn hoạt động quá mức, khiến da luôn bóng nhẫy chỉ sau vài giờ rửa mặt." },
 ] as const
 
 export const BUDGETS = [
@@ -100,9 +100,12 @@ export const ACTIVE_INGREDIENTS = [
 ] as const
 
 export const AVOID_INGREDIENTS = [
-  { id: "alcohol", label: "Cồn khô (Alcohol)", desc: "Dễ gây khô rát" },
-  { id: "fragrance", label: "Hương liệu (Fragrance)", desc: "Dễ gây dị ứng" },
-  { id: "silicone", label: "Silicone", desc: "Dễ gây bít tắc, bí da" },
+  { id: "alcohol", label: "Cồn khô (Alcohol)", desc: "Dễ gây khô rát, yếu màng bảo vệ da" },
+  { id: "fragrance", label: "Hương liệu (Fragrance)", desc: "Dễ gây dị ứng, nổi mẩn đỏ" },
+  { id: "silicone", label: "Silicone", desc: "Dễ gây bít tắc, bí da sinh mụn ẩn" },
+  { id: "parabens", label: "Parabens", desc: "Chất bảo quản có thể gây kích ứng" },
+  { id: "sulfates", label: "Sulfates (SLS/SLES)", desc: "Chất tạo bọt mạnh, làm khô căng da" },
+  { id: "essential-oils", label: "Tinh dầu (Essential Oils)", desc: "Dễ gây rát da cho nền da nhạy cảm" },
 ] as const
 
 export const PREFERENCES = [

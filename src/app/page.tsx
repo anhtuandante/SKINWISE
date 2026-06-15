@@ -30,14 +30,12 @@ export default function HomePage() {
   const router = useRouter()
   const store = useUserStore()
 
-  const handleDemo = () => {
-    store.setAge("25-34")
-    store.setSkinType("combination")
-    store.toggleConcern("acne")
-    store.toggleConcern("pores")
-    store.setBudget("mid-range")
-    store.setBarrierStatus("stable")
+  const handleGuest = () => {
+    store.setGuest(true)
     store.setQuizCompleted(true)
+    // Default some minimum fields for guest mode so UI doesn't break
+    if (!store.birthYear) store.setBirthYear(2000)
+    if (!store.skinType) store.setSkinType("combination")
     router.push("/dashboard")
   }
 
@@ -107,8 +105,8 @@ export default function HomePage() {
             <Button href="/login?mode=signup" size="lg">
               Bắt đầu ngay
             </Button>
-            <Button onClick={handleDemo} variant="outline">
-              Xem demo
+            <Button onClick={handleGuest} variant="outline">
+              Trải nghiệm với tư cách Khách
             </Button>
           </motion.div>
         </div>

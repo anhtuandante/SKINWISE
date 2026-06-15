@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { Smile, Meh, Frown, ChevronLeft, ChevronRight, Plus, ArrowUpCircle, Search, Edit3 } from "lucide-react";
+import { Smile, Meh, Frown, ChevronLeft, ChevronRight, ArrowUpCircle, Search, Edit3 } from "lucide-react";
 import { useSkinStore } from "@/store/useSkinStore";
 import { DiaryLog } from "@/types";
 import { useToastStore } from "@/store/toast-store";
@@ -135,7 +135,6 @@ export default function SkinJournalPanel() {
   }, []);
 
   const isToday = currentWeekDays[selectedDayIdx]?.fullDate === todayStr;
-  const todayHasLog = diaryLogs.some((l) => l.date === todayStr);
 
   if (!mounted || !isHydrated) {
     return (
@@ -200,37 +199,42 @@ export default function SkinJournalPanel() {
         })}
       </div>
 
-      {/* Check-in CTA for today */}
-      {isToday && !todayHasLog && (
-        <button
-          onClick={() => {
-            setCheckinStartStep(0);
-            setCheckinInitialMood(null);
-            setCheckinTargetDateStr(todayStr);
-            setShowCheckin(true);
-          }}
-          className="w-full border-2 border-dashed border-fg/20 hover:border-fg/40 rounded-[24px] p-6 text-center transition-all group bg-fg/[0.01] hover:bg-fg/[0.03]"
-        >
-          <div className="flex items-center justify-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-fg/5 group-hover:bg-fg/10 flex items-center justify-center transition-colors">
-              <Plus size={20} className="text-fg" />
-            </div>
-            <div className="text-left">
-              <span className="text-body font-bold text-fg block">Check-in da hôm nay</span>
-              <span className="text-caption text-muted">Chỉ mất 3 giây — hoặc kể thêm để AI dự đoán ngày mai</span>
-            </div>
+      {/* Check-in CTA for today or missing day */}
+      {!currentSelectedDayLog ? (
+        <div className="w-full border-2 border-dashed border-fg/20 hover:border-fg/40 rounded-[24px] p-6 text-center transition-all group bg-fg/[0.01] hover:bg-fg/[0.03] animate-in">
+          <div className="mb-4">
+            <span className="text-body font-bold text-fg block">Da bạn hôm nay thế nào?</span>
+            <span className="text-caption text-muted">Chạm vào cảm xúc để check-in nhanh</span>
           </div>
-          {checkinStreak > 0 && (
-            <div className="mt-3 text-[10px] font-bold text-muted uppercase tracking-wider">
+          <div className="grid grid-cols-3 gap-3 max-w-sm mx-auto">
+            {([
+              { value: "great" as const, label: "Rất tốt", emoji: "😊" },
+              { value: "okay" as const, label: "Bình thường", emoji: "😐" },
+              { value: "irritated" as const, label: "Kích ứng", emoji: "😣" },
+            ]).map((item) => (
+              <button
+                key={item.value}
+                onClick={() => {
+                  setCheckinStartStep(0);
+                  setCheckinInitialMood(item.value);
+                  setCheckinTargetDateStr(currentWeekDays[selectedDayIdx].fullDate);
+                  setShowCheckin(true);
+                }}
+                className="border border-line rounded-2xl p-3 text-center transition-all bg-white hover:border-fg/30 hover:scale-105 active:scale-95"
+              >
+                <span className="text-2xl block mb-1">{item.emoji}</span>
+                <span className="text-[10px] font-bold text-muted block">{item.label}</span>
+              </button>
+            ))}
+          </div>
+          {checkinStreak > 0 && isToday && (
+            <div className="mt-4 text-[10px] font-bold text-muted uppercase tracking-wider">
               🔥 Streak hiện tại: {checkinStreak} ngày
             </div>
           )}
-        </button>
-      )}
-
-      {/* Existing entry view */}
-      {currentSelectedDayLog ? (
-        <div className="border border-line rounded-[24px] p-6 bg-white shadow-soft space-y-4 animate-in">
+        </div>
+      ) : (
+        <div className="border border-line rounded-[24px] p-6 bg-white shadow-soft space-y-4 animate-in relative">
           <div className="flex items-center justify-between border-b border-line pb-3">
             <div className="flex items-center gap-2">
               <span className="text-caption text-muted font-bold uppercase">Nhật ký ngày {currentSelectedDayLog.date}</span>
@@ -257,6 +261,30 @@ export default function SkinJournalPanel() {
               );
             })()}
           </div>
+
+          <button
+            onClick={() => {
+              setCheckinStartStep(1);
+              setCheckinTargetDateStr(currentSelectedDayLog.date);
+              setShowCheckin(true);
+            }}
+            className="absolute top-4 right-4 p-2 text-muted hover:text-fg transition-colors"
+            title="Chỉnh sửa nhật ký"
+          >
+            <Edit3 size={16} />
+          </button>
+
+          {/* Visual Gallery */}
+          {currentSelectedDayLog.images && currentSelectedDayLog.images.length > 0 && (
+            <div className="space-y-2">
+              <span className="text-micro font-bold text-muted uppercase tracking-wider block">Hình ảnh:</span>
+              <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+                {currentSelectedDayLog.images.map((img, i) => (
+                  <img key={i} src={img} alt={`Log image ${i}`} className="h-24 w-24 object-cover rounded-xl border border-line" />
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Routine check-offs */}
           {!currentSelectedDayLog.isPartial && (
@@ -301,6 +329,30 @@ export default function SkinJournalPanel() {
             </div>
           )}
 
+          {/* Health Metrics (Sleep, Stress, Water) */}
+          {(currentSelectedDayLog.sleepHours || currentSelectedDayLog.stressLevel || currentSelectedDayLog.waterIntake !== undefined) && (
+            <div className="grid grid-cols-3 gap-2">
+              {currentSelectedDayLog.sleepHours && (
+                <div className="bg-indigo-50 border border-indigo-100 p-2 rounded-xl text-center">
+                  <span className="text-lg block mb-0.5">😴</span>
+                  <span className="text-[10px] font-bold text-indigo-700">{currentSelectedDayLog.sleepHours}h ngủ</span>
+                </div>
+              )}
+              {currentSelectedDayLog.stressLevel && (
+                <div className="bg-red-50 border border-red-100 p-2 rounded-xl text-center">
+                  <span className="text-lg block mb-0.5">🤯</span>
+                  <span className="text-[10px] font-bold text-red-700">Stress: {currentSelectedDayLog.stressLevel}/10</span>
+                </div>
+              )}
+              {currentSelectedDayLog.waterIntake !== undefined && (
+                <div className="bg-blue-50 border border-blue-100 p-2 rounded-xl text-center">
+                  <span className="text-lg block mb-0.5">💧</span>
+                  <span className="text-[10px] font-bold text-blue-700">{currentSelectedDayLog.waterIntake} ly</span>
+                </div>
+              )}
+            </div>
+          )}
+
           {currentSelectedDayLog.lifestyle.length > 0 && (
             <div className="space-y-1.5">
               <span className="text-micro font-bold text-muted uppercase">Yếu tố thói quen:</span>
@@ -336,8 +388,6 @@ export default function SkinJournalPanel() {
             </div>
           )}
 
-
-
           {/* Upgrade partial log CTA */}
           {currentSelectedDayLog.isPartial && (
             <button
@@ -347,18 +397,20 @@ export default function SkinJournalPanel() {
                 setCheckinTargetDateStr(currentSelectedDayLog.date);
                 setShowCheckin(true);
               }}
-              className="w-full flex items-center justify-center gap-2 py-3 bg-fg/5 hover:bg-fg/10 rounded-xl text-caption font-bold text-fg transition-all"
+              className="w-full flex items-center justify-center gap-2 py-3 bg-fg/5 hover:bg-fg/10 rounded-xl text-caption font-bold text-fg transition-all mt-2"
             >
               <ArrowUpCircle size={16} />
               Bổ sung chi tiết để xem dự đoán AI
             </button>
           )}
 
-          <div className="text-center">
+          <div className="text-center mt-2">
             <button
               onClick={() => {
-                deleteDiaryLog(currentSelectedDayLog.date);
-                addToast("Đã xóa nhật ký để bạn nhập lại.", "info");
+                if (window.confirm("Bạn có chắc muốn xóa nhật ký ngày này?")) {
+                  deleteDiaryLog(currentSelectedDayLog.date);
+                  addToast("Đã xóa nhật ký.", "info");
+                }
               }}
               className="text-caption text-danger hover:underline font-bold"
             >
@@ -366,22 +418,7 @@ export default function SkinJournalPanel() {
             </button>
           </div>
         </div>
-      ) : !isToday ? (
-        <div className="border border-line rounded-[24px] p-8 bg-white shadow-soft text-center animate-in space-y-4">
-          <p className="text-caption text-muted">Chưa có nhật ký cho ngày này.</p>
-          <button
-            onClick={() => {
-              setCheckinStartStep(0);
-              setCheckinInitialMood(null);
-              setCheckinTargetDateStr(currentWeekDays[selectedDayIdx].fullDate);
-              setShowCheckin(true);
-            }}
-            className="inline-flex items-center justify-center gap-2 px-4 py-2 border border-fg text-fg hover:bg-fg/5 rounded-xl text-caption font-bold transition-all"
-          >
-            <Plus size={16} /> Bổ sung nhật ký ngày này
-          </button>
-        </div>
-      ) : null}
+      )}
 
       {/* Log History */}
       {diaryLogs.length > 0 && (

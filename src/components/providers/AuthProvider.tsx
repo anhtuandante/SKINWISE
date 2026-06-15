@@ -54,7 +54,7 @@ export default function AuthProvider({
       title: userState.title,
       main_goal: userState.mainGoal,
 
-      age: userState.age,
+      age: userState.birthYear ? String(userState.birthYear) : "",
       gender: userState.gender,
       environment: userState.environment,
       makeup_frequency: userState.makeupFrequency,
@@ -82,7 +82,7 @@ export default function AuthProvider({
 
         lifestyle: log.lifestyle || [],
         note: log.note || '',
-        image: log.image || null,
+        image: (log.images && log.images.length > 0) ? log.images[0] : null,
         am_routine_completed: log.amRoutineCompleted || false,
         pm_routine_completed: log.pmRoutineCompleted || false,
       }));
@@ -110,7 +110,7 @@ export default function AuthProvider({
             title: profile.title || "",
             mainGoal: profile.main_goal || "",
 
-            age: profile.age || "",
+            birthYear: profile.age ? parseInt(profile.age) : undefined,
             gender: profile.gender || "",
             environment: profile.environment || "",
             makeupFrequency: profile.makeup_frequency || "",
@@ -138,7 +138,7 @@ export default function AuthProvider({
 
             lifestyle: log.lifestyle,
             note: log.note,
-            image: log.image,
+            images: log.image ? [log.image] : [],
             amRoutineCompleted: log.am_routine_completed,
             pmRoutineCompleted: log.pm_routine_completed,
           }));
@@ -201,7 +201,7 @@ export default function AuthProvider({
           title: state.title,
           main_goal: state.mainGoal,
 
-          age: state.age,
+          age: state.birthYear ? String(state.birthYear) : "",
           gender: state.gender,
           environment: state.environment,
           makeup_frequency: state.makeupFrequency,
@@ -231,7 +231,7 @@ export default function AuthProvider({
 
             lifestyle: log.lifestyle || [],
             note: log.note || '',
-            image: log.image || null,
+            image: (log.images && log.images.length > 0) ? log.images[0] : null,
             am_routine_completed: log.amRoutineCompleted || false,
             pm_routine_completed: log.pmRoutineCompleted || false,
           }));

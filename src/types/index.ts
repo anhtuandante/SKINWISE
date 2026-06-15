@@ -17,6 +17,14 @@ export interface Product {
   isWaterBased?: boolean;
   shopeeUrl: string;
   image?: string;
+  // Phase 3 Features:
+  daysOfWeek?: number[]; // e.g. [1, 3, 5] for Mon, Wed, Fri
+  purchaseDate?: string;
+  volumeRemaining?: number; // percentage 0-100
+  expiryDate?: string;
+  userNotes?: string;
+  dosage?: string;
+  customPrice?: number;
 }
 
 export interface Ingredient {
@@ -47,11 +55,14 @@ export interface WalletAllocation {
 }
 
 export interface UserProfile {
+  isGuest: boolean;
+  quizStep: number;
   skinType: string;
   concerns: string[];
   budget: string;
   totalBudget?: number; // In VND, e.g. 1500000
-  allergies: string;
+  budgetStrategy?: "even" | "serum" | "save";
+  allergies: string[];
   quizCompleted: boolean;
   barrier?: string;
   barrierStatus?: "stable" | "redness" | "flaking" | "stinging";
@@ -60,7 +71,7 @@ export interface UserProfile {
   title?: string;
   mainGoal?: string;
 
-  age?: string;
+  birthYear?: number;
   gender?: string;
   environment?: string;
   makeupFrequency?: string;
@@ -90,7 +101,10 @@ export interface DiaryLog {
   lifestyle: string[];
   diet?: string[];
   note: string;
-  image?: string | null;
+  images?: string[];
+  sleepHours?: number;
+  stressLevel?: number;
+  waterIntake?: number;
   aiOriginalMetrics?: {
     oiliness: number;
     dryness: number;

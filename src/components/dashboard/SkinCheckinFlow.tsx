@@ -1,15 +1,17 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X, Camera,
   CheckCircle2, Sparkles, Flame,
   ChevronRight, Loader2, Copy,
-  Droplet, Sun, ShieldAlert, AlertCircle
+  Droplet, Sun, ShieldAlert, AlertCircle,
+  TrendingUp, TrendingDown, BarChart3
 } from "lucide-react";
 import { useSkinStore } from "@/store/useSkinStore";
 import { useToastStore } from "@/store/toast-store";
+import { calculateSkinScore } from "@/utils/trendAnalysis";
 import { DiaryLog } from "@/types";
 
 interface SkinCheckinFlowProps {
@@ -122,11 +124,23 @@ export default function SkinCheckinFlow({
   const [aiOriginalMetrics, setAiOriginalMetrics] = useState<Record<string, number> | null>(null);
   const [userCorrected, setUserCorrected] = useState(false);
 
+  // Completion screen state
+  const [completionData, setCompletionData] = useState<{
+    score: number;
+    yesterdayScore: number | null;
+    biggestChange: { metric: string; delta: number } | null;
+    recommendation: string;
+  } | null>(null);
+
   const [lifestyle, setLifestyle] = useState<string[]>([]);
   const [diet, setDiet] = useState<string[]>([]);
   const [amDone, setAmDone] = useState(false);
   const [pmDone, setPmDone] = useState(false);
   const [note, setNote] = useState("");
+  
+  const [sleepHours, setSleepHours] = useState<number>(7);
+  const [stressLevel, setStressLevel] = useState<number>(5);
+  const [waterIntake, setWaterIntake] = useState<number>(6); // ~1.5L
 
   // Date
   const today = useMemo(() => {
@@ -167,7 +181,10 @@ export default function SkinCheckinFlow({
       if (existingLog.lifestyle && lifestyle.length === 0) setLifestyle(existingLog.lifestyle);
       if (existingLog.diet && diet.length === 0) setDiet(existingLog.diet);
       if (existingLog.note && !note) setNote(existingLog.note);
-      if (existingLog.image && !selfieImage) setSelfieImage(existingLog.image);
+      if (existingLog.images && existingLog.images.length > 0 && !selfieImage) setSelfieImage(existingLog.images[0]);
+      if (existingLog.sleepHours) setSleepHours(existingLog.sleepHours);
+      if (existingLog.stressLevel) setStressLevel(existingLog.stressLevel);
+      if (existingLog.waterIntake !== undefined) setWaterIntake(existingLog.waterIntake);
       if (existingLog.source) setMetricsSource(existingLog.source);
       if (existingLog.aiOriginalMetrics) setAiOriginalMetrics(existingLog.aiOriginalMetrics);
       if (existingLog.userCorrected) setUserCorrected(existingLog.userCorrected);
@@ -215,9 +232,65 @@ export default function SkinCheckinFlow({
     onComplete();
   };
 
+  // Compress image to thumbnail for localStorage storage efficiency
+  const compressImage = useCallback((base64: string, maxWidth = 400, quality = 0.6): Promise<string> => {
+    return new Promise((resolve) => {
+      const img = new window.Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const ratio = Math.min(maxWidth / img.width, 1);
+        canvas.width = img.width * ratio;
+        canvas.height = img.height * ratio;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          resolve(canvas.toDataURL("image/jpeg", quality));
+        } else {
+          resolve(base64);
+        }
+      };
+      img.onerror = () => resolve(base64);
+      img.src = base64;
+    });
+  }, []);
+
+  // Generate recommendation based on today's metrics
+  const generateRecommendation = useCallback((m: Record<string, number>): string => {
+    if (m.barrierComfort <= 2) return "Hàng rào bảo vệ da đang yếu. Hôm nay nên tạm ngưng AHA/BHA/Retinol và tập trung phục hồi bằng Centella hoặc Panthenol.";
+    if (m.acne >= 4) return "Mụn đang bùng phát. Hãy kiểm tra xem hôm qua có ăn đồ ngọt/sữa hay ngủ muộn không. Duy trì cleansing nhẹ nhàng và tránh sờ tay lên mặt.";
+    if (m.redness >= 4) return "Da đang đỏ rát nhiều. Hạn chế dùng sản phẩm chứa cồn và hương liệu. Ưu tiên sản phẩm dịu nhẹ, có Aloe Vera hoặc Madecassoside.";
+    if (m.dryness >= 4) return "Da đang rất khô căng. Tăng cường cấp ẩm bằng Hyaluronic Acid và bôi kem dưỡng đặc hơn. Uống đủ nước trong ngày.";
+    if (m.oiliness >= 4) return "Da đổ nhiều dầu hôm nay. Dùng toner kiềm dầu nhẹ và kem dưỡng gel-based thay vì cream đặc. Tránh rửa mặt quá nhiều lần.";
+    if (m.barrierComfort >= 4 && m.acne <= 2 && m.redness <= 2) return "Da đang rất khỏe mạnh! Đây là thời điểm tốt để thử thêm treatment nhẹ nếu muốn nâng cấp routine.";
+    return "Da ở trạng thái ổn định. Tiếp tục duy trì routine hiện tại và đừng quên bôi kem chống nắng nhé!";
+  }, []);
+
   // Full save
-  const handleFullSave = () => {
+  const handleFullSave = async () => {
     if (!mood) return;
+
+    // Compress selfie image before storing to prevent localStorage overflow
+    let compressedImage = selfieImage;
+    if (selfieImage) {
+      compressedImage = await compressImage(selfieImage);
+    }
+
+    // Fix calibration: write offsets when user corrected AI metrics
+    if (userCorrected && aiOriginalMetrics) {
+      const store = useSkinStore.getState();
+      const metricKeys = ["oiliness", "dryness", "redness", "acne", "barrierComfort"] as const;
+      metricKeys.forEach((k) => {
+        const userVal = metrics[k];
+        const aiVal = aiOriginalMetrics[k];
+        if (userVal !== undefined && aiVal !== undefined && userVal !== aiVal) {
+          const existingOffset = store.calibrationOffsets[k] || 0;
+          // Running average: blend new correction with existing offset
+          const newOffset = Math.round(((existingOffset + (userVal - aiVal)) / 2) * 10) / 10;
+          store.setCalibrationOffset(k, newOffset);
+        }
+      });
+    }
+
     addDiaryLog({
       date: today.str, dayName: today.dayName, mood,
       isPartial: false, source: metricsSource,
@@ -228,11 +301,41 @@ export default function SkinCheckinFlow({
       aiOriginalMetrics: aiOriginalMetrics ? (aiOriginalMetrics as DiaryLog["aiOriginalMetrics"]) : undefined,
       userCorrected,
       lifestyle, diet, note,
-      image: selfieImage,
+      sleepHours, stressLevel, waterIntake,
+      images: compressedImage ? [compressedImage] : undefined,
       amRoutineCompleted: amDone, pmRoutineCompleted: pmDone,
     });
-    addToast("Đã lưu nhật ký thành công!", "success");
-    onComplete();
+
+    // Calculate completion data for summary screen
+    const todayScore = calculateSkinScore(metrics as { oiliness: number; dryness: number; redness: number; acne: number; barrierComfort: number });
+    const yScore = yesterdayLog ? calculateSkinScore(yesterdayLog.metrics) : null;
+
+    // Find biggest metric change vs yesterday
+    let biggestChange: { metric: string; delta: number } | null = null;
+    if (yesterdayLog) {
+      const METRIC_NAMES: Record<string, string> = {
+        oiliness: "Đổ dầu", dryness: "Khô căng", redness: "Mẩn đỏ",
+        acne: "Mụn", barrierComfort: "Hàng rào da"
+      };
+      let maxDelta = 0;
+      (["oiliness", "dryness", "redness", "acne", "barrierComfort"] as const).forEach((k) => {
+        const delta = metrics[k] - (yesterdayLog.metrics[k] || 0);
+        if (Math.abs(delta) > Math.abs(maxDelta)) {
+          maxDelta = delta;
+          biggestChange = { metric: METRIC_NAMES[k], delta };
+        }
+      });
+    }
+
+    setCompletionData({
+      score: todayScore,
+      yesterdayScore: yScore,
+      biggestChange,
+      recommendation: generateRecommendation(metrics),
+    });
+
+    setDirection(1);
+    setStep(2);
   };
 
   // Selfie analysis
@@ -248,7 +351,10 @@ export default function SkinCheckinFlow({
         reader.onloadend = () => resolve(reader.result as string);
         reader.readAsDataURL(file);
       });
-      setSelfieImage(base64);
+
+      // Compress for display preview (keep higher quality for AI analysis)
+      const previewImage = await compressImage(base64, 600, 0.7);
+      setSelfieImage(previewImage);
 
       // Simulate analysis delay for visual effect
       await new Promise(r => setTimeout(r, 2000));
@@ -308,6 +414,7 @@ export default function SkinCheckinFlow({
         <div className="flex items-center gap-2">
           <div className={`h-1.5 rounded-full transition-all duration-300 ${step === 0 ? "w-6 bg-fg" : "w-3 bg-fg/40"}`} />
           <div className={`h-1.5 rounded-full transition-all duration-300 ${step === 1 ? "w-6 bg-fg" : "w-3 bg-line"}`} />
+          <div className={`h-1.5 rounded-full transition-all duration-300 ${step === 2 ? "w-6 bg-fg" : "w-3 bg-line"}`} />
         </div>
         <div className="w-10" />
       </div>
@@ -632,6 +739,38 @@ export default function SkinCheckinFlow({
                   </div>
                 </div>
 
+                {/* Health Metrics */}
+                <div className="space-y-4 bg-white p-5 rounded-2xl border border-line shadow-soft">
+                  <span className="text-micro font-bold text-muted uppercase tracking-wider">Sức khỏe & Sinh hoạt</span>
+                  
+                  <div className="space-y-5">
+                    {/* Sleep */}
+                    <div>
+                      <div className="flex justify-between mb-1 text-[11px] font-bold text-fg">
+                        <span>😴 Thời gian ngủ</span>
+                        <span>{sleepHours} giờ</span>
+                      </div>
+                      <input type="range" min="3" max="12" step="0.5" value={sleepHours} onChange={e => setSleepHours(parseFloat(e.target.value))} className="w-full accent-fg h-1.5 bg-line rounded-lg appearance-none cursor-pointer" />
+                    </div>
+                    {/* Stress */}
+                    <div>
+                      <div className="flex justify-between mb-1 text-[11px] font-bold text-fg">
+                        <span>🤯 Mức độ Stress (1-10)</span>
+                        <span>Mức {stressLevel}</span>
+                      </div>
+                      <input type="range" min="1" max="10" step="1" value={stressLevel} onChange={e => setStressLevel(parseInt(e.target.value))} className="w-full accent-fg h-1.5 bg-line rounded-lg appearance-none cursor-pointer" />
+                    </div>
+                    {/* Water */}
+                    <div>
+                      <div className="flex justify-between mb-1 text-[11px] font-bold text-fg">
+                        <span>💧 Lượng nước uống</span>
+                        <span>{waterIntake} ly (~{waterIntake * 250}ml)</span>
+                      </div>
+                      <input type="range" min="0" max="15" step="1" value={waterIntake} onChange={e => setWaterIntake(parseInt(e.target.value))} className="w-full accent-fg h-1.5 bg-line rounded-lg appearance-none cursor-pointer" />
+                    </div>
+                  </div>
+                </div>
+
                 <div className="space-y-2">
                   <textarea
                     value={note} onChange={(e) => setNote(e.target.value)}
@@ -652,6 +791,146 @@ export default function SkinCheckinFlow({
                   className="w-full py-4 bg-fg text-bg rounded-2xl text-caption font-bold hover:opacity-90 transition-all flex items-center justify-center gap-2 shadow-lg mb-8">
                   <CheckCircle2 size={18} /> Hoàn tất lưu nhật ký
                 </button>
+              </motion.div>
+            )}
+
+            {/* ───── STEP 2: COMPLETION SUMMARY ───── */}
+            {step === 2 && completionData && (
+              <motion.div
+                key="completion"
+                custom={direction}
+                variants={slideVariants}
+                initial="enter" animate="center" exit="exit"
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="space-y-6 pt-4"
+              >
+                {/* Celebration Header */}
+                <div className="text-center space-y-3">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.1 }}
+                    className="w-16 h-16 bg-fg text-bg rounded-full flex items-center justify-center mx-auto shadow-lg"
+                  >
+                    <CheckCircle2 size={32} />
+                  </motion.div>
+                  <h2 className="text-[22px] font-bold text-fg">Đã lưu nhật ký!</h2>
+                  {streakLabel && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-fg/[0.05] border border-line rounded-full"
+                    >
+                      <Flame size={16} className="text-fg" />
+                      <span className="text-caption font-bold text-fg">{streakLabel}</span>
+                    </motion.div>
+                  )}
+                </div>
+
+                {/* Skin Score Card */}
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="bg-white border border-line rounded-2xl p-6 shadow-soft"
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-micro font-bold text-muted uppercase tracking-wider">Chỉ số sức khỏe da</span>
+                    {completionData.yesterdayScore !== null && (
+                      <div className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                        completionData.score >= completionData.yesterdayScore
+                          ? "bg-emerald-50 text-emerald-600"
+                          : "bg-red-50 text-red-500"
+                      }`}>
+                        {completionData.score >= completionData.yesterdayScore
+                          ? <TrendingUp size={12} />
+                          : <TrendingDown size={12} />}
+                        {completionData.score >= completionData.yesterdayScore ? "+" : ""}
+                        {completionData.score - completionData.yesterdayScore} so với hôm qua
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-end gap-3">
+                    <span className="text-[48px] font-bold text-fg leading-none">{completionData.score}</span>
+                    <span className="text-caption text-muted mb-2">/100</span>
+                  </div>
+                  <div className="w-full bg-line/30 rounded-full h-2 mt-3">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${completionData.score}%` }}
+                      transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+                      className={`h-full rounded-full ${
+                        completionData.score >= 75 ? "bg-emerald-500" :
+                        completionData.score >= 50 ? "bg-amber-400" : "bg-red-400"
+                      }`}
+                    />
+                  </div>
+                </motion.div>
+
+                {/* Biggest Change Badge */}
+                {completionData.biggestChange && Math.abs(completionData.biggestChange.delta) >= 1 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.35 }}
+                    className={`flex items-center gap-3 p-4 rounded-2xl border ${
+                      completionData.biggestChange.delta > 0 && completionData.biggestChange.metric !== "Hàng rào da"
+                        ? "bg-red-50/50 border-red-100 text-red-600"
+                        : "bg-emerald-50/50 border-emerald-100 text-emerald-600"
+                    }`}
+                  >
+                    {(completionData.biggestChange.delta > 0 && completionData.biggestChange.metric !== "Hàng rào da")
+                      ? <TrendingUp size={18} />
+                      : <TrendingDown size={18} />}
+                    <div>
+                      <span className="text-caption font-bold block">
+                        {completionData.biggestChange.metric}:
+                        {completionData.biggestChange.delta > 0 ? " +" : " "}{completionData.biggestChange.delta} bậc so với hôm qua
+                      </span>
+                      <span className="text-[11px] opacity-80">
+                        {completionData.biggestChange.metric === "Hàng rào da"
+                          ? (completionData.biggestChange.delta > 0 ? "Da khỏe hơn hôm qua" : "Da yếu đi, cần chú ý phục hồi")
+                          : (completionData.biggestChange.delta > 0 ? "Chỉ số tăng, cần theo dõi" : "Đang cải thiện tốt!")}
+                      </span>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* AI Recommendation */}
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.45 }}
+                  className="bg-white border border-line rounded-2xl p-5 shadow-soft"
+                >
+                  <div className="flex items-center gap-2 mb-3">
+                    <Sparkles size={14} className="text-accent" />
+                    <span className="text-micro font-bold text-muted uppercase tracking-wider">Lời khuyên hôm nay</span>
+                  </div>
+                  <p className="text-caption text-fg leading-relaxed">{completionData.recommendation}</p>
+                </motion.div>
+
+                {/* Action Buttons */}
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.55 }}
+                  className="flex gap-3 pb-8"
+                >
+                  <button
+                    onClick={onComplete}
+                    className="flex-1 py-3.5 border border-line bg-white rounded-2xl text-caption font-bold text-fg hover:bg-surface transition-all flex items-center justify-center gap-2"
+                  >
+                    Đóng
+                  </button>
+                  <button
+                    onClick={() => { onComplete(); setTimeout(() => window.dispatchEvent(new CustomEvent("navigate-tab", { detail: "journal" })), 100); }}
+                    className="flex-1 py-3.5 bg-fg text-bg rounded-2xl text-caption font-bold hover:opacity-90 transition-all flex items-center justify-center gap-2"
+                  >
+                    <BarChart3 size={16} /> Xem xu hướng
+                  </button>
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>

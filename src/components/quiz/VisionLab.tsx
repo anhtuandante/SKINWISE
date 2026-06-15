@@ -12,26 +12,12 @@ import {
   AlertCircle,
   Fingerprint,
   ScanEye,
-  FileText,
-  AlertTriangle,
-  ShieldCheck
+  CheckCircle2,
+  BookOpen
 } from "lucide-react"
-import { Product, ConflictWarning, Ingredient } from "@/types"
-
-interface ScannedProductResult {
-  product: Product;
-  rawDetectedText: string;
-  otherActiveIngredients: string[];
-  conflicts: {
-    morning: ConflictWarning[];
-    evening: ConflictWarning[];
-  };
-}
 import { useUserStore } from "@/store/user-store"
-import { useRoutineStore } from "@/store/routine-store"
-import { CATEGORY_LABELS } from "@/lib/constants"
-import ingredientsData from "@/data/ingredients.json"
-import { supabase } from "@/lib/supabase"
+import { useSkinStore } from "@/store/useSkinStore"
+import { calculateSkinScore } from "@/utils/trendAnalysis"
 import { trackEvent } from "@/lib/tracking"
 
 interface VisionLabProps {
@@ -40,43 +26,75 @@ interface VisionLabProps {
 }
 
 export default function VisionLab({ onComplete, onClose }: VisionLabProps) {
-  const [mode, setMode] = useState<"skin" | "product">("skin")
   const [image, setImage] = useState<string | null>(null)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
-  const [result, setResult] = useState<{ skinType: string; concerns: string[]; summary: string } | null>(null)
-  const [productResult, setProductResult] = useState<ScannedProductResult | null>(null)
+  const [result, setResult] = useState<{ 
+    skinType: string; concerns: string[]; summary: string;
+    estimatedMetrics?: { oiliness: number; dryness: number; redness: number; acne: number; barrierComfort: number };
+  } | null>(null)
   const [error, setError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  
-  const [ingredients, setIngredients] = useState<Ingredient[]>(ingredientsData.ingredients as Ingredient[]);
-
-  useEffect(() => {
-    const loadIngredients = async () => {
-      try {
-        const { data, error } = await supabase.from("ingredients").select("*");
-        if (!error && data && data.length > 0) {
-          const mapped: Ingredient[] = data.map((i) => ({
-            id: i.id,
-            name: i.name,
-            nameVi: i.name_vi,
-            category: i.category,
-            benefits: i.benefits || [],
-            skinTypes: i.skin_types || [],
-            timeOfDay: i.time_of_day as Ingredient["timeOfDay"],
-            pregnancy: i.pregnancy,
-            conflictsWith: i.conflicts_with || []
-          }));
-          setIngredients(mapped);
-        }
-      } catch (err) {
-        console.warn("Failed to load ingredients from Supabase for VisionLab, using fallback:", err);
-      }
-    };
-    loadIngredients();
-  }, []);
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [isLiveCamera, setIsLiveCamera] = useState(false)
+  const [skinScore, setSkinScore] = useState<number | null>(null)
+  const [savedToDiary, setSavedToDiary] = useState(false)
   
   const store = useUserStore()
-  const { morningRoutine, eveningRoutine } = useRoutineStore()
+  const skinStore = useSkinStore()
+
+  const startLiveCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: { facingMode: "user" } 
+      });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+      setIsLiveCamera(true);
+      setError(null);
+    } catch (err) {
+      console.warn("Camera access denied or unavailable", err);
+      if (err instanceof Error) {
+        if (err.name === "NotAllowedError" || err.name === "NotFoundError") {
+          setError("Không thể truy cập camera. Vui lòng cấp quyền hoặc tải ảnh lên từ thiết bị.");
+        } else {
+          setError("Lỗi camera: " + err.message);
+        }
+      } else {
+        setError("Lỗi camera không xác định.");
+      }
+      setIsLiveCamera(false);
+    }
+  };
+
+  const captureLiveImage = () => {
+    if (videoRef.current) {
+      const canvas = document.createElement("canvas");
+      canvas.width = videoRef.current.videoWidth;
+      canvas.height = videoRef.current.videoHeight;
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+        setImage(canvas.toDataURL("image/jpeg", 0.9));
+        stopLiveCamera();
+      }
+    }
+  };
+
+  const stopLiveCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const stream = videoRef.current.srcObject as MediaStream;
+      stream.getTracks().forEach(track => track.stop());
+      videoRef.current.srcObject = null;
+    }
+    setIsLiveCamera(false);
+  };
+
+  useEffect(() => {
+    return () => {
+      stopLiveCamera();
+    };
+  }, []);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -89,7 +107,6 @@ export default function VisionLab({ onComplete, onClose }: VisionLabProps) {
       reader.onloadend = () => {
         setImage(reader.result as string)
         setResult(null)
-        setProductResult(null)
         setError(null)
       }
       reader.readAsDataURL(file)
@@ -99,8 +116,13 @@ export default function VisionLab({ onComplete, onClose }: VisionLabProps) {
   const handleCancel = () => {
     setImage(null)
     setResult(null)
-    setProductResult(null)
     setError(null)
+    stopLiveCamera()
+  }
+
+  const handleClose = () => {
+    stopLiveCamera()
+    onClose()
   }
 
   const analyzeSkin = async () => {
@@ -109,58 +131,39 @@ export default function VisionLab({ onComplete, onClose }: VisionLabProps) {
     setError(null)
 
     try {
-      if (mode === "skin") {
-        const response = await fetch("/api/vision/analyze", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ image: image.split(",")[1] }),
-        })
+      const response = await fetch("/api/vision/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ image: image.split(",")[1], mode: "quiz" }),
+      })
 
-        if (!response.ok) {
-          const errData = await response.json().catch(() => null);
-          throw new Error(errData?.error || "Phân tích thất bại");
-        }
-
-        const data = await response.json()
-        setResult(data)
-        
-        // Track success
-        trackEvent("ai_face_scan_success", { 
-          skinType: data.skinType, 
-          concerns: data.concerns 
-        });
-
-        // Auto-map to store
-        store.setSkinType(data.skinType)
-        data.concerns.forEach((c: string) => {
-          if (!store.concerns.includes(c.toLowerCase())) {
-            store.toggleConcern(c.toLowerCase())
-          }
-        })
-      } else {
-        const response = await fetch("/api/vision/scan", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            image: image.split(",")[1],
-            userContext: {
-              skinType: store.skinType,
-              concerns: store.concerns,
-              allergies: store.allergies,
-              morningRoutine,
-              eveningRoutine,
-            }
-          }),
-        })
-
-        if (!response.ok) {
-          const errData = await response.json().catch(() => null);
-          throw new Error(errData?.error || "Quét bảng thành phần thất bại");
-        }
-
-        const data = await response.json()
-        setProductResult(data)
+      if (!response.ok) {
+        const errData = await response.json().catch(() => null);
+        throw new Error(errData?.error || "Phân tích thất bại");
       }
+
+      const data = await response.json()
+      setResult(data)
+
+      // Calculate skin score from estimated metrics
+      if (data.estimatedMetrics) {
+        const score = calculateSkinScore(data.estimatedMetrics);
+        setSkinScore(score);
+      }
+      
+      // Track success
+      trackEvent("ai_face_scan_success", { 
+        skinType: data.skinType, 
+        concerns: data.concerns 
+      });
+
+      // Auto-map to store
+      store.setSkinType(data.skinType)
+      data.concerns.forEach((c: string) => {
+        if (!store.concerns.includes(c.toLowerCase())) {
+          store.toggleConcern(c.toLowerCase())
+        }
+      })
     } catch (err) {
       console.error("Analysis error", err)
       setError(err instanceof Error ? err.message : "Không thể kết nối với AI. Vui lòng thử lại.")
@@ -169,7 +172,7 @@ export default function VisionLab({ onComplete, onClose }: VisionLabProps) {
     }
   }
 
-  const hasResult = result || productResult
+  const hasResult = !!result
 
   return (
     <div className="fixed inset-0 z-50 bg-bg/80 backdrop-blur-xl flex items-center justify-center p-6 px-4">
@@ -187,79 +190,91 @@ export default function VisionLab({ onComplete, onClose }: VisionLabProps) {
         <div className="p-6 pb-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-fg text-bg rounded-2xl flex items-center justify-center">
-              {mode === "skin" ? <ScanEye size={20} /> : <FileText size={20} />}
+              <ScanEye size={20} />
             </div>
             <div>
               <h3 className="text-body font-bold">
-                {mode === "skin" ? "Biometric Skin Lab" : "Ingredient Scanner"}
+                Check-in khuôn mặt AI
               </h3>
               <p className="text-[10px] text-muted uppercase tracking-widest">
-                {mode === "skin" ? "AI Precision Analysis" : "AI Ingredient Detection"}
+                AI Phân tích da chính xác
               </p>
             </div>
           </div>
-          <button onClick={onClose} className="p-2 text-muted hover:text-fg hover:bg-line/10 rounded-full transition-all">
+          <button onClick={handleClose} className="p-2 text-muted hover:text-fg hover:bg-line/10 rounded-full transition-all">
             <X size={20} />
           </button>
         </div>
 
-        {/* Mode Selector - Show only when not showing scan result */}
-        {!hasResult && !isAnalyzing && (
-          <div className="flex bg-line/20 p-1 rounded-2xl mx-6 mb-2">
-            <button
-              onClick={() => { setMode("skin"); handleCancel(); }}
-              className={cn(
-                "flex-1 py-2 px-3 rounded-xl text-caption font-bold transition-all flex items-center justify-center gap-2",
-                mode === "skin" ? "bg-bg text-fg shadow-sm" : "text-muted hover:text-fg"
-              )}
-            >
-              <ScanEye size={14} /> Chẩn đoán da
-            </button>
-            <button
-              onClick={() => { setMode("product"); handleCancel(); }}
-              className={cn(
-                "flex-1 py-2 px-3 rounded-xl text-caption font-bold transition-all flex items-center justify-center gap-2",
-                mode === "product" ? "bg-bg text-fg shadow-sm" : "text-muted hover:text-fg"
-              )}
-            >
-              <FileText size={14} /> Quét sản phẩm
-            </button>
-          </div>
-        )}
-
         {/* Content */}
         <div className="p-6 flex-1 flex flex-col min-h-[350px]">
           {!image ? (
-            <div className="space-y-6 w-full flex-1 flex flex-col justify-center">
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => fileInputRef.current?.click()}
-                className="w-full aspect-[4/5] border-2 border-dashed border-line/60 rounded-[40px] flex flex-col items-center justify-center gap-6 hover:border-fg/40 hover:bg-line/5 transition-all cursor-pointer group relative overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-line/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="w-20 h-20 bg-line/20 rounded-3xl flex items-center justify-center group-hover:bg-fg group-hover:text-bg transition-all duration-300">
-                  <Camera size={36} className="text-muted group-hover:text-bg" />
+            isLiveCamera ? (
+              <div className="relative w-full aspect-[4/5] bg-black rounded-[32px] overflow-hidden">
+                <video 
+                  ref={videoRef} 
+                  autoPlay 
+                  playsInline 
+                  className="w-full h-full object-cover"
+                />
+                
+                {/* Face framing guide */}
+                <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                  <div className="w-3/4 h-2/3 border-2 border-white/40 border-dashed rounded-[100px] flex items-center justify-center relative">
+                    <div className="absolute -bottom-8 text-white/80 text-[10px] bg-black/50 px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-md">
+                      Đảm bảo đủ sáng & khuôn mặt ở giữa
+                    </div>
+                  </div>
                 </div>
-                <div className="text-center z-10 px-6">
-                  <p className="text-body font-bold mb-1">
-                    {mode === "skin" ? "Bắt đầu quét khuôn mặt" : "Chụp bảng thành phần"}
-                  </p>
+                
+                <button
+                  onClick={captureLiveImage}
+                  className="absolute bottom-6 left-1/2 -translate-x-1/2 w-16 h-16 bg-white rounded-full border-4 border-white/20 shadow-2xl flex items-center justify-center active:scale-95 transition-all"
+                >
+                  <div className="w-12 h-12 bg-fg rounded-full" />
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-6 w-full flex-1 flex flex-col justify-center">
+                <div className="flex gap-4">
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={startLiveCamera}
+                    className="flex-1 aspect-square border-2 border-dashed border-line/60 rounded-[32px] flex flex-col items-center justify-center gap-4 hover:border-fg/40 hover:bg-line/5 transition-all cursor-pointer group"
+                  >
+                    <div className="w-14 h-14 bg-line/20 rounded-2xl flex items-center justify-center group-hover:bg-fg group-hover:text-bg transition-all">
+                      <Camera size={28} className="text-muted group-hover:text-bg" />
+                    </div>
+                    <span className="text-caption font-bold text-center px-2">Chụp trực tiếp</span>
+                  </motion.div>
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => fileInputRef.current?.click()}
+                    className="flex-1 aspect-square border-2 border-dashed border-line/60 rounded-[32px] flex flex-col items-center justify-center gap-4 hover:border-fg/40 hover:bg-line/5 transition-all cursor-pointer group"
+                  >
+                    <div className="w-14 h-14 bg-line/20 rounded-2xl flex items-center justify-center group-hover:bg-fg group-hover:text-bg transition-all">
+                      <Camera size={28} className="text-muted group-hover:text-bg" />
+                    </div>
+                    <span className="text-caption font-bold text-center px-2">Tải ảnh lên</span>
+                  </motion.div>
+                </div>
+                <div className="text-center px-6">
                   <p className="text-caption text-muted leading-relaxed">
-                    {mode === "skin"
-                      ? "Chụp ảnh selfie cận cảnh trong điều kiện đủ sáng để có kết quả tốt nhất"
-                      : "Chụp cận cảnh mặt sau sản phẩm, nơi ghi danh sách thành phần bằng tiếng Anh để AI bóc tách"}
+                    Chụp ảnh selfie cận cảnh trong điều kiện đủ sáng để có kết quả phân tích AI tốt nhất.
                   </p>
                 </div>
-              </motion.div>
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileUpload}
-                accept="image/*"
-                className="hidden"
-              />
-            </div>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileUpload}
+                  accept="image/*"
+                  capture="user"
+                  className="hidden"
+                />
+              </div>
+            )
           ) : (
             <div className="flex-1 flex flex-col">
               {/* Show original image overlay scan effect only during analysis */}
@@ -287,7 +302,7 @@ export default function VisionLab({ onComplete, onClose }: VisionLabProps) {
                     >
                       <div className="w-full h-full bg-fg shadow-[0_0_20px_rgba(255,255,255,1),0_0_40px_var(--fg)] relative">
                         <span className="absolute right-4 top-2 text-[8px] font-mono text-fg uppercase tracking-widest">
-                          {mode === "skin" ? "Scanning Layer 7..." : "Performing OCR Scan..."}
+                          Đang phân tích cấu trúc da...
                         </span>
                       </div>
                     </motion.div>
@@ -298,150 +313,111 @@ export default function VisionLab({ onComplete, onClose }: VisionLabProps) {
                     isAnalyzing ? "opacity-100" : "opacity-0 pointer-events-none"
                   )}>
                     <p className="text-bg font-mono text-[10px] tracking-[0.5em] animate-pulse">
-                      {mode === "skin" ? "ANALYZING BIOMETRICS" : "EXTRACTING ACTIVE CHEMICALS"}
+                      ĐANG PHÂN TÍCH CHỈ SỐ DA
                     </p>
                   </div>
                 </div>
               )}
 
               {/* Render Skin Analysis Results */}
-              {mode === "skin" && result && (
+              {hasResult && result && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="space-y-4"
                 >
+                  {/* Skin Type + Score Row */}
                   <div className="flex gap-3">
                     <div className="flex-1 p-4 bg-line/10 rounded-2xl border border-line/20">
-                      <p className="text-[9px] text-muted uppercase tracking-widest mb-1">Skin Type</p>
-                      <p className="text-body font-bold capitalize">{result.skinType}</p>
+                      <p className="text-[9px] text-muted uppercase tracking-widest mb-1">Loại da</p>
+                      <p className="text-body font-bold capitalize">{
+                        result.skinType === "oily" ? "Da dầu" :
+                        result.skinType === "dry" ? "Da khô" :
+                        result.skinType === "combination" ? "Da hỗn hợp" : "Da thường"
+                      }</p>
                     </div>
-                    <div className="flex-1 p-4 bg-line/10 rounded-2xl border border-line/20">
-                      <p className="text-[9px] text-muted uppercase tracking-widest mb-1">Condition</p>
-                      <p className="text-body font-bold">Stable</p>
-                    </div>
-                  </div>
-                  <div className="p-4 bg-fg text-bg rounded-2xl">
-                    <p className="text-caption leading-relaxed opacity-90 italic">{`"${result.summary}"`}</p>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Render Product Ingredient Scanner Results */}
-              {mode === "product" && productResult && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex-1 flex flex-col max-h-[360px] overflow-y-auto pr-1 space-y-4"
-                >
-                  {/* Product basic details card */}
-                  <div className="p-4 bg-line/10 rounded-2xl border border-line/20">
-                    <p className="text-[9px] text-muted uppercase tracking-widest mb-1">
-                      {productResult.product.brand || "Thương hiệu chưa rõ"}
-                    </p>
-                    <h4 className="text-body font-bold mb-2">{productResult.product.name}</h4>
-                    <div className="flex gap-2 flex-wrap">
-                      <span className="px-2 py-0.5 rounded bg-surface border border-line text-[10px] text-muted capitalize">
-                        {CATEGORY_LABELS[productResult.product.category] || productResult.product.category}
-                      </span>
-                      <span className="px-2 py-0.5 rounded bg-surface border border-line text-[10px] text-muted">
-                        {productResult.product.texture === "water-based"
-                          ? "Gốc nước (Water-based)"
-                          : productResult.product.texture === "silicone-based"
-                          ? "Gốc silicone (Silicone-based)"
-                          : "Cream/Oil base"}
-                      </span>
-                    </div>
+                    {skinScore !== null && (
+                      <div className="flex-1 p-4 bg-line/10 rounded-2xl border border-line/20">
+                        <p className="text-[9px] text-muted uppercase tracking-widest mb-1">Điểm sức khỏe</p>
+                        <div className="flex items-end gap-1.5">
+                          <span className="text-[24px] font-bold leading-none">{skinScore}</span>
+                          <span className="text-[10px] text-muted mb-0.5">/100</span>
+                        </div>
+                        <div className="w-full bg-line/30 rounded-full h-1.5 mt-2">
+                          <div
+                            className={`h-full rounded-full transition-all duration-700 ${
+                              skinScore >= 75 ? "bg-emerald-500" :
+                              skinScore >= 50 ? "bg-amber-400" : "bg-red-400"
+                            }`}
+                            style={{ width: `${skinScore}%` }}
+                          />
+                        </div>
+                      </div>
+                    )}
                   </div>
 
-                  {/* Scanned Ingredients badges */}
-                  <div>
-                    <p className="text-[10px] text-muted uppercase tracking-widest mb-2 font-bold">Thành phần đặc biệt</p>
-                    <div className="flex gap-1.5 flex-wrap">
-                      {productResult.product.ingredients.length === 0 && productResult.otherActiveIngredients.length === 0 ? (
-                        <span className="text-caption text-muted">Không phát hiện hoạt chất hệ thống theo dõi.</span>
-                      ) : (
-                        <>
-                          {productResult.product.ingredients.map((ingId: string) => {
-                            const ingName = ingredients.find(i => i.id === ingId)?.nameVi || ingId;
-                            return (
-                              <span key={ingId} className="px-2.5 py-1 rounded-full bg-fg text-bg text-[10px] font-medium capitalize">
-                                {ingName}
-                              </span>
-                            )
-                          })}
-                          {productResult.otherActiveIngredients.map((ing: string) => (
-                            <span key={ing} className="px-2.5 py-1 rounded-full bg-line/30 text-fg text-[10px] font-medium capitalize">
-                              {ing}
+                  {/* Detected Concerns Tags */}
+                  {result.concerns.length > 0 && (
+                    <div className="space-y-2">
+                      <p className="text-[9px] text-muted uppercase tracking-widest">Vấn đề phát hiện</p>
+                      <div className="flex flex-wrap gap-2">
+                        {result.concerns.map((c) => {
+                          const CONCERN_LABELS: Record<string, string> = {
+                            acne: "Mụn", dark_spots: "Thâm nám", wrinkles: "Nếp nhăn",
+                            redness: "Mẩn đỏ", pores: "Lỗ chân lông", dryness: "Khô da",
+                            oiliness: "Da dầu", sensitivity: "Da nhạy cảm", pigmentation: "Sạm màu",
+                            dark_circles: "Quầng thâm", texture: "Kết cấu da",
+                          };
+                          return (
+                            <span key={c} className="px-3 py-1.5 bg-fg/[0.06] border border-line rounded-full text-[11px] font-medium text-fg">
+                              {CONCERN_LABELS[c.toLowerCase()] || c}
                             </span>
-                          ))}
-                        </>
-                      )}
+                          );
+                        })}
+                      </div>
                     </div>
+                  )}
+
+                  {/* AI Summary */}
+                  <div className="p-4 bg-fg text-bg rounded-2xl">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Sparkles size={12} className="opacity-70" />
+                      <span className="text-[9px] uppercase tracking-widest opacity-60">Nhận xét AI</span>
+                    </div>
+                    <p className="text-caption leading-relaxed opacity-90">{result.summary}</p>
                   </div>
 
-                  {/* Routine Conflicts status */}
-                  <div className="space-y-3">
-                    <p className="text-[10px] text-muted uppercase tracking-widest font-bold">Khả năng tương thích</p>
-
-                    {/* AM Routine Check */}
-                    <div className="p-4 rounded-2xl border bg-surface/50 border-line">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                        <span className="text-[11px] font-bold uppercase tracking-wider text-muted">Routine Sáng (AM)</span>
-                      </div>
-                      {productResult.conflicts.morning.length === 0 ? (
-                        <div className="flex items-center gap-2 text-green-500 text-caption font-medium">
-                          <ShieldCheck size={16} /> An toàn, tương thích tốt
+                  {/* Estimated Metrics (if available) */}
+                  {result.estimatedMetrics && (
+                    <div className="grid grid-cols-5 gap-2">
+                      {([
+                        { key: "acne", label: "Mụn" },
+                        { key: "redness", label: "Đỏ" },
+                        { key: "oiliness", label: "Dầu" },
+                        { key: "dryness", label: "Khô" },
+                        { key: "barrierComfort", label: "Barrier" },
+                      ] as const).map(({ key, label }) => (
+                        <div key={key} className="text-center p-2 bg-line/10 rounded-xl border border-line/20">
+                          <span className="text-[16px] font-bold block">{result.estimatedMetrics![key]}</span>
+                          <span className="text-[8px] text-muted uppercase tracking-wider">{label}</span>
                         </div>
-                      ) : (
-                        <div className="space-y-2">
-                          {productResult.conflicts.morning.map((c: ConflictWarning, idx: number) => (
-                            <div key={idx} className="p-3 bg-red-500/10 border border-red-500/20 text-red-500 rounded-xl text-caption space-y-1">
-                              <div className="flex items-center gap-1.5 font-bold">
-                                <AlertTriangle size={14} /> Xung đột: {c.items.join(" vs ")}
-                              </div>
-                              <p className="text-[11px] leading-relaxed opacity-95">{c.reason}</p>
-                              <p className="text-[10px] text-fg/80 leading-relaxed font-medium">Giải pháp: {c.solution}</p>
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                      ))}
                     </div>
-
-                    {/* PM Routine Check */}
-                    <div className="p-4 rounded-2xl border bg-surface/50 border-line">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
-                        <span className="text-[11px] font-bold uppercase tracking-wider text-muted">Routine Tối (PM)</span>
-                      </div>
-                      {productResult.conflicts.evening.length === 0 ? (
-                        <div className="flex items-center gap-2 text-green-500 text-caption font-medium">
-                          <ShieldCheck size={16} /> An toàn, tương thích tốt
-                        </div>
-                      ) : (
-                        <div className="space-y-2">
-                          {productResult.conflicts.evening.map((c: ConflictWarning, idx: number) => (
-                            <div key={idx} className="p-3 bg-red-500/10 border border-red-500/20 text-red-500 rounded-xl text-caption space-y-1">
-                              <div className="flex items-center gap-1.5 font-bold">
-                                <AlertTriangle size={14} /> Xung đột: {c.items.join(" vs ")}
-                              </div>
-                              <p className="text-[11px] leading-relaxed opacity-95">{c.reason}</p>
-                              <p className="text-[10px] text-fg/80 leading-relaxed font-medium">Giải pháp: {c.solution}</p>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
+                  )}
                 </motion.div>
               )}
             </div>
           )}
 
           {error && (
-            <div className="mt-4 p-4 bg-red-50 text-red-600 rounded-2xl flex items-center gap-3 text-caption border border-red-100">
-              <AlertCircle size={18} /> {error}
+            <div className="mt-4 p-4 bg-red-50 text-red-600 rounded-2xl flex flex-col gap-2 text-caption border border-red-100">
+              <div className="flex items-center gap-2 font-bold"><AlertCircle size={18} /> Lỗi hệ thống</div>
+              <p>{error}</p>
+              {error.includes("camera") && (
+                <p className="mt-1 text-red-500/80 italic">
+                  💡 Hướng dẫn: Nhấn vào biểu tượng 🔒 (ổ khóa) trên thanh địa chỉ trình duyệt, bật &quot;Camera&quot; (hoặc Máy ảnh) và tải lại trang.
+                </p>
+              )}
             </div>
           )}
         </div>
@@ -467,13 +443,52 @@ export default function VisionLab({ onComplete, onClose }: VisionLabProps) {
             </>
           )}
           {hasResult && (
-            <button
-              onClick={onComplete}
-              className="w-full py-4 bg-fg text-bg rounded-2xl text-body font-bold flex items-center justify-center gap-2 shadow-xl shadow-fg/20 hover:translate-y-[-2px] transition-all"
-            >
-              Hoàn thành
-              <Sparkles size={18} />
-            </button>
+            <div className="w-full space-y-3">
+              {/* Save to diary button */}
+              {result?.estimatedMetrics && !savedToDiary && (
+                <button
+                  onClick={() => {
+                    const now = new Date();
+                    const dateStr = `${String(now.getDate()).padStart(2, "0")}/${String(now.getMonth() + 1).padStart(2, "0")}/${now.getFullYear()}`;
+                    const dayNames = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
+                    const dayName = dayNames[now.getDay()];
+
+                    skinStore.addDiaryLog({
+                      date: dateStr, dayName, mood: "okay",
+                      isPartial: false, source: "ai",
+                      metrics: {
+                        oiliness: result.estimatedMetrics!.oiliness,
+                        dryness: result.estimatedMetrics!.dryness,
+                        redness: result.estimatedMetrics!.redness,
+                        acne: result.estimatedMetrics!.acne,
+                        barrierComfort: result.estimatedMetrics!.barrierComfort,
+                      },
+                      aiOriginalMetrics: result.estimatedMetrics,
+                      userCorrected: false,
+                      lifestyle: [], note: "",
+                      images: image ? [image] : undefined,
+                    });
+                    setSavedToDiary(true);
+                    trackEvent("vision_saved_to_diary");
+                  }}
+                  className="w-full py-4 border-2 border-fg rounded-2xl text-body font-bold flex items-center justify-center gap-3 hover:bg-fg hover:text-bg transition-all"
+                >
+                  <BookOpen size={18} /> Lưu vào nhật ký hôm nay
+                </button>
+              )}
+              {savedToDiary && (
+                <div className="w-full py-3 bg-emerald-50 border border-emerald-200 rounded-2xl text-caption font-bold text-emerald-600 flex items-center justify-center gap-2">
+                  <CheckCircle2 size={16} /> Đã lưu vào nhật ký!
+                </div>
+              )}
+              <button
+                onClick={onComplete}
+                className="w-full py-4 bg-fg text-bg rounded-2xl text-body font-bold flex items-center justify-center gap-2 shadow-xl shadow-fg/20 hover:translate-y-[-2px] transition-all"
+              >
+                {savedToDiary ? "Đóng" : "Hoàn thành"}
+                {!savedToDiary && <Sparkles size={18} />}
+              </button>
+            </div>
           )}
         </div>
       </motion.div>

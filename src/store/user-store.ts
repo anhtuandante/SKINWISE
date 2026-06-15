@@ -3,11 +3,14 @@ import { persist } from "zustand/middleware";
 import { UserProfile } from "@/types";
 
 interface UserStore extends UserProfile {
+  setGuest: (guest: boolean) => void;
+  setQuizStep: (step: number) => void;
   setSkinType: (type: string) => void;
   toggleConcern: (concern: string) => void;
   setBudget: (budget: string) => void;
   setTotalBudget: (totalBudget: number) => void;
-  setAllergies: (allergies: string) => void;
+  setBudgetStrategy: (strategy: "even" | "serum" | "save") => void;
+  toggleAllergy: (allergy: string) => void;
   setQuizCompleted: (completed: boolean) => void;
   setBarrier: (barrier: string) => void;
   setLifestyle: (lifestyle: string[]) => void;
@@ -15,7 +18,7 @@ interface UserStore extends UserProfile {
   setProfileMetadata: (title: string, mainGoal: string, barrierStatus: "stable" | "redness" | "flaking" | "stinging") => void;
   setBarrierStatus: (status: "stable" | "redness" | "flaking" | "stinging") => void;
 
-  setAge: (age: string) => void;
+  setBirthYear: (year: number | undefined) => void;
   setGender: (gender: string) => void;
   setEnvironment: (env: string) => void;
   setMakeupFrequency: (freq: string) => void;
@@ -31,11 +34,14 @@ interface UserStore extends UserProfile {
 
 const initialState: UserProfile & { isHydrated: boolean } = {
   isHydrated: false,
+  isGuest: false,
+  quizStep: 1,
   skinType: "",
   concerns: [],
   budget: "",
   totalBudget: 1500000,
-  allergies: "",
+  budgetStrategy: "even",
+  allergies: [],
   quizCompleted: false,
   barrier: "",
   barrierStatus: "stable",
@@ -44,7 +50,7 @@ const initialState: UserProfile & { isHydrated: boolean } = {
   title: "",
   mainGoal: "",
 
-  age: "",
+  birthYear: undefined,
   gender: "",
   environment: "",
   makeupFrequency: "",
@@ -59,6 +65,8 @@ export const useUserStore = create<UserStore>()(
   persist(
     (set) => ({
       ...initialState,
+      setGuest: (guest) => set({ isGuest: guest }),
+      setQuizStep: (step) => set({ quizStep: step }),
       setSkinType: (type) => set({ skinType: type }),
       toggleConcern: (concern) =>
         set((state) => ({
@@ -76,7 +84,13 @@ export const useUserStore = create<UserStore>()(
         else budget = "luxury";
         set({ totalBudget, budget });
       },
-      setAllergies: (allergies) => set({ allergies }),
+      setBudgetStrategy: (budgetStrategy) => set({ budgetStrategy }),
+      toggleAllergy: (allergy) =>
+        set((state) => ({
+          allergies: state.allergies.includes(allergy)
+            ? state.allergies.filter((a) => a !== allergy)
+            : [...state.allergies, allergy],
+        })),
       setQuizCompleted: (completed) => set({ quizCompleted: completed }),
       setBarrier: (barrier) => set({ barrier }),
       setLifestyle: (lifestyle) => set({ lifestyle }),
@@ -84,7 +98,7 @@ export const useUserStore = create<UserStore>()(
       setProfileMetadata: (title, mainGoal, barrierStatus) => set({ title, mainGoal, barrierStatus }),
       setBarrierStatus: (status) => set({ barrierStatus: status }),
 
-      setAge: (age) => set({ age }),
+      setBirthYear: (year) => set({ birthYear: year }),
       setGender: (gender) => set({ gender }),
       setEnvironment: (environment) => set({ environment }),
       setMakeupFrequency: (makeupFrequency) => set({ makeupFrequency }),

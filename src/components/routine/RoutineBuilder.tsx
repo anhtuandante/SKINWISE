@@ -36,12 +36,18 @@ function SortableItem({
   product, 
   onRemove,
   isOwned,
-  onToggleOwned
+  onToggleOwned,
+  onUpdate,
+  isPaused,
+  onTogglePause
 }: { 
   product: Product; 
   onRemove: (id: string) => void;
   isOwned: boolean;
   onToggleOwned: (id: string) => void;
+  onUpdate: (id: string, updates: Partial<Product>) => void;
+  isPaused: boolean;
+  onTogglePause: (id: string) => void;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: product.id })
   const style = { transform: CSS.Transform.toString(transform), transition }
@@ -63,6 +69,9 @@ function SortableItem({
           compact 
           isOwned={isOwned}
           onToggleOwned={onToggleOwned}
+          onUpdate={(updates) => onUpdate(product.id, updates)}
+          isPaused={isPaused}
+          onTogglePause={() => onTogglePause(product.id)}
         />
       </div>
     </div>
@@ -75,12 +84,18 @@ function RoutineList({
   onReorder,
   ownedProductIds = [],
   onToggleOwned,
+  onUpdate,
+  pausedProductIds = [],
+  onTogglePause,
 }: {
   products: Product[]
   onRemove: (id: string) => void
   onReorder: (p: Product[]) => void
   ownedProductIds: string[]
   onToggleOwned: (id: string) => void
+  onUpdate: (id: string, updates: Partial<Product>) => void
+  pausedProductIds: string[]
+  onTogglePause: (id: string) => void
 }) {
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -123,6 +138,9 @@ function RoutineList({
                   onRemove={onRemove} 
                   isOwned={ownedProductIds.includes(p.id)}
                   onToggleOwned={onToggleOwned}
+                  onUpdate={onUpdate}
+                  isPaused={pausedProductIds.includes(p.id)}
+                  onTogglePause={onTogglePause}
                 />
               </motion.div>
             ))}
@@ -190,6 +208,29 @@ export default function RoutineBuilder() {
   const [customCategory, setCustomCategory] = useState<Product["category"]>("serum");
   const [customTexture, setCustomTexture] = useState("water-based");
   const [customIngredients, setCustomIngredients] = useState<string[]>([]);
+  const [customRawIngredients, setCustomRawIngredients] = useState("");
+  const [showHistoryModal, setShowHistoryModal] = useState(false);
+
+  const handleParseIngredients = () => {
+    if (!customRawIngredients) return;
+    const text = customRawIngredients.toLowerCase();
+    const parsed: string[] = [];
+    if (text.includes("niacinamide") || text.includes("vitamin b3")) parsed.push("niacinamide");
+    if (text.includes("salicylic") || text.includes("bha")) parsed.push("bha");
+    if (text.includes("glycolic") || text.includes("lactic") || text.includes("aha")) parsed.push("aha");
+    if (text.includes("retinol") || text.includes("retinoid")) parsed.push("retinol");
+    if (text.includes("ascorbic") || text.includes("vitamin c")) parsed.push("vitamin-c");
+    if (text.includes("hyaluronic") || text.includes("sodium hyaluronate")) parsed.push("hyaluronic-acid");
+    if (text.includes("centella") || text.includes("cica") || text.includes("madecassoside")) parsed.push("centella");
+    if (text.includes("panthenol") || text.includes("vitamin b5")) parsed.push("panthenol");
+    
+    if (parsed.length > 0) {
+      setCustomIngredients(Array.from(new Set([...customIngredients, ...parsed])));
+      addToast(`Đã nhận diện ${parsed.length} hoạt chất chính!`, "success");
+    } else {
+      addToast(`Không nhận diện được hoạt chất chính quen thuộc nào.`, "info");
+    }
+  }
 
   const handleRemove = (id: string) => {
     const product = activeList.find((p) => p.id === id)
@@ -233,6 +274,7 @@ export default function RoutineBuilder() {
       setCustomName("");
       setCustomBrand("");
       setCustomIngredients([]);
+      setCustomRawIngredients("");
       setShowAddCustomModal(false);
     } else {
       addToast("Không thể thêm. Giới hạn tối đa 8 sản phẩm hoặc sản phẩm đã tồn tại.", "error");
@@ -264,6 +306,12 @@ export default function RoutineBuilder() {
             className="px-3 py-1.5 border border-dashed border-fg/30 hover:border-fg/60 rounded-lg text-caption font-bold text-fg hover:bg-fg/[0.02] transition-all flex items-center gap-1 select-none"
           >
             <span>+</span> Tự thêm sản phẩm
+          </button>
+          <button
+            onClick={() => setShowHistoryModal(true)}
+            className="px-3 py-1.5 border border-line hover:border-fg/50 rounded-lg text-caption font-bold text-muted hover:text-fg transition-all flex items-center gap-1 select-none"
+          >
+            Lịch sử
           </button>
         </div>
         <div className="text-caption text-muted">Tổng: {formatPrice(total)}</div>
@@ -324,6 +372,9 @@ export default function RoutineBuilder() {
               onReorder={(items) => (tab === "AM" ? store.reorderMorning(items) : store.reorderEvening(items))}
               ownedProductIds={store.ownedProductIds || []}
               onToggleOwned={store.toggleProductOwned}
+              onUpdate={(id, updates) => tab === "AM" ? store.updateMorningProduct(id, updates) : store.updateEveningProduct(id, updates)}
+              pausedProductIds={store.pausedProductIds || []}
+              onTogglePause={store.togglePauseProduct}
             />
           )}
         </motion.div>
@@ -340,7 +391,11 @@ export default function RoutineBuilder() {
         </motion.div>
       )}
 
-      <ConflictWarnings warnings={warnings} />
+      <ConflictWarnings 
+        warnings={warnings} 
+        dismissedWarnings={store.dismissedWarnings}
+        onDismiss={store.dismissWarning}
+      />
 
       {/* Custom Product Add Modal */}
       {showAddCustomModal && (
@@ -399,9 +454,31 @@ export default function RoutineBuilder() {
                 </div>
               </div>
 
+              <div className="space-y-2">
+                <label className="text-micro font-bold text-muted uppercase tracking-wider block">
+                  Phân tích bảng thành phần (Tùy chọn)
+                </label>
+                <div className="flex gap-2">
+                  <textarea
+                    rows={2}
+                    placeholder="Dán bảng thành phần (Ingredients list) vào đây..."
+                    value={customRawIngredients}
+                    onChange={(e) => setCustomRawIngredients(e.target.value)}
+                    className="flex-1 bg-surface border border-line rounded-xl px-3 py-2 text-caption text-fg outline-none focus:border-fg transition-all resize-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleParseIngredients}
+                    className="px-4 py-2 bg-fg text-bg rounded-xl text-caption font-bold hover:opacity-90 transition-all shrink-0"
+                  >
+                    Quét
+                  </button>
+                </div>
+              </div>
+
               <div className="space-y-1">
                 <label className="text-micro font-bold text-muted uppercase tracking-wider block">
-                  Hoạt chất chính (Chọn các hoạt chất nổi bật)
+                  Hoặc chọn thủ công Hoạt chất chính
                 </label>
                 <div className="flex flex-wrap gap-1.5 p-3 border border-line rounded-xl bg-surface/50 max-h-24 overflow-y-auto">
                   {([
@@ -451,6 +528,75 @@ export default function RoutineBuilder() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Routine History Modal */}
+      {showHistoryModal && (
+        <div className="fixed inset-0 z-50 bg-bg/85 backdrop-blur-md flex items-center justify-center p-6 pointer-events-auto">
+          <div className="bg-bg border border-line rounded-3xl w-full max-w-lg p-6 shadow-2xl flex flex-col max-h-[80vh] animate-in">
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <h3 className="text-body font-bold text-fg">Lịch sử Routine</h3>
+                <p className="text-caption text-muted">Lưu và phục hồi các phiên bản routine trước đó.</p>
+              </div>
+              <button onClick={() => setShowHistoryModal(false)} className="text-muted hover:text-fg font-bold px-2 py-1">Đóng</button>
+            </div>
+
+            <div className="mb-4">
+              <button
+                onClick={() => {
+                  const name = prompt("Nhập tên phiên bản (ví dụ: Routine mùa hè):");
+                  if (name) {
+                    store.saveRoutineVersion(name);
+                    addToast(`Đã lưu phiên bản: ${name}`, "success");
+                  }
+                }}
+                className="w-full px-4 py-2 bg-surface border border-line rounded-xl text-caption font-bold text-fg hover:border-fg transition-all"
+              >
+                + Lưu routine hiện tại
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto space-y-3 pr-2">
+              {store.routineVersions.length === 0 ? (
+                <div className="text-center text-caption text-muted py-8">
+                  Chưa có phiên bản nào được lưu.
+                </div>
+              ) : (
+                store.routineVersions.map((v) => (
+                  <div key={v.id} className="p-4 border border-line rounded-xl bg-surface/30 flex justify-between items-center group">
+                    <div>
+                      <div className="text-body font-bold text-fg mb-1">{v.name}</div>
+                      <div className="text-micro text-muted">
+                        Ngày lưu: {new Date(v.date).toLocaleDateString("vi-VN")} · {v.morningRoutine.length} Sáng, {v.eveningRoutine.length} Tối
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => {
+                          if (confirm(`Bạn có chắc chắn muốn phục hồi phiên bản "${v.name}"? Routine hiện tại sẽ bị ghi đè.`)) {
+                            store.restoreRoutineVersion(v.id);
+                            addToast(`Đã phục hồi phiên bản: ${v.name}`, "success");
+                            setShowHistoryModal(false);
+                          }
+                        }}
+                        className="px-3 py-1.5 bg-fg text-bg rounded-lg text-caption font-bold hover:opacity-90 transition-all"
+                      >
+                        Khôi phục
+                      </button>
+                      <button
+                        onClick={() => store.deleteRoutineVersion(v.id)}
+                        className="px-2 py-1.5 text-danger border border-danger/20 hover:bg-danger/10 rounded-lg text-caption font-bold transition-all"
+                      >
+                        Xóa
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         </div>
       )}

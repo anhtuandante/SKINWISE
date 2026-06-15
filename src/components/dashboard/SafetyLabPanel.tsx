@@ -14,8 +14,7 @@ import {
   Clock,
   ChevronRight,
   ShieldCheck,
-  Zap,
-  Camera
+  Zap
 } from "lucide-react";
 import { getAllProducts, formatPrice } from "@/lib/quiz-logic";
 import { Product, Ingredient } from "@/types";
@@ -23,7 +22,7 @@ import { checkConflicts, getSortedRoutine } from "@/lib/conflict-checker";
 import { SKIN_LABELS, CATEGORY_LABELS } from "@/lib/constants";
 import { useRoutineStore } from "@/store/routine-store";
 import ProductAvatar from "@/components/ui/ProductAvatar";
-import VisionLab from "@/components/quiz/VisionLab";
+
 import ingredientsData from "@/data/ingredients.json";
 import { supabase } from "@/lib/supabase";
 
@@ -107,7 +106,7 @@ export default function SafetyLabPanel() {
   }, [ingredients]);
 
   const [safetyMode, setSafetyMode] = useState<"pair" | "full">("pair");
-  const [showVisionModal, setShowVisionModal] = useState(false);
+
   
   // Zustand Routine Store
   const routineStore = useRoutineStore();
@@ -419,22 +418,7 @@ export default function SafetyLabPanel() {
       {safetyMode === "pair" ? (
         // Mode 1: Product comparison (Deep Ingredient comparison)
         <div className="space-y-6 animate-in">
-          {/* AI Camera Onboarding CTA */}
-          <div className="border border-accent/20 bg-gradient-to-r from-accent/5 to-accent-light/10 rounded-[24px] p-6 flex flex-col sm:flex-row items-center gap-5 shadow-soft">
-            <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shrink-0 shadow-md">
-              <Camera size={24} className="text-accent-dark" />
-            </div>
-            <div className="flex-1 text-center sm:text-left">
-              <h3 className="text-body font-bold text-fg mb-1">Kiểm tra sản phẩm của bạn chưa có trong kho?</h3>
-              <p className="text-caption text-muted">Sử dụng Camera AI để chụp ảnh nhãn thành phần. Hệ thống sẽ phân tích lập tức mức độ an toàn.</p>
-            </div>
-            <button 
-              onClick={() => setShowVisionModal(true)}
-              className="w-full sm:w-auto bg-fg text-bg px-5 py-3 rounded-xl font-bold text-caption hover:opacity-90 active:scale-95 transition-all whitespace-nowrap shadow-lg flex items-center justify-center gap-2"
-            >
-              <Sparkles size={16} className="text-bg" /> Quét ảnh ngay
-            </button>
-          </div>
+
 
           {/* Product search box */}
           <div className="border border-line rounded-[24px] p-6 bg-white shadow-soft">
@@ -1253,12 +1237,7 @@ export default function SafetyLabPanel() {
         </div>
       )}
 
-      {showVisionModal && (
-        <VisionLab
-          onComplete={() => setShowVisionModal(false)}
-          onClose={() => setShowVisionModal(false)}
-        />
-      )}
+
     </div>
   );
 }

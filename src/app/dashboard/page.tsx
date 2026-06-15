@@ -13,7 +13,8 @@ import {
   ClipboardList,
   FlaskConical,
   BookOpen,
-  ShoppingBag
+  ShoppingBag,
+  Search
 } from "lucide-react";
 
 import { useUserStore } from "@/store/user-store";
@@ -24,6 +25,8 @@ import SkinDashboard from "@/components/dashboard/SkinDashboard";
 import SkinProfileCard from "@/components/dashboard/SkinProfileCard";
 import SafetyLabPanel from "@/components/dashboard/SafetyLabPanel";
 import SkinJournalPanel from "@/components/dashboard/SkinJournalPanel";
+import TrendVisualizer from "@/components/dashboard/TrendVisualizer";
+import SkinWallet from "@/components/routine/SkinWallet";
 
 import ProductCatalog from "@/components/dashboard/ProductCatalog";
 
@@ -52,16 +55,15 @@ const CITY_COORDS = {
 export default function DashboardPage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [exploreSubTab, setExploreSubTab] = useState<"catalog" | "safety">("catalog");
   const [selectedCity, setSelectedCity] = useState<keyof typeof CITIES_WEATHER>("danang");
   const [citiesWeather, setCitiesWeather] = useState(CITIES_WEATHER);
 
   // Live weather fetching using Open-Meteo API
   useEffect(() => {
-    async function fetchLiveWeather() {
-      const coords = CITY_COORDS[selectedCity];
-      if (!coords) return;
+    async function fetchWeatherForCoords(lat: number, lon: number, locationName: string) {
       try {
-        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&current=temperature_2m,weather_code&daily=uv_index_max&timezone=auto&forecast_days=1`);
+        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&daily=uv_index_max&timezone=auto&forecast_days=1`);
         if (!res.ok) throw new Error();
         const data = await res.json();
         
@@ -96,7 +98,8 @@ export default function DashboardPage() {
         setCitiesWeather(prev => ({
           ...prev,
           [selectedCity]: {
-            name: prev[selectedCity].name,
+            ...prev[selectedCity],
+            name: locationName,
             uv,
             status,
             desc: `${desc} (Nhiệt độ: ${temp}°C)`,
@@ -106,6 +109,33 @@ export default function DashboardPage() {
         }));
       } catch (err) {
         console.error("Failed to fetch live weather", err);
+        // Fallback to offline mode
+        setCitiesWeather(prev => ({
+          ...prev,
+          [selectedCity]: {
+            ...prev[selectedCity],
+            desc: prev[selectedCity].desc + " (Ngoại tuyến)",
+          }
+        }));
+      }
+    }
+
+    async function fetchLiveWeather() {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            fetchWeatherForCoords(position.coords.latitude, position.coords.longitude, "Vị trí của bạn");
+          },
+          (error) => {
+            console.warn("Geolocation denied or failed, falling back to selected city.", error);
+            const coords = CITY_COORDS[selectedCity];
+            if (coords) fetchWeatherForCoords(coords.lat, coords.lon, CITIES_WEATHER[selectedCity].name);
+          },
+          { timeout: 5000 }
+        );
+      } else {
+        const coords = CITY_COORDS[selectedCity];
+        if (coords) fetchWeatherForCoords(coords.lat, coords.lon, CITIES_WEATHER[selectedCity].name);
       }
     }
     fetchLiveWeather();
@@ -142,12 +172,12 @@ export default function DashboardPage() {
     user.activeIngredients, user.avoidedIngredients
   ]);
 
-  // Redirect to quiz if user hasn't completed it
+  // Redirect to quiz if user hasn't completed it and is not a guest
   useEffect(() => {
-    if (user.isHydrated && !user.quizCompleted) {
+    if (user.isHydrated && !user.quizCompleted && !user.isGuest) {
       router.replace("/quiz");
     }
-  }, [user.isHydrated, user.quizCompleted, router]);
+  }, [user.isHydrated, user.quizCompleted, user.isGuest, router]);
 
   const filteredRecommended = useMemo(() => {
     let list = recommended;
@@ -209,7 +239,6 @@ export default function DashboardPage() {
                 selectedCity={selectedCity}
                 setSelectedCity={(city) => setSelectedCity(city as "hanoi" | "danang" | "hcm")}
                 citiesWeather={citiesWeather}
-                recommendedProducts={recommended}
               />
             </motion.div>
           )}
@@ -429,7 +458,13 @@ export default function DashboardPage() {
                 </div>
               )}
 
-
+              {/* SkinWallet budget planner */}
+              {user.quizCompleted && (
+                <div className="space-y-3 pt-6 border-t border-line/60">
+                  <h3 className="text-body font-bold text-fg">Quản lý ví & Ngân sách sản phẩm</h3>
+                  <SkinWallet />
+                </div>
+              )}
 
               {/* Smart Adjustment Tips */}
               <div className="space-y-3">
@@ -458,38 +493,57 @@ export default function DashboardPage() {
             </motion.div>
           )}
 
-          {/* TAB 4: KHO SẢN PHẨM (CATALOG) */}
-          {activeTab === "catalog" && (
+          {/* TAB 4: EXPLORE (TRA CỨU) */}
+          {activeTab === "explore" && (
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               className="space-y-6"
             >
-              <ProductCatalog />
+              {/* Segmented Control Switcher */}
+              <div className="flex bg-line/10 border border-line rounded-2xl p-1 max-w-md mx-auto shadow-sm">
+                <button
+                  onClick={() => setExploreSubTab("catalog")}
+                  className={`flex-1 py-2 px-4 rounded-xl text-caption font-bold transition-all flex items-center justify-center gap-2 ${
+                    exploreSubTab === "catalog"
+                      ? "bg-white text-fg shadow-sm border border-line/50"
+                      : "text-muted hover:text-fg"
+                  }`}
+                >
+                  <ShoppingBag size={14} />
+                  <span>Tra cứu sản phẩm</span>
+                </button>
+                <button
+                  onClick={() => setExploreSubTab("safety")}
+                  className={`flex-1 py-2 px-4 rounded-xl text-caption font-bold transition-all flex items-center justify-center gap-2 ${
+                    exploreSubTab === "safety"
+                      ? "bg-white text-fg shadow-sm border border-line/50"
+                      : "text-muted hover:text-fg"
+                  }`}
+                >
+                  <FlaskConical size={14} />
+                  <span>Safety Lab</span>
+                </button>
+              </div>
+
+              {exploreSubTab === "catalog" ? (
+                <ProductCatalog />
+              ) : (
+                <SafetyLabPanel />
+              )}
             </motion.div>
           )}
 
-          {/* TAB 5: SAFETY LAB */}
-          {activeTab === "safety" && (
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              className="space-y-6"
-            >
-              <SafetyLabPanel />
-            </motion.div>
-          )}
-
-          {/* TAB 6: SKIN JOURNAL */}
+          {/* TAB 5: SKIN JOURNAL & TRENDS */}
           {activeTab === "journal" && (
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
-              className="space-y-6"
+              className="space-y-6 animate-in"
             >
+              <TrendVisualizer />
               <SkinJournalPanel />
             </motion.div>
           )}
@@ -500,10 +554,9 @@ export default function DashboardPage() {
       <nav className="fixed bottom-0 left-0 right-0 z-40 bg-bg/95 backdrop-blur-md border-t border-line py-3 px-6 shadow-[0_-8px_24px_rgba(0,0,0,0.03)]">
         <div className="max-w-lg mx-auto flex items-center justify-between gap-2">
           {[
-            { id: "dashboard", label: "Tổng quan", icon: Home },
+            { id: "dashboard", label: "Hôm nay", icon: Home },
             { id: "routine", label: "Routine", icon: ClipboardList },
-            { id: "catalog", label: "Kho sản phẩm", icon: ShoppingBag },
-            { id: "safety", label: "Safety Lab", icon: FlaskConical },
+            { id: "explore", label: "Tra cứu", icon: Search },
             { id: "journal", label: "Nhật ký", icon: BookOpen }
           ].map((tab) => {
             const Icon = tab.icon;

@@ -1,13 +1,13 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { Product } from "@/types"
 import { formatPrice } from "@/lib/quiz-logic"
 import { CATEGORY_LABELS } from "@/lib/constants"
 import { useUserStore } from "@/store/user-store"
-import { Sparkles, CheckCircle2 } from "lucide-react"
+import { Sparkles, CheckCircle2, ChevronUp, Edit3 } from "lucide-react"
 import { calculateMatchScore } from "@/lib/recommendation-engine"
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import ProductAvatar from "@/components/ui/ProductAvatar"
 import { trackEvent } from "@/lib/tracking"
 
@@ -19,6 +19,9 @@ interface ProductCardProps {
   compact?: boolean
   isOwned?: boolean
   onToggleOwned?: (productId: string) => void
+  onUpdate?: (updates: Partial<Product>) => void
+  isPaused?: boolean
+  onTogglePause?: (productId: string) => void
 }
 
 export default function ProductCard({ 
@@ -28,9 +31,13 @@ export default function ProductCard({
   isInRoutine, 
   compact,
   isOwned = false,
-  onToggleOwned
+  onToggleOwned,
+  onUpdate,
+  isPaused = false,
+  onTogglePause
 }: ProductCardProps) {
   const profile = useUserStore()
+  const [isExpanded, setIsExpanded] = useState(false)
 
   const matchResult = useMemo(() => {
     if (compact || !profile.skinType) return null;
@@ -39,10 +46,14 @@ export default function ProductCard({
 
   if (compact) {
     return (
-      <div className="flex items-center justify-between py-3 border-b border-line last:border-0 gap-3">
+      <div className="flex flex-col w-full border-b border-line last:border-0">
+        <div className="flex items-center justify-between py-3 gap-3">
         <ProductAvatar brand={product.brand} name={product.name} className="w-10 h-10" />
-        <div className="flex-1 min-w-0">
-          <div className="text-body font-medium text-fg truncate">{product.name}</div>
+        <div className={`flex-1 min-w-0 ${isPaused ? "opacity-50" : ""}`}>
+          <div className="text-body font-medium text-fg truncate flex items-center gap-2">
+            {product.name}
+            {isPaused && <span className="text-[9px] bg-warning/20 text-warning px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">Tạm ngưng</span>}
+          </div>
           <div className="text-caption text-muted">
             {product.brand} · {formatPrice(product.price)}
           </div>
@@ -58,23 +69,145 @@ export default function ProductCard({
               isOwned
                 ? "bg-green-500/10 text-green-600 border-green-500/20"
                 : "bg-amber-500/10 text-amber-600 border-amber-500/20 hover:border-amber-500/40"
-            }`}
+            } ${isPaused ? "opacity-50" : ""}`}
           >
             {isOwned ? "Đang có ✓" : "Cần mua 🛒"}
           </button>
         )}
 
-        {onRemove && (
+        {onTogglePause && (
           <button
-            onClick={() => {
-              trackEvent("remove_from_routine", { productId: product.id, name: product.name });
-              onRemove(product.id);
+            onClick={(e) => {
+              e.stopPropagation();
+              onTogglePause(product.id);
             }}
-            className="text-caption text-muted hover:text-danger transition-colors ml-1"
+            className={`text-[10px] font-bold px-2.5 py-1 rounded-lg border transition-all shrink-0 select-none ${
+              isPaused
+                ? "bg-warning/20 text-warning border-warning/30"
+                : "bg-surface border-line text-muted hover:border-fg/30 hover:text-fg"
+            }`}
+            title={isPaused ? "Tiếp tục dùng" : "Tạm ngưng dùng"}
           >
-            Xóa
+            {isPaused ? "Tiếp tục" : "Tạm ngưng"}
           </button>
         )}
+
+        {onRemove && (
+          <div className="flex flex-col items-end gap-2 ml-1">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsExpanded(!isExpanded);
+              }}
+              className="text-caption text-muted hover:text-fg transition-colors"
+            >
+              {isExpanded ? <ChevronUp size={16} /> : <Edit3 size={16} />}
+            </button>
+            <button
+              onClick={() => {
+                trackEvent("remove_from_routine", { productId: product.id, name: product.name });
+                onRemove(product.id);
+              }}
+              className="text-caption text-muted hover:text-danger transition-colors"
+            >
+              Xóa
+            </button>
+          </div>
+        )}
+      </div>
+      
+      {/* Expanded Details Area for Routine Builder */}
+      <AnimatePresence>
+        {isExpanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden border-t border-line/50"
+          >
+            <div className="py-3 px-2 grid grid-cols-1 md:grid-cols-2 gap-3 bg-surface/30 rounded-b-xl text-[11px]">
+              {/* Note & Dosage */}
+              <div className="space-y-2">
+                <div>
+                  <label className="text-muted font-bold block mb-1">Ghi chú cá nhân</label>
+                  <input 
+                    type="text" 
+                    placeholder="Vd: Dùng kèm kem phục hồi..."
+                    value={product.userNotes || ""}
+                    onChange={(e) => onUpdate?.({ userNotes: e.target.value })}
+                    className="w-full bg-white border border-line rounded px-2 py-1 outline-none focus:border-fg"
+                  />
+                </div>
+                <div>
+                  <label className="text-muted font-bold block mb-1">Liều lượng</label>
+                  <input 
+                    type="text" 
+                    placeholder="Vd: 2 giọt, 1 lóng tay..."
+                    value={product.dosage || ""}
+                    onChange={(e) => onUpdate?.({ dosage: e.target.value })}
+                    className="w-full bg-white border border-line rounded px-2 py-1 outline-none focus:border-fg"
+                  />
+                </div>
+                <div>
+                  <label className="text-muted font-bold block mb-1">Giá thực tế mua (VNĐ)</label>
+                  <input 
+                    type="number" 
+                    placeholder="Giá thực mua..."
+                    value={product.customPrice || product.price}
+                    onChange={(e) => onUpdate?.({ customPrice: Number(e.target.value) })}
+                    className="w-full bg-white border border-line rounded px-2 py-1 outline-none focus:border-fg"
+                  />
+                </div>
+              </div>
+              
+              {/* Inventory Tracking */}
+              <div className="space-y-2">
+                <div>
+                  <label className="text-muted font-bold block mb-1">Lịch dùng trong tuần</label>
+                  <div className="flex gap-1">
+                    {["T2","T3","T4","T5","T6","T7","CN"].map((d, i) => {
+                      const dayVal = i === 6 ? 0 : i + 1;
+                      const active = product.daysOfWeek ? product.daysOfWeek.includes(dayVal) : true;
+                      return (
+                        <button 
+                          key={d}
+                          onClick={() => {
+                            const current = product.daysOfWeek || [0,1,2,3,4,5,6];
+                            const next = active ? current.filter(x => x !== dayVal) : [...current, dayVal];
+                            onUpdate?.({ daysOfWeek: next });
+                          }}
+                          className={`w-6 h-6 rounded flex items-center justify-center font-bold text-[9px] ${active ? "bg-fg text-bg" : "bg-line/30 text-muted"}`}
+                        >
+                          {d}
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+                <div>
+                  <label className="text-muted font-bold block mb-1">Ngày hết hạn (HSD)</label>
+                  <input 
+                    type="date" 
+                    value={product.expiryDate || ""}
+                    onChange={(e) => onUpdate?.({ expiryDate: e.target.value })}
+                    className="w-full bg-white border border-line rounded px-2 py-1 outline-none focus:border-fg"
+                  />
+                </div>
+                <div>
+                  <label className="text-muted font-bold block mb-1">Lượng còn lại ({product.volumeRemaining ?? 100}%)</label>
+                  <input 
+                    type="range" 
+                    min="0" max="100" 
+                    value={product.volumeRemaining ?? 100}
+                    onChange={(e) => onUpdate?.({ volumeRemaining: Number(e.target.value) })}
+                    className="w-full accent-fg"
+                  />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       </div>
     )
   }

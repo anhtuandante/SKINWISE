@@ -25,7 +25,8 @@ export type TrackingEventName =
   | "routine_completed_toggle" // User checks off routine completed
   | "product_marked_owned"  // User marks a product as owned
   | "wallet_suggestion_add" // User adds AI suggested product
-  | "wallet_upgrade_swap"; // User upgrades a product in routine
+  | "wallet_upgrade_swap"  // User upgrades a product in routine
+  | "vision_saved_to_diary"; // User saves AI face scan results to diary
 
 // Generate a random UUID-like string
 function generateSessionId(): string {
