@@ -21,6 +21,7 @@ Chào mừng bạn đến với thư mục tài liệu kỹ thuật của **Skin
 
 ### 🌸 Tài liệu Dành cho Người dùng (User Guides)
 *   [**Giới thiệu SkinWise (High-level Intro)**](file:///e:/SKINWISE/skinwise-app/docs/guides/gioi-thieu-skinwise.md): Giới thiệu nhanh các tính năng cốt lõi và hành trình sử dụng ứng dụng dưới góc nhìn phi kỹ thuật (Dành cho mọi đối tượng độc giả).
+*   [**Bản đồ Luồng Trải nghiệm (Detailed Product Flow)**](file:///e:/SKINWISE/skinwise-app/docs/guides/luong-san-pham-skinwise.md): Sơ đồ liên kết sâu giữa các tính năng và mô tả chi tiết hành trình sử dụng hàng ngày của người dùng.
 *   [**Hướng dẫn Sử dụng chi tiết (User Guide)**](file:///e:/SKINWISE/skinwise-app/docs/guides/user-guide.md): Cẩm nang chi tiết từng bước tạo tài khoản, làm quiz, quản lý Workspace và các khuyến cáo an toàn khi chăm sóc da.
 
 ---
