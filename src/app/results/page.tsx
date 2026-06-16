@@ -8,7 +8,7 @@ import { buildInitialRoutine, formatPrice, calculateTotal, getAllProducts } from
 import { Product, UserProfile } from "@/types"
 import { calculateMatchScore } from "@/lib/recommendation-engine"
 import { getCyclePhase } from "@/utils/cyclePredictor"
-import { Sparkles, ArrowRight, Loader2, Sun, Moon, CheckCircle2, PlusCircle, ShoppingBag, ExternalLink, Salad } from "lucide-react"
+import { Sparkles, ArrowRight, Loader2, Sun, Moon, CheckCircle2, PlusCircle, ShoppingBag, ExternalLink, Salad, RotateCcw } from "lucide-react"
 import { useRoutineStore } from "@/store/routine-store"
 import { useToastStore } from "@/store/toast-store"
 import ProductAvatar from "@/components/ui/ProductAvatar"
@@ -40,6 +40,12 @@ export default function ResultsPage() {
   const [allProducts, setAllProducts] = useState<Product[]>([])
   const [morningRoutine, setMorningRoutine] = useState<Product[]>([])
   const [eveningRoutine, setEveningRoutine] = useState<Product[]>([])
+
+  // Detect retake mode
+  const quizHistory = user.quizHistory || []
+  const isRetake = quizHistory.length > 1
+  const previousSnapshot = isRetake ? quizHistory[quizHistory.length - 2] : null
+  const currentSnapshot = quizHistory.length > 0 ? quizHistory[quizHistory.length - 1] : null
 
   const dietGuide = useMemo(() => {
     const isSensitive = user.skinType === "sensitive";
@@ -320,11 +326,74 @@ export default function ResultsPage() {
               >
                 <CheckCircle2 size={28} />
               </motion.div>
-              <h1 className="text-headline font-semibold mb-2">Routine của bạn đã sẵn sàng!</h1>
+              <h1 className="text-headline font-semibold mb-2">{isRetake ? "Routine mới đã cập nhật!" : "Routine của bạn đã sẵn sàng!"}</h1>
               <p className="text-body text-muted max-w-md mx-auto mb-4">
-                Dựa trên phân tích cơ địa và môi trường, SkinWise AI đã thiết kế chu trình <strong>tối ưu và an toàn nhất</strong> cho bạn.
+                {isRetake 
+                  ? "Dựa trên hồ sơ da cập nhật, SkinWise AI đã thiết kế lại chu trình tối ưu cho bạn."
+                  : <>Dựa trên phân tích cơ địa và môi trường, SkinWise AI đã thiết kế chu trình <strong>tối ưu và an toàn nhất</strong> cho bạn.</>
+                }
               </p>
             </div>
+
+            {/* Retake Comparison Card */}
+            {isRetake && previousSnapshot && currentSnapshot && (
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 }}
+                className="mb-8 bg-white border border-line rounded-[24px] p-6 shadow-soft"
+              >
+                <div className="flex items-center gap-2 mb-4">
+                  <RotateCcw size={16} className="text-accent-dark" />
+                  <span className="text-caption font-bold text-fg">So sánh với lần quiz trước</span>
+                  <span className="text-[10px] text-muted ml-auto">
+                    {new Date(previousSnapshot.completedAt).toLocaleDateString('vi-VN')}
+                  </span>
+                </div>
+                <div className="space-y-2.5">
+                  {/* Skin Type change */}
+                  {previousSnapshot.skinType !== currentSnapshot.skinType && (
+                    <ComparisonRow
+                      label="Loại da"
+                      before={formatSkinType(previousSnapshot.skinType)}
+                      after={formatSkinType(currentSnapshot.skinType)}
+                    />
+                  )}
+                  {/* Concerns change */}
+                  {JSON.stringify(previousSnapshot.concerns.sort()) !== JSON.stringify(currentSnapshot.concerns.sort()) && (
+                    <ComparisonRow
+                      label="Vấn đề da"
+                      before={previousSnapshot.concerns.map(formatConcern).join(', ')}
+                      after={currentSnapshot.concerns.map(formatConcern).join(', ')}
+                    />
+                  )}
+                  {/* Barrier change */}
+                  {previousSnapshot.barrierStatus !== currentSnapshot.barrierStatus && (
+                    <ComparisonRow
+                      label="Hàng rào da"
+                      before={formatBarrier(previousSnapshot.barrierStatus)}
+                      after={formatBarrier(currentSnapshot.barrierStatus)}
+                    />
+                  )}
+                  {/* Budget change */}
+                  {previousSnapshot.totalBudget !== currentSnapshot.totalBudget && (
+                    <ComparisonRow
+                      label="Ngân sách"
+                      before={`${previousSnapshot.totalBudget.toLocaleString()}đ`}
+                      after={`${currentSnapshot.totalBudget.toLocaleString()}đ`}
+                    />
+                  )}
+                  {/* No changes */}
+                  {previousSnapshot.skinType === currentSnapshot.skinType &&
+                   JSON.stringify(previousSnapshot.concerns.sort()) === JSON.stringify(currentSnapshot.concerns.sort()) &&
+                   previousSnapshot.barrierStatus === currentSnapshot.barrierStatus &&
+                   previousSnapshot.totalBudget === currentSnapshot.totalBudget && (
+                    <p className="text-caption text-muted text-center py-2">Hồ sơ da không thay đổi — Routine vẫn phù hợp!</p>
+                  )}
+                </div>
+                <p className="text-[10px] text-muted mt-3 text-center italic">Lần quiz thứ {quizHistory.length} · Bạn có thể làm lại bất cứ lúc nào từ trang Hồ sơ</p>
+              </motion.div>
+            )}
 
             {/* Personalized Routine Profile Summary */}
             <div className="flex flex-wrap gap-2 justify-center mb-8">
@@ -774,5 +843,42 @@ function ProductStepCard({
         )}
       </div>
     </motion.div>
+  )
+}
+
+// --- Helper functions for retake comparison ---
+function formatSkinType(type: string): string {
+  const map: Record<string, string> = {
+    oily: "Da dầu", dry: "Da khô", sensitive: "Da nhạy cảm",
+    combination: "Da hỗn hợp", normal: "Da thường"
+  }
+  return map[type] || type
+}
+
+function formatConcern(c: string): string {
+  const map: Record<string, string> = {
+    acne: "Mụn", pores: "Lỗ chân lông", "dark-spots": "Thâm nám",
+    aging: "Lão hóa", dullness: "Xỉn màu", dryness: "Thiếu ẩm"
+  }
+  return map[c] || c
+}
+
+function formatBarrier(status: string): string {
+  const map: Record<string, string> = {
+    stable: "Ổn định", redness: "Mẩn đỏ", flaking: "Bong tróc", stinging: "Châm chích"
+  }
+  return map[status] || status
+}
+
+function ComparisonRow({ label, before, after }: { label: string; before: string; after: string }) {
+  return (
+    <div className="flex items-center gap-3 p-3 bg-surface/30 rounded-xl border border-line/50">
+      <span className="text-[10px] font-bold text-muted uppercase tracking-wider w-16 shrink-0">{label}</span>
+      <div className="flex items-center gap-2 flex-1 min-w-0">
+        <span className="text-[11px] text-muted line-through truncate">{before}</span>
+        <ArrowRight size={12} className="text-accent-dark shrink-0" />
+        <span className="text-[11px] font-bold text-fg truncate">{after}</span>
+      </div>
+    </div>
   )
 }

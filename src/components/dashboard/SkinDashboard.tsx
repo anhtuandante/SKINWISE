@@ -8,7 +8,7 @@ import { SkinPredictorNetwork } from "@/utils/skinPredictor";
 import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Camera, Settings, Check, Droplets, Sun, Moon, ShieldAlert, Calendar, Sparkle, Brain, Download, Upload, Trash2, Salad, Clock, BookOpen, ArrowRight, Ban, X, Heart, Info, Bell, Luggage } from "lucide-react";
+import { Sparkles, Camera, Settings, Check, Droplets, Sun, Moon, ShieldAlert, Calendar, Sparkle, Brain, Download, Upload, Trash2, Salad, Clock, BookOpen, ArrowRight, Ban, X, Heart, Info, Bell, Luggage, RotateCcw } from "lucide-react";
 import { getCyclePhase } from "@/utils/cyclePredictor";
 import { useToastStore } from "@/store/toast-store";
 import { trackEvent } from "@/lib/tracking";
@@ -119,11 +119,20 @@ export default function SkinDashboard({
   const isSkinStoreHydrated = useSkinStore((s) => s.isHydrated);
   const isUserStoreHydrated = useUserStore((s) => s.isHydrated);
   const [surveyDismissed, setSurveyDismissed] = useState(false);
+  const [retakeReminderDismissed, setRetakeReminderDismissed] = useState(false);
 
   useEffect(() => {
     setMounted(true);
     if (typeof window !== "undefined") {
       setSurveyDismissed(localStorage.getItem("skinwise_survey_dismissed") === "true");
+      // Check retake reminder dismissal (7-day cooldown)
+      const retakeDismissedAt = localStorage.getItem("skinwise_retake_dismissed_at");
+      if (retakeDismissedAt) {
+        const dismissedDate = new Date(retakeDismissedAt);
+        const now = new Date();
+        const daysDiff = (now.getTime() - dismissedDate.getTime()) / (1000 * 60 * 60 * 24);
+        setRetakeReminderDismissed(daysDiff < 7);
+      }
     }
   }, []);
 
@@ -138,6 +147,22 @@ export default function SkinDashboard({
     setSurveyDismissed(true);
     trackEvent("survey_click");
   };
+
+  const handleDismissRetakeReminder = () => {
+    localStorage.setItem("skinwise_retake_dismissed_at", new Date().toISOString());
+    setRetakeReminderDismissed(true);
+    trackEvent("retake_reminder_dismissed");
+  };
+
+  // Smart retake reminder logic
+  const shouldShowRetakeReminder = useMemo(() => {
+    if (retakeReminderDismissed) return false;
+    const quizHistory = user.quizHistory || [];
+    if (quizHistory.length === 0) return false;
+    const lastQuizDate = new Date(quizHistory[quizHistory.length - 1].completedAt);
+    const daysSinceLastQuiz = (Date.now() - lastQuizDate.getTime()) / (1000 * 60 * 60 * 24);
+    return daysSinceLastQuiz >= 30 && diaryLogs.length >= 14;
+  }, [retakeReminderDismissed, user.quizHistory, diaryLogs.length]);
 
   const [checkinStartStep, setCheckinStartStep] = useState(0);
   const [checkinInitialMood, setCheckinInitialMood] = useState<"great" | "okay" | "irritated" | null>(null);
@@ -593,6 +618,43 @@ export default function SkinDashboard({
             Kích hoạt ngay
           </button>
         </div>
+      )}
+
+      {/* Smart Quiz Retake Reminder */}
+      {shouldShowRetakeReminder && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="p-4 bg-accent/5 border border-accent/20 rounded-2xl flex items-center justify-between gap-3 animate-in fade-in duration-300"
+        >
+          <div className="flex items-start gap-3 flex-1 min-w-0">
+            <div className="w-9 h-9 rounded-xl bg-accent-light text-accent-dark flex items-center justify-center shrink-0">
+              <RotateCcw size={16} />
+            </div>
+            <div className="min-w-0">
+              <p className="text-caption font-bold text-fg">Da bạn có thể đã thay đổi 🌿</p>
+              <p className="text-[11px] text-muted leading-relaxed">
+                Đã hơn 30 ngày kể từ lần chẩn đoán cuối. Cập nhật hồ sơ da để AI tối ưu lại Routine?
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <Link
+              href="/quiz"
+              onClick={() => trackEvent("retake_reminder_click")}
+              className="bg-fg text-bg px-3 py-2 rounded-xl text-[11px] font-bold hover:opacity-90 active:scale-[0.98] transition-all whitespace-nowrap"
+            >
+              Cập nhật
+            </Link>
+            <button
+              onClick={handleDismissRetakeReminder}
+              className="p-1.5 text-muted hover:text-fg transition-colors rounded-lg hover:bg-surface"
+              title="Ẩn nhắc nhở"
+            >
+              <X size={14} />
+            </button>
+          </div>
+        </motion.div>
       )}
 
       {/* 1. Daily Health & Environmental Briefing */}

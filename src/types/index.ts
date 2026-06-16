@@ -117,3 +117,18 @@ export interface DiaryLog {
   amRoutineCompleted?: boolean;
   pmRoutineCompleted?: boolean;
 }
+
+export interface QuizSnapshot {
+  id: string;
+  completedAt: string;       // ISO date string
+  skinType: string;
+  concerns: string[];
+  barrierStatus: string;
+  totalBudget: number;
+  budgetStrategy: string;
+  birthYear?: number;
+  allergies: string[];
+  skinScore?: number;        // calculated from diary data at quiz time
+  isRetake: boolean;         // true if this is a re-take (not the first quiz)
+  routineApplied: boolean;   // whether user applied the new routine
+}

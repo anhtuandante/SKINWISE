@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { UserProfile } from "@/types";
+import { UserProfile, QuizSnapshot } from "@/types";
 
 interface UserStore extends UserProfile {
   setGuest: (guest: boolean) => void;
@@ -28,12 +28,17 @@ interface UserStore extends UserProfile {
   setCycleStartDate: (date: string) => void;
   setCycleLength: (length: number) => void;
   resetQuiz: () => void;
+  quizHistory: QuizSnapshot[];
+  saveQuizSnapshot: () => void;
+  getLastQuizDate: () => string | null;
+  markSnapshotRoutineApplied: (id: string) => void;
   isHydrated: boolean;
   setHydrated: () => void;
 }
 
-const initialState: UserProfile & { isHydrated: boolean } = {
+const initialState: UserProfile & { isHydrated: boolean; quizHistory: QuizSnapshot[] } = {
   isHydrated: false,
+  quizHistory: [],
   isGuest: false,
   quizStep: 1,
   skinType: "",
@@ -63,7 +68,7 @@ const initialState: UserProfile & { isHydrated: boolean } = {
 
 export const useUserStore = create<UserStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       ...initialState,
       setGuest: (guest) => set({ isGuest: guest }),
       setQuizStep: (step) => set({ quizStep: step }),
@@ -117,7 +122,44 @@ export const useUserStore = create<UserStore>()(
         })),
       setCycleStartDate: (date) => set({ cycleStartDate: date }),
       setCycleLength: (length) => set({ cycleLength: length }),
-      resetQuiz: () => set(initialState),
+      resetQuiz: () => {
+        // Only reset quiz-specific fields, preserve quizHistory
+        const currentHistory = get().quizHistory;
+        set({
+          ...initialState,
+          quizHistory: currentHistory,
+          isHydrated: true,
+        });
+      },
+      saveQuizSnapshot: () => {
+        const state = get();
+        const snapshot: QuizSnapshot = {
+          id: `quiz-${Date.now()}`,
+          completedAt: new Date().toISOString(),
+          skinType: state.skinType,
+          concerns: [...state.concerns],
+          barrierStatus: state.barrierStatus || "stable",
+          totalBudget: state.totalBudget || 0,
+          budgetStrategy: state.budgetStrategy || "even",
+          birthYear: state.birthYear,
+          allergies: [...state.allergies],
+          isRetake: state.quizHistory.length > 0,
+          routineApplied: false,
+        };
+        set({ quizHistory: [...state.quizHistory, snapshot] });
+      },
+      getLastQuizDate: () => {
+        const history = get().quizHistory;
+        if (history.length === 0) return null;
+        return history[history.length - 1].completedAt;
+      },
+      markSnapshotRoutineApplied: (id) => {
+        set((state) => ({
+          quizHistory: state.quizHistory.map((s) =>
+            s.id === id ? { ...s, routineApplied: true } : s
+          ),
+        }));
+      },
       setHydrated: () => set({ isHydrated: true }),
     }),
     {

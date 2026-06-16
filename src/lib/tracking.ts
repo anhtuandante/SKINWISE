@@ -28,7 +28,11 @@ export type TrackingEventName =
   | "wallet_upgrade_swap"  // User upgrades a product in routine
   | "vision_saved_to_diary" // User saves AI face scan results to diary
   | "survey_dismissed"     // User dismisses feedback survey
-  | "survey_click";        // User clicks to open feedback survey
+  | "survey_click"         // User clicks to open feedback survey
+  | "quiz_retake_start"    // User starts a quiz retake
+  | "quiz_retake_complete" // User completes a quiz retake
+  | "retake_reminder_click"    // User clicks retake reminder banner
+  | "retake_reminder_dismissed"; // User dismisses retake reminder
 
 // Generate a random UUID-like string
 function generateSessionId(): string {

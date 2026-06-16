@@ -1,6 +1,7 @@
 "use client";
 
-import { CheckCircle2, Sparkles, Check, RotateCcw } from "lucide-react";
+import { CheckCircle2, Sparkles, Check, RotateCcw, Clock, ChevronDown, ChevronUp } from "lucide-react";
+import { useState } from "react";
 import { useUserStore } from "@/store/user-store";
 import { useRoutineStore } from "@/store/routine-store";
 import { useAddToRoutine } from "@/hooks/useAddToRoutine";
@@ -334,7 +335,12 @@ export default function SkinProfileCard({
         </div>
       </div>
 
-      <div className="flex gap-4">
+      {/* Quiz History Timeline */}
+      {user.quizHistory && user.quizHistory.length > 0 && (
+        <QuizHistoryTimeline snapshots={user.quizHistory} />
+      )}
+
+      <div className="flex gap-3">
         <button
           onClick={() => setActiveTab("routine")}
           className="flex-1 py-4 bg-fg text-bg rounded-2xl text-body font-bold shadow-lg shadow-fg/10 active:scale-95 transition-all text-center"
@@ -343,11 +349,90 @@ export default function SkinProfileCard({
         </button>
         <Link
           href="/quiz"
-          className="px-6 py-4 border border-line rounded-2xl hover:bg-surface text-muted hover:text-fg transition-all flex items-center"
+          className="px-5 py-4 border border-accent/30 bg-accent/5 rounded-2xl hover:bg-accent/10 text-accent-dark hover:text-accent transition-all flex items-center gap-2"
           aria-label="Làm lại chẩn đoán"
         >
-          <RotateCcw size={18} />
+          <RotateCcw size={16} />
+          <span className="text-caption font-bold hidden sm:inline">Làm lại Quiz</span>
         </Link>
+      </div>
+    </div>
+  );
+}
+
+// --- Quiz History Timeline Component ---
+function QuizHistoryTimeline({ snapshots }: { snapshots: Array<{ id: string; completedAt: string; skinType: string; concerns: string[]; barrierStatus: string; totalBudget: number; isRetake: boolean }> }) {
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  const formatDate = (iso: string) => {
+    const d = new Date(iso);
+    return d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  };
+
+  const skinTypeLabel = (t: string) => {
+    const m: Record<string, string> = { oily: 'Dầu', dry: 'Khô', sensitive: 'Nhạy cảm', combination: 'Hỗn hợp', normal: 'Thường' };
+    return m[t] || t;
+  };
+
+  const concernLabel = (c: string) => {
+    const m: Record<string, string> = { acne: 'Mụn', pores: 'Lỗ chân lông', 'dark-spots': 'Thâm', aging: 'Lão hóa', dullness: 'Xỉn màu', dryness: 'Thiếu ẩm' };
+    return m[c] || c;
+  };
+
+  return (
+    <div className="border border-line rounded-[24px] p-6 bg-white shadow-soft space-y-4">
+      <div className="flex items-center justify-between">
+        <h3 className="text-body font-bold text-fg flex items-center gap-2">
+          <Clock size={16} className="text-muted" />
+          <span>Lịch sử Quiz ({snapshots.length} lần)</span>
+        </h3>
+      </div>
+      <div className="relative">
+        {/* Vertical line */}
+        <div className="absolute left-[11px] top-3 bottom-3 w-px bg-line" />
+        <div className="space-y-3">
+          {[...snapshots].reverse().map((snap, idx) => {
+            const isExpanded = expandedId === snap.id;
+            return (
+              <div key={snap.id} className="relative pl-8">
+                {/* Dot */}
+                <div className={`absolute left-[5px] top-2 w-[14px] h-[14px] rounded-full border-2 ${
+                  idx === 0 ? 'bg-accent border-accent-dark' : 'bg-white border-line'
+                }`} />
+                <button
+                  onClick={() => setExpandedId(isExpanded ? null : snap.id)}
+                  className="w-full text-left p-3 rounded-xl hover:bg-surface/50 transition-all group"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-caption font-bold text-fg">
+                        {idx === 0 ? 'Hiện tại' : `Lần ${snapshots.length - idx}`}
+                      </span>
+                      <span className="text-[10px] text-muted ml-2">{formatDate(snap.completedAt)}</span>
+                    </div>
+                    {isExpanded ? <ChevronUp size={14} className="text-muted" /> : <ChevronDown size={14} className="text-muted" />}
+                  </div>
+                  {!isExpanded && (
+                    <p className="text-[11px] text-muted mt-0.5">
+                      Da {skinTypeLabel(snap.skinType)} · {snap.concerns.map(concernLabel).join(', ')}
+                    </p>
+                  )}
+                </button>
+                {isExpanded && (
+                  <div className="px-3 pb-3 space-y-2 animate-in fade-in slide-in-from-top-1 duration-200">
+                    <div className="flex flex-wrap gap-1.5">
+                      <span className="text-[10px] bg-fg/5 text-fg px-2 py-1 rounded-full font-bold">Da: {skinTypeLabel(snap.skinType)}</span>
+                      {snap.concerns.map(c => (
+                        <span key={c} className="text-[10px] bg-fg/5 text-fg px-2 py-1 rounded-full font-bold">{concernLabel(c)}</span>
+                      ))}
+                      <span className="text-[10px] bg-fg/5 text-fg px-2 py-1 rounded-full font-bold">{snap.totalBudget.toLocaleString()}đ</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

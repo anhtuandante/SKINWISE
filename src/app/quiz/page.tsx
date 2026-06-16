@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { useUserStore } from "@/store/user-store"
@@ -13,6 +13,7 @@ import Button from "@/components/ui/Button"
 import VisionLab from "@/components/quiz/VisionLab"
 import { Sparkles, Check, Info } from "lucide-react"
 import { trackEvent } from "@/lib/tracking"
+import { useSkinStore } from "@/store/useSkinStore"
 
 const STEPS = [
   { title: "Năm sinh", sub: "Xác định chu kỳ tái tạo da" },
@@ -45,6 +46,34 @@ export default function QuizPage() {
   const store = useUserStore()
   const addToast = useToastStore((s) => s.addToast)
   const [showVision, setShowVision] = useState(false)
+  const diaryLogs = useSkinStore((s) => s.diaryLogs)
+
+  // Detect retake mode
+  const isRetake = store.quizHistory.length > 0
+  const lastSnapshot = isRetake ? store.quizHistory[store.quizHistory.length - 1] : null
+
+  // Calculate diary-based skin insights for retake
+  const diaryInsights = useMemo(() => {
+    if (!isRetake || diaryLogs.length < 3) return null
+    const recent = diaryLogs.slice(-14) // Last 14 logs
+    const avgOiliness = recent.reduce((s, l) => s + l.metrics.oiliness, 0) / recent.length
+    const avgDryness = recent.reduce((s, l) => s + l.metrics.dryness, 0) / recent.length
+    const avgAcne = recent.reduce((s, l) => s + l.metrics.acne, 0) / recent.length
+    const avgRedness = recent.reduce((s, l) => s + l.metrics.redness, 0) / recent.length
+    
+    const hints: string[] = []
+    if (avgOiliness > 3) hints.push("Da bạn gần đây có xu hướng dầu nhiều")
+    if (avgDryness > 3) hints.push("Da bạn gần đây thiếu ẩm thường xuyên")
+    if (avgAcne > 2.5) hints.push("Mụn xuất hiện thường xuyên trong 2 tuần qua")
+    if (avgRedness > 3) hints.push("Da có dấu hiệu kích ứng/mẩn đỏ")
+    if (avgOiliness <= 2 && avgDryness <= 2) hints.push("Da bạn đang khá ổn định!")
+    
+    return {
+      hints,
+      suggestedSkinType: avgOiliness > 3.5 ? "oily" : avgDryness > 3.5 ? "dry" : avgOiliness > 2.5 && avgDryness > 2.5 ? "combination" : null,
+      logCount: recent.length
+    }
+  }, [isRetake, diaryLogs])
 
   // Sync step from store on hydrate
   useEffect(() => {
@@ -55,8 +84,8 @@ export default function QuizPage() {
 
   // Track quiz load
   useEffect(() => {
-    trackEvent("quiz_start");
-  }, []);
+    trackEvent(isRetake ? "quiz_retake_start" : "quiz_start");
+  }, [isRetake]);
 
   // Track step changes
   useEffect(() => {
@@ -81,7 +110,7 @@ export default function QuizPage() {
       setStep(step + 1)
       store.setQuizStep(step + 1)
     } else {
-      trackEvent("quiz_complete", {
+      trackEvent(isRetake ? "quiz_retake_complete" : "quiz_complete", {
         birthYear: store.birthYear,
         skinType: store.skinType,
         concerns: store.concerns,
@@ -89,6 +118,8 @@ export default function QuizPage() {
         totalBudget: store.totalBudget,
         budgetStrategy: store.budgetStrategy
       });
+      // Save snapshot before marking complete
+      store.saveQuizSnapshot()
       store.setQuizCompleted(true)
       store.setGuest(false)
       store.setQuizStep(1)
@@ -119,7 +150,7 @@ export default function QuizPage() {
         <div className="max-w-md mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <img src="/logo.png" alt="SkinWise Logo" className="h-6 w-auto object-contain" />
-            <span className="text-body font-semibold">SkinWise AI Quiz</span>
+          <span className="text-body font-semibold">{isRetake ? "Cập nhật hồ sơ da" : "SkinWise AI Quiz"}</span>
           </div>
           <span className="text-caption font-medium text-muted">Bước {step}/6</span>
         </div>
@@ -150,6 +181,25 @@ export default function QuizPage() {
             <div className="space-y-2 mb-8">
               <p className="text-caption font-bold uppercase tracking-[0.15em] text-accent">{STEPS[step - 1].sub}</p>
               <h1 className="text-headline font-semibold text-fg">{STEPS[step - 1].title}</h1>
+              {/* Retake: Show diary-based insight hint */}
+              {isRetake && diaryInsights && step === 2 && diaryInsights.hints.length > 0 && (
+                <div className="mt-3 p-3 bg-accent/5 border border-accent/20 rounded-xl">
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <Sparkles size={12} className="text-accent-dark" />
+                    <span className="text-[10px] font-bold text-accent-dark uppercase tracking-wider">Insight từ nhật ký da ({diaryInsights.logCount} bản ghi)</span>
+                  </div>
+                  {diaryInsights.hints.map((h, i) => (
+                    <p key={i} className="text-[11px] text-muted leading-relaxed">• {h}</p>
+                  ))}
+                </div>
+              )}
+              {/* Retake: Show previous answer for reference */}
+              {isRetake && lastSnapshot && step === 2 && (
+                <p className="text-[11px] text-muted mt-2">📋 Lần trước bạn chọn: <strong>{lastSnapshot.skinType === 'oily' ? 'Da dầu' : lastSnapshot.skinType === 'dry' ? 'Da khô' : lastSnapshot.skinType === 'sensitive' ? 'Da nhạy cảm' : lastSnapshot.skinType === 'combination' ? 'Da hỗn hợp' : 'Da thường'}</strong></p>
+              )}
+              {isRetake && lastSnapshot && step === 3 && (
+                <p className="text-[11px] text-muted mt-2">📋 Lần trước: {lastSnapshot.concerns.map(c => c === 'acne' ? 'Mụn' : c === 'pores' ? 'Lỗ chân lông' : c === 'dark-spots' ? 'Thâm nám' : c === 'aging' ? 'Lão hóa' : c === 'dullness' ? 'Xỉn màu' : c === 'dryness' ? 'Thiếu ẩm' : c).join(', ')}</p>
+              )}
             </div>
 
             <div className="space-y-3">
