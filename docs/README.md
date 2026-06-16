@@ -16,8 +16,12 @@ Chào mừng bạn đến với thư mục tài liệu kỹ thuật của **Skin
 ### 2. 🔌 Giao tiếp Hệ thống (APIs)
 *   [**Tài liệu chi tiết API Endpoints**](file:///e:/SKINWISE/skinwise-app/docs/api/endpoints.md): Hướng dẫn cấu trúc payload request/response cho Chat (Streaming), Scoring (Tính điểm AI), Skin Analyze (Quét da mặt) và Product Scan (Quét bảng thành phần nhãn chai).
 
-### 3. 🚀 Hướng dẫn Vận hành & Phát triển (Guides)
+### 3. 🚀 Hướng dẫn Vận hành & Phát triển (Developer Guides)
 *   [**Deployment & Dev Guide**](file:///e:/SKINWISE/skinwise-app/docs/guides/deployment-and-dev-guide.md): Cài đặt môi trường local, các lệnh dev thường dùng, quy trình đóng gói và deploy lên Vercel, cùng quy trình đồng bộ hóa cơ sở dữ liệu từ file JSON tĩnh lên Supabase.
+
+### 🌸 Tài liệu Dành cho Người dùng (User Guides)
+*   [**Giới thiệu SkinWise (High-level Intro)**](file:///e:/SKINWISE/skinwise-app/docs/guides/gioi-thieu-skinwise.md): Giới thiệu nhanh các tính năng cốt lõi và hành trình sử dụng ứng dụng dưới góc nhìn phi kỹ thuật (Dành cho mọi đối tượng độc giả).
+*   [**Hướng dẫn Sử dụng chi tiết (User Guide)**](file:///e:/SKINWISE/skinwise-app/docs/guides/user-guide.md): Cẩm nang chi tiết từng bước tạo tài khoản, làm quiz, quản lý Workspace và các khuyến cáo an toàn khi chăm sóc da.
 
 ---
 
