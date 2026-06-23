@@ -2,6 +2,9 @@
 
 import { ConflictWarning } from "@/types"
 
+import { useUserStore } from "@/store/user-store"
+import { AlertTriangle, Lock } from "lucide-react"
+
 interface Props {
   warnings: ConflictWarning[]
   dismissedWarnings?: string[]
@@ -15,10 +18,34 @@ const SEV_LABEL: Record<string, string> = {
 }
 
 export default function ConflictWarnings({ warnings, dismissedWarnings = [], onDismiss }: Props) {
+  const plan = useUserStore(s => s.plan) || "free";
+  const isPremium = plan === "premium";
   const visibleWarnings = warnings.filter(w => !dismissedWarnings.includes(w.items.sort().join("-")))
 
   if (visibleWarnings.length === 0) {
     return null;
+  }
+
+  if (!isPremium) {
+    return (
+      <div className="border border-[#EADFD2] rounded-2xl p-6 bg-[#FAF6F0] text-center space-y-4 shadow-soft">
+        <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mx-auto text-red-500">
+          <AlertTriangle size={24} />
+        </div>
+        <div className="space-y-2">
+          <h4 className="text-caption font-bold text-fg">Phát hiện xung đột hoạt chất ({visibleWarnings.length})</h4>
+          <p className="text-[11px] text-muted leading-relaxed max-w-sm mx-auto font-medium">
+            Có sự kết hợp hoạt chất dễ gây kích ứng hoặc làm mất tác dụng của nhau trong routine của bạn. Nâng cấp Premium để xem chi tiết các thành phần xung khắc và giải pháp xử lý.
+          </p>
+        </div>
+        <button
+          onClick={() => window.location.href = "/dashboard?tab=upgrade"}
+          className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-fg text-bg rounded-xl text-caption font-bold hover:opacity-90 transition-all shadow-sm"
+        >
+          <Lock size={12} /> Nâng cấp Premium
+        </button>
+      </div>
+    );
   }
 
   return (

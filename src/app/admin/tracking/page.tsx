@@ -27,7 +27,9 @@ import {
   Search,
   ChevronRight,
   ShoppingBag,
-  Info
+  Info,
+  Trash2,
+  Download
 } from "lucide-react";
 
 interface TrackedEvent {
@@ -97,6 +99,50 @@ export default function TrackingDashboard() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const [clearing, setClearing] = useState(false);
+
+  const handleClearEvents = async () => {
+    if (!window.confirm("Bạn có chắc chắn muốn xóa toàn bộ lịch sử sự kiện tracking? Thao tác này không thể hoàn tác.")) {
+      return;
+    }
+    setClearing(true);
+    try {
+      const res = await fetch("/api/track", {
+        method: "DELETE"
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          setEvents([]);
+          setSelectedEvent(null);
+        } else {
+          alert(`Lỗi khi xóa dữ liệu: ${data.db_error || "Không rõ nguyên nhân"}`);
+        }
+      } else {
+        alert("Lỗi kết nối khi gửi yêu cầu xóa.");
+      }
+    } catch (e) {
+      console.error(e);
+      alert("Lỗi hệ thống khi xóa sự kiện.");
+    } finally {
+      setClearing(false);
+    }
+  };
+
+  const handleExportLogs = () => {
+    if (events.length === 0) {
+      alert("Không có sự kiện nào để xuất.");
+      return;
+    }
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(events, null, 2));
+    const downloadAnchor = document.createElement("a");
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", `skinwise_tracking_export_${new Date().toISOString().slice(0, 10)}.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
   };
 
   useEffect(() => {
@@ -657,8 +703,8 @@ export default function TrackingDashboard() {
               </p>
             </div>
             
-            {/* Filter controls */}
-            <div className="flex gap-2">
+            {/* Filter controls & Action buttons */}
+            <div className="flex flex-wrap gap-2">
               <select
                 value={filterEvent}
                 onChange={(e) => setFilterEvent(e.target.value)}
@@ -669,6 +715,25 @@ export default function TrackingDashboard() {
                   <option key={name} value={name}>{name}</option>
                 ))}
               </select>
+
+              <button
+                onClick={handleExportLogs}
+                className="flex items-center gap-1.5 px-3 py-2 border border-[#EADFD2] rounded-xl hover:bg-[#C4A882]/5 text-caption font-bold text-muted hover:text-fg hover:border-fg transition-all"
+                title="Xuất dữ liệu dưới dạng JSON"
+              >
+                <Download size={14} />
+                <span>Xuất JSON</span>
+              </button>
+
+              <button
+                onClick={handleClearEvents}
+                disabled={clearing || events.length === 0}
+                className="flex items-center gap-1.5 px-3 py-2 border border-red-200 rounded-xl hover:bg-red-50 text-caption font-bold text-red-600 disabled:opacity-40 disabled:hover:bg-transparent transition-all"
+                title="Xóa sạch dữ liệu tracking"
+              >
+                {clearing ? <RefreshCw size={14} className="animate-spin" /> : <Trash2 size={14} />}
+                <span>Xóa sạch logs</span>
+              </button>
             </div>
           </div>
 

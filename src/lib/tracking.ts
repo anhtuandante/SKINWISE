@@ -32,7 +32,8 @@ export type TrackingEventName =
   | "quiz_retake_start"    // User starts a quiz retake
   | "quiz_retake_complete" // User completes a quiz retake
   | "retake_reminder_click"    // User clicks retake reminder banner
-  | "retake_reminder_dismissed"; // User dismisses retake reminder
+  | "retake_reminder_dismissed" // User dismisses retake reminder
+  | "plan_change";             // User changes their pricing subscription plan
 
 // Generate a random UUID-like string
 function generateSessionId(): string {

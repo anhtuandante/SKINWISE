@@ -113,6 +113,7 @@ export async function GET() {
     let events: { created_at: string; [key: string]: unknown }[] = [];
     let source = "database";
     let dbError = null;
+    let dbSuccess = false;
 
     // 1. Try to read from Supabase
     try {
@@ -124,15 +125,16 @@ export async function GET() {
 
       if (error) {
         dbError = error.message;
-      } else if (data && data.length > 0) {
+      } else if (data) {
         events = data;
+        dbSuccess = true;
       }
     } catch (err) {
       dbError = err instanceof Error ? err.message : String(err);
     }
 
-    // 2. Fallback to local logs if Supabase has no data or errors
-    if (events.length === 0) {
+    // 2. Fallback to local logs ONLY if Supabase fetch failed
+    if (!dbSuccess) {
       source = "local_file";
       try {
         if (fs.existsSync(LOCAL_LOG_PATH)) {
@@ -156,6 +158,57 @@ export async function GET() {
     });
   } catch (error) {
     console.error("Tracking API Fetch Error:", error);
+    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+}
+
+// Add a DELETE endpoint to clear all tracking events (DB and local fallback)
+export async function DELETE() {
+  try {
+    let clearedDb = false;
+    let clearedFile = false;
+    let dbError = null;
+
+    // 1. Try to delete all rows from Supabase
+    try {
+      const { error } = await supabase
+        .from("tracking_events")
+        .delete()
+        .neq("id", "00000000-0000-0000-0000-000000000000"); // Deletes all rows since all UUIDs are not zero
+
+      if (error) {
+        dbError = error.message;
+      } else {
+        clearedDb = true;
+      }
+    } catch (err) {
+      dbError = err instanceof Error ? err.message : String(err);
+    }
+
+    // 2. Clear local log file
+    try {
+      if (fs.existsSync(LOCAL_LOG_PATH)) {
+        fs.writeFileSync(LOCAL_LOG_PATH, JSON.stringify([], null, 2), "utf8");
+        clearedFile = true;
+      }
+    } catch (fileErr) {
+      console.error("Failed to clear local tracking logs:", fileErr);
+    }
+
+    return new Response(JSON.stringify({ 
+      success: true, 
+      cleared_db: clearedDb,
+      cleared_file: clearedFile,
+      db_error: dbError 
+    }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" }
+    });
+  } catch (error) {
+    console.error("Tracking API Delete Error:", error);
     return new Response(JSON.stringify({ error: "Internal Server Error" }), {
       status: 500,
       headers: { "Content-Type": "application/json" }

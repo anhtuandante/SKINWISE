@@ -226,6 +226,25 @@ export default function LoginPage() {
                 : "Đã có tài khoản? Đăng nhập"}
             </button>
           </div>
+
+          {process.env.NODE_ENV === "development" && (
+            <div className="bg-[#FAF6F0] border border-[#EADFD2] rounded-2xl p-4 space-y-2.5 text-left text-xs">
+              <div className="font-bold text-accent-dark text-[10px] tracking-wider uppercase">Môi trường phát triển (Dev)</div>
+              <p className="text-muted leading-relaxed text-[11px]">
+                Nhấp để điền nhanh thông tin tài khoản Admin đã được tạo sẵn để kiểm tra live tracking:
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail("admin@skinwise.vn");
+                  setPassword("AdminSkinWise2026!");
+                }}
+                className="w-full py-2 bg-[#EADFD2] hover:bg-[#DFD2C2] text-fg font-bold rounded-xl transition-all text-xs"
+              >
+                Điền nhanh Admin Credentials
+              </button>
+            </div>
+          )}
         </motion.div>
       </div>
     </main>

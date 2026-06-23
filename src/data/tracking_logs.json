@@ -1,538 +1,4504 @@
 [
   {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "session_id": "session_fake_u2",
     "event_name": "page_view",
     "page_path": "/",
     "metadata": {
-      "path": "/"
+      "source": "facebook_ad"
     },
-    "created_at": "2026-06-13T13:39:31.657Z",
-    "id": "xkk6t4j5s",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+    "created_at": "2026-06-10T03:56:21.420Z"
   },
   {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
-    "event_name": "page_view",
-    "page_path": "/login",
-    "metadata": {
-      "path": "/login"
-    },
-    "created_at": "2026-06-13T13:41:51.634Z",
-    "id": "ql47d2ruk",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
-  },
-  {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
-    "event_name": "page_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "path": "/quiz"
-    },
-    "created_at": "2026-06-13T13:42:01.019Z",
-    "id": "n15halm2i",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
-  },
-  {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "session_id": "session_fake_u2",
     "event_name": "quiz_start",
     "page_path": "/quiz",
     "metadata": {},
-    "created_at": "2026-06-13T13:42:01.380Z",
-    "id": "y774q3i0x",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+    "created_at": "2026-06-10T03:58:21.420Z"
   },
   {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
-    "event_name": "quiz_start",
-    "page_path": "/quiz",
-    "metadata": {},
-    "created_at": "2026-06-13T13:42:01.380Z",
-    "id": "7qfzaglkm",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
-  },
-  {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "session_id": "session_fake_u2",
     "event_name": "quiz_step_view",
     "page_path": "/quiz",
     "metadata": {
       "step": 1
     },
-    "created_at": "2026-06-13T13:42:01.380Z",
-    "id": "v6h2klsnv",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+    "created_at": "2026-06-10T03:58:31.420Z"
   },
   {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 1
-    },
-    "created_at": "2026-06-13T13:42:01.380Z",
-    "id": "6jwndv2kz",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
-  },
-  {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "session_id": "session_fake_u2",
     "event_name": "quiz_step_view",
     "page_path": "/quiz",
     "metadata": {
       "step": 2
     },
-    "created_at": "2026-06-13T13:42:03.177Z",
-    "id": "myroz3js8",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+    "created_at": "2026-06-10T03:58:41.420Z"
   },
   {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "session_id": "session_fake_u2",
     "event_name": "quiz_step_view",
     "page_path": "/quiz",
     "metadata": {
       "step": 3
     },
-    "created_at": "2026-06-13T13:42:04.390Z",
-    "id": "ls01m4w6s",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+    "created_at": "2026-06-10T03:58:51.420Z"
   },
   {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "session_id": "session_fake_u2",
     "event_name": "quiz_step_view",
     "page_path": "/quiz",
     "metadata": {
       "step": 4
     },
-    "created_at": "2026-06-13T13:42:05.238Z",
-    "id": "aqkico5e9",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+    "created_at": "2026-06-10T03:59:01.420Z"
   },
   {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "session_id": "session_fake_u2",
     "event_name": "quiz_step_view",
     "page_path": "/quiz",
     "metadata": {
       "step": 5
     },
-    "created_at": "2026-06-13T13:42:06.359Z",
-    "id": "7ie7f6bdo",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+    "created_at": "2026-06-10T03:59:11.420Z"
   },
   {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "session_id": "session_fake_u2",
     "event_name": "quiz_step_view",
     "page_path": "/quiz",
     "metadata": {
       "step": 6
     },
-    "created_at": "2026-06-13T13:42:07.372Z",
-    "id": "4m0hjbygu",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+    "created_at": "2026-06-10T03:59:21.420Z"
   },
   {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
-    "event_name": "quiz_complete",
+    "session_id": "session_fake_u2",
+    "event_name": "ai_face_scan_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-10T03:59:26.420Z"
+  },
+  {
+    "session_id": "session_fake_u2",
+    "event_name": "ai_face_scan_success",
     "page_path": "/quiz",
     "metadata": {
-      "age": "18-24",
-      "skinType": "combination",
-      "concerns": [
-        "dark-spots"
-      ],
-      "barrierStatus": "stable",
-      "budget": "luxury",
-      "cycleLength": 28,
-      "hasCycleDate": false
+      "detectedType": "oily"
     },
-    "created_at": "2026-06-13T13:42:20.457Z",
-    "id": "lzyi4vzgf",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+    "created_at": "2026-06-10T03:59:31.420Z"
   },
   {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
-    "event_name": "page_view",
-    "page_path": "/login",
+    "session_id": "session_fake_u2",
+    "event_name": "quiz_complete",
+    "page_path": "/results",
     "metadata": {
-      "path": "/login"
+      "skinType": "oily"
     },
-    "created_at": "2026-06-13T13:42:20.549Z",
-    "id": "vzsfof2vj",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+    "created_at": "2026-06-10T03:59:41.420Z"
   },
   {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
+    "session_id": "session_fake_u2",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "cleanser"
+    },
+    "created_at": "2026-06-10T04:00:01.420Z"
+  },
+  {
+    "session_id": "session_fake_u2",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "moisturizer"
+    },
+    "created_at": "2026-06-10T04:00:06.420Z"
+  },
+  {
+    "session_id": "session_fake_u17",
     "event_name": "page_view",
     "page_path": "/",
     "metadata": {
-      "path": "/"
+      "source": "facebook_ad"
     },
-    "created_at": "2026-06-13T13:42:47.614Z",
-    "id": "7azj3sbv8",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+    "created_at": "2026-06-10T04:07:06.201Z"
   },
   {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
-    "event_name": "page_view",
-    "page_path": "/dashboard",
-    "metadata": {
-      "path": "/dashboard"
-    },
-    "created_at": "2026-06-13T13:42:50.781Z",
-    "id": "l8mtgg056",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
-  },
-  {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
-    "event_name": "routine_completed_toggle",
-    "page_path": "/dashboard",
-    "metadata": {
-      "period": "AM",
-      "completed": true
-    },
-    "created_at": "2026-06-13T13:42:56.087Z",
-    "id": "sy4gzg5q2",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
-  },
-  {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
-    "event_name": "routine_completed_toggle",
-    "page_path": "/dashboard",
-    "metadata": {
-      "period": "AM",
-      "completed": false
-    },
-    "created_at": "2026-06-13T13:42:58.941Z",
-    "id": "h47q5z9k6",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
-  },
-  {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
-    "event_name": "routine_completed_toggle",
-    "page_path": "/dashboard",
-    "metadata": {
-      "period": "AM",
-      "completed": true
-    },
-    "created_at": "2026-06-13T13:43:00.114Z",
-    "id": "oep41cj4e",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
-  },
-  {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
-    "event_name": "routine_completed_toggle",
-    "page_path": "/dashboard",
-    "metadata": {
-      "period": "AM",
-      "completed": false
-    },
-    "created_at": "2026-06-13T13:43:00.341Z",
-    "id": "kbmaa5gc6",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
-  },
-  {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
-    "event_name": "routine_completed_toggle",
-    "page_path": "/dashboard",
-    "metadata": {
-      "period": "AM",
-      "completed": true
-    },
-    "created_at": "2026-06-13T13:43:01.067Z",
-    "id": "kfdsny31t",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
-  },
-  {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
-    "event_name": "routine_completed_toggle",
-    "page_path": "/dashboard",
-    "metadata": {
-      "period": "AM",
-      "completed": false
-    },
-    "created_at": "2026-06-13T13:43:02.024Z",
-    "id": "8l327hmd0",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
-  },
-  {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
-    "event_name": "routine_completed_toggle",
-    "page_path": "/dashboard",
-    "metadata": {
-      "period": "PM",
-      "completed": true
-    },
-    "created_at": "2026-06-13T13:43:03.533Z",
-    "id": "dhxubub2u",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
-  },
-  {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
-    "event_name": "routine_completed_toggle",
-    "page_path": "/dashboard",
-    "metadata": {
-      "period": "PM",
-      "completed": false
-    },
-    "created_at": "2026-06-13T13:43:04.412Z",
-    "id": "s686ghlma",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
-  },
-  {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
-    "event_name": "routine_completed_toggle",
-    "page_path": "/dashboard",
-    "metadata": {
-      "period": "PM",
-      "completed": true
-    },
-    "created_at": "2026-06-13T13:43:04.996Z",
-    "id": "xspcklmgo",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
-  },
-  {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
-    "event_name": "routine_completed_toggle",
-    "page_path": "/dashboard",
-    "metadata": {
-      "period": "AM",
-      "completed": true
-    },
-    "created_at": "2026-06-13T13:43:06.230Z",
-    "id": "sfnravgd9",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
-  },
-  {
-    "session_id": "f58e798f-c798-48e9-8ee7-7177efae9d5d",
-    "event_name": "page_view",
-    "page_path": "/dashboard",
-    "metadata": {
-      "path": "/dashboard"
-    },
-    "created_at": "2026-06-13T13:54:17.889Z",
-    "id": "5w4l6k1i4",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
-  },
-  {
-    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
-    "event_name": "page_view",
-    "page_path": "/login",
-    "metadata": {
-      "path": "/login"
-    },
-    "created_at": "2026-06-14T13:49:22.543Z",
-    "id": "7p4wenksy",
-    "fallback_log": true,
-    "db_error": "TypeError: fetch failed"
-  },
-  {
-    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
-    "event_name": "page_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "path": "/quiz"
-    },
-    "created_at": "2026-06-14T13:49:40.743Z",
-    "id": "m2cyjmvun",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
-  },
-  {
-    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
+    "session_id": "session_fake_u17",
     "event_name": "quiz_start",
     "page_path": "/quiz",
     "metadata": {},
-    "created_at": "2026-06-14T13:49:41.126Z",
-    "id": "rlgd1tmxb",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+    "created_at": "2026-06-10T04:09:06.201Z"
   },
   {
-    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
+    "session_id": "session_fake_u17",
     "event_name": "quiz_step_view",
     "page_path": "/quiz",
     "metadata": {
       "step": 1
     },
-    "created_at": "2026-06-14T13:49:41.127Z",
-    "id": "8e0vr75g6",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+    "created_at": "2026-06-10T04:09:16.201Z"
   },
   {
-    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
-    "event_name": "quiz_start",
-    "page_path": "/quiz",
-    "metadata": {},
-    "created_at": "2026-06-14T13:49:41.127Z",
-    "id": "tq8jmqdx7",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
-  },
-  {
-    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 1
-    },
-    "created_at": "2026-06-14T13:49:41.127Z",
-    "id": "fj44kueqb",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
-  },
-  {
-    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
-    "event_name": "quiz_answer",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 1,
-      "type": "age",
-      "value": "25-34"
-    },
-    "created_at": "2026-06-14T13:49:48.345Z",
-    "id": "z6jn01jxi",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
-  },
-  {
-    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
+    "session_id": "session_fake_u17",
     "event_name": "quiz_step_view",
     "page_path": "/quiz",
     "metadata": {
       "step": 2
     },
-    "created_at": "2026-06-14T13:49:49.149Z",
-    "id": "lg3dlnkk9",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+    "created_at": "2026-06-10T04:09:26.201Z"
   },
   {
-    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
+    "session_id": "session_fake_u17",
     "event_name": "quiz_step_view",
     "page_path": "/quiz",
     "metadata": {
       "step": 3
     },
-    "created_at": "2026-06-14T13:49:50.136Z",
-    "id": "pbiijy15c",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+    "created_at": "2026-06-10T04:09:36.201Z"
   },
   {
-    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
+    "session_id": "session_fake_u17",
     "event_name": "quiz_step_view",
     "page_path": "/quiz",
     "metadata": {
       "step": 4
     },
-    "created_at": "2026-06-14T13:49:50.876Z",
-    "id": "4l4qdx9uc",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+    "created_at": "2026-06-10T04:09:46.201Z"
   },
   {
-    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
+    "session_id": "session_fake_u17",
     "event_name": "quiz_step_view",
     "page_path": "/quiz",
     "metadata": {
       "step": 5
     },
-    "created_at": "2026-06-14T13:49:51.555Z",
-    "id": "kzcnipx7p",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+    "created_at": "2026-06-10T04:09:56.201Z"
   },
   {
-    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
+    "session_id": "session_fake_u17",
     "event_name": "quiz_step_view",
     "page_path": "/quiz",
     "metadata": {
       "step": 6
     },
-    "created_at": "2026-06-14T13:49:52.247Z",
-    "id": "2vo42ab7s",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+    "created_at": "2026-06-10T04:10:06.201Z"
   },
   {
-    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
-    "event_name": "quiz_complete",
+    "session_id": "session_fake_u17",
+    "event_name": "ai_face_scan_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-10T04:10:11.201Z"
+  },
+  {
+    "session_id": "session_fake_u17",
+    "event_name": "ai_face_scan_success",
     "page_path": "/quiz",
     "metadata": {
-      "age": "25-34",
-      "skinType": "dry",
-      "concerns": [
-        "aging"
-      ],
-      "barrierStatus": "stable",
-      "budget": "affordable",
-      "cycleLength": 28,
-      "hasCycleDate": false
+      "detectedType": "oily"
     },
-    "created_at": "2026-06-14T13:49:53.846Z",
-    "id": "v2lqrnwf0",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+    "created_at": "2026-06-10T04:10:16.201Z"
   },
   {
-    "session_id": "d1a0ae59-8602-4588-9dab-5c065661bd10",
-    "event_name": "page_view",
-    "page_path": "/login",
+    "session_id": "session_fake_u17",
+    "event_name": "quiz_complete",
+    "page_path": "/results",
     "metadata": {
-      "path": "/login"
+      "skinType": "oily"
     },
-    "created_at": "2026-06-14T13:49:53.908Z",
-    "id": "7m4chlsn7",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+    "created_at": "2026-06-10T04:10:26.201Z"
   },
   {
-    "session_id": "71ff3aa2-5c35-4b93-ad6a-52784d407d57",
+    "session_id": "session_fake_u17",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "cleanser"
+    },
+    "created_at": "2026-06-10T04:10:46.201Z"
+  },
+  {
+    "session_id": "session_fake_u17",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "moisturizer"
+    },
+    "created_at": "2026-06-10T04:10:51.201Z"
+  },
+  {
+    "session_id": "session_fake_u13",
     "event_name": "page_view",
     "page_path": "/",
     "metadata": {
-      "path": "/"
+      "source": "facebook_ad"
     },
-    "created_at": "2026-06-14T14:14:09.378Z",
-    "id": "znehah686",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+    "created_at": "2026-06-10T09:46:00.003Z"
   },
   {
-    "session_id": "71ff3aa2-5c35-4b93-ad6a-52784d407d57",
-    "event_name": "page_view",
-    "page_path": "/login",
+    "session_id": "session_fake_u13",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-10T09:48:00.003Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
     "metadata": {
-      "path": "/login"
+      "step": 1
     },
-    "created_at": "2026-06-14T14:14:22.614Z",
-    "id": "5sbj85r5d",
-    "fallback_log": true,
-    "db_error": "Could not find the table 'public.tracking_events' in the schema cache"
+    "created_at": "2026-06-10T09:48:10.003Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-10T09:48:20.003Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-10T09:48:30.003Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-10T09:48:40.003Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-10T09:48:50.003Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-10T09:49:00.003Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "ai_face_scan_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-10T09:49:05.003Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "ai_face_scan_success",
+    "page_path": "/quiz",
+    "metadata": {
+      "detectedType": "oily"
+    },
+    "created_at": "2026-06-10T09:49:10.003Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "quiz_complete",
+    "page_path": "/results",
+    "metadata": {
+      "skinType": "oily"
+    },
+    "created_at": "2026-06-10T09:49:20.003Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "cleanser"
+    },
+    "created_at": "2026-06-10T09:49:40.003Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "moisturizer"
+    },
+    "created_at": "2026-06-10T09:49:45.003Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {
+      "source": "facebook_group"
+    },
+    "created_at": "2026-06-10T15:04:21.291Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-10T15:06:21.291Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-10T15:06:31.291Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-10T15:06:41.291Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-10T15:06:51.291Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-10T15:07:01.291Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-10T15:07:11.291Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-10T15:07:21.291Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "ai_face_scan_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-10T15:07:26.291Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "ai_face_scan_success",
+    "page_path": "/quiz",
+    "metadata": {
+      "detectedType": "oily"
+    },
+    "created_at": "2026-06-10T15:07:31.291Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "quiz_complete",
+    "page_path": "/results",
+    "metadata": {
+      "skinType": "oily"
+    },
+    "created_at": "2026-06-10T15:07:41.291Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "cleanser"
+    },
+    "created_at": "2026-06-10T15:08:01.291Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "moisturizer"
+    },
+    "created_at": "2026-06-10T15:08:06.291Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {
+      "source": "facebook_ad"
+    },
+    "created_at": "2026-06-10T17:23:27.512Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-10T17:25:27.512Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-10T17:25:37.512Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-10T17:25:47.512Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-10T17:25:57.512Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-10T17:26:07.512Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-10T17:26:17.512Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-10T17:26:27.512Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "ai_face_scan_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-10T17:26:32.512Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "ai_face_scan_success",
+    "page_path": "/quiz",
+    "metadata": {
+      "detectedType": "oily"
+    },
+    "created_at": "2026-06-10T17:26:37.512Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "quiz_complete",
+    "page_path": "/results",
+    "metadata": {
+      "skinType": "oily"
+    },
+    "created_at": "2026-06-10T17:26:47.512Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "cleanser"
+    },
+    "created_at": "2026-06-10T17:27:07.512Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "moisturizer"
+    },
+    "created_at": "2026-06-10T17:27:12.512Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {
+      "source": "facebook_ad"
+    },
+    "created_at": "2026-06-11T02:22:03.813Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-11T02:24:03.813Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-11T02:24:13.813Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-11T02:24:23.813Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-11T02:24:33.813Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-11T02:24:43.813Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-11T02:24:53.813Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-11T02:25:03.813Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "ai_face_scan_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-11T02:25:08.813Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "ai_face_scan_success",
+    "page_path": "/quiz",
+    "metadata": {
+      "detectedType": "oily"
+    },
+    "created_at": "2026-06-11T02:25:13.813Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "quiz_complete",
+    "page_path": "/results",
+    "metadata": {
+      "skinType": "oily"
+    },
+    "created_at": "2026-06-11T02:25:23.813Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "cleanser"
+    },
+    "created_at": "2026-06-11T02:25:43.813Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "moisturizer"
+    },
+    "created_at": "2026-06-11T02:25:48.813Z"
+  },
+  {
+    "session_id": "session_fake_u20",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {
+      "source": "facebook_ad"
+    },
+    "created_at": "2026-06-11T02:58:38.442Z"
+  },
+  {
+    "session_id": "session_fake_u20",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-11T03:00:38.442Z"
+  },
+  {
+    "session_id": "session_fake_u20",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-11T03:00:48.442Z"
+  },
+  {
+    "session_id": "session_fake_u20",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-11T03:00:58.442Z"
+  },
+  {
+    "session_id": "session_fake_u20",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-11T03:01:08.442Z"
+  },
+  {
+    "session_id": "session_fake_u20",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-11T03:01:18.442Z"
+  },
+  {
+    "session_id": "session_fake_u20",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-11T03:01:28.442Z"
+  },
+  {
+    "session_id": "session_fake_u20",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-11T03:01:38.442Z"
+  },
+  {
+    "session_id": "session_fake_u20",
+    "event_name": "ai_face_scan_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-11T03:01:43.442Z"
+  },
+  {
+    "session_id": "session_fake_u20",
+    "event_name": "ai_face_scan_success",
+    "page_path": "/quiz",
+    "metadata": {
+      "detectedType": "oily"
+    },
+    "created_at": "2026-06-11T03:01:48.442Z"
+  },
+  {
+    "session_id": "session_fake_u20",
+    "event_name": "quiz_complete",
+    "page_path": "/results",
+    "metadata": {
+      "skinType": "oily"
+    },
+    "created_at": "2026-06-11T03:01:58.442Z"
+  },
+  {
+    "session_id": "session_fake_u20",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "cleanser"
+    },
+    "created_at": "2026-06-11T03:02:18.442Z"
+  },
+  {
+    "session_id": "session_fake_u20",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "moisturizer"
+    },
+    "created_at": "2026-06-11T03:02:23.442Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {
+      "source": "facebook_ad"
+    },
+    "created_at": "2026-06-11T06:30:09.618Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-11T06:32:09.618Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-11T06:32:19.618Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-11T06:32:29.618Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-11T06:32:39.618Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-11T06:32:49.618Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-11T06:32:59.618Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-11T06:33:09.618Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "ai_face_scan_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-11T06:33:14.618Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "ai_face_scan_success",
+    "page_path": "/quiz",
+    "metadata": {
+      "detectedType": "oily"
+    },
+    "created_at": "2026-06-11T06:33:19.618Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "quiz_complete",
+    "page_path": "/results",
+    "metadata": {
+      "skinType": "oily"
+    },
+    "created_at": "2026-06-11T06:33:29.618Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "cleanser"
+    },
+    "created_at": "2026-06-11T06:33:49.618Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "moisturizer"
+    },
+    "created_at": "2026-06-11T06:33:54.618Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {
+      "source": "facebook_ad"
+    },
+    "created_at": "2026-06-11T16:59:49.759Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-11T17:01:49.759Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-11T17:01:59.759Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-11T17:02:09.759Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-11T17:02:19.759Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-11T17:02:29.759Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-11T17:02:39.759Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-11T17:02:49.759Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "ai_face_scan_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-11T17:02:54.759Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "ai_face_scan_success",
+    "page_path": "/quiz",
+    "metadata": {
+      "detectedType": "oily"
+    },
+    "created_at": "2026-06-11T17:02:59.759Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "quiz_complete",
+    "page_path": "/results",
+    "metadata": {
+      "skinType": "oily"
+    },
+    "created_at": "2026-06-11T17:03:09.759Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "cleanser"
+    },
+    "created_at": "2026-06-11T17:03:29.759Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "moisturizer"
+    },
+    "created_at": "2026-06-11T17:03:34.759Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {
+      "source": "facebook_group"
+    },
+    "created_at": "2026-06-11T17:16:02.357Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-11T17:18:02.357Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-11T17:18:12.357Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-11T17:18:22.357Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-11T17:18:32.357Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-11T17:18:42.357Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-11T17:18:52.357Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-11T17:19:02.357Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "ai_face_scan_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-11T17:19:07.357Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "ai_face_scan_success",
+    "page_path": "/quiz",
+    "metadata": {
+      "detectedType": "oily"
+    },
+    "created_at": "2026-06-11T17:19:12.357Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "quiz_complete",
+    "page_path": "/results",
+    "metadata": {
+      "skinType": "oily"
+    },
+    "created_at": "2026-06-11T17:19:22.357Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "cleanser"
+    },
+    "created_at": "2026-06-11T17:19:42.357Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "moisturizer"
+    },
+    "created_at": "2026-06-11T17:19:47.357Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {
+      "source": "facebook_ad"
+    },
+    "created_at": "2026-06-11T22:01:51.859Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-11T22:03:51.859Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-11T22:04:01.859Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-11T22:04:11.859Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-11T22:04:21.859Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-11T22:04:31.859Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-11T22:04:41.859Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-11T22:04:51.859Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "ai_face_scan_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-11T22:04:56.859Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "ai_face_scan_success",
+    "page_path": "/quiz",
+    "metadata": {
+      "detectedType": "oily"
+    },
+    "created_at": "2026-06-11T22:05:01.859Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "quiz_complete",
+    "page_path": "/results",
+    "metadata": {
+      "skinType": "oily"
+    },
+    "created_at": "2026-06-11T22:05:11.859Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "cleanser"
+    },
+    "created_at": "2026-06-11T22:05:31.859Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "moisturizer"
+    },
+    "created_at": "2026-06-11T22:05:36.859Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {
+      "source": "facebook_group"
+    },
+    "created_at": "2026-06-12T08:26:16.971Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-12T08:28:16.971Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-12T08:28:26.971Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-12T08:28:36.971Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-12T08:28:46.971Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-12T08:28:56.971Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-12T08:29:06.971Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-12T08:29:16.971Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "ai_face_scan_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-12T08:29:21.971Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "ai_face_scan_success",
+    "page_path": "/quiz",
+    "metadata": {
+      "detectedType": "oily"
+    },
+    "created_at": "2026-06-12T08:29:26.971Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "quiz_complete",
+    "page_path": "/results",
+    "metadata": {
+      "skinType": "oily"
+    },
+    "created_at": "2026-06-12T08:29:36.971Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "cleanser"
+    },
+    "created_at": "2026-06-12T08:29:56.971Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "moisturizer"
+    },
+    "created_at": "2026-06-12T08:30:01.971Z"
+  },
+  {
+    "session_id": "session_fake_u18",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {
+      "source": "facebook_ad"
+    },
+    "created_at": "2026-06-12T12:17:59.479Z"
+  },
+  {
+    "session_id": "session_fake_u18",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-12T12:19:59.479Z"
+  },
+  {
+    "session_id": "session_fake_u18",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-12T12:20:09.479Z"
+  },
+  {
+    "session_id": "session_fake_u18",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-12T12:20:19.479Z"
+  },
+  {
+    "session_id": "session_fake_u18",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-12T12:20:29.479Z"
+  },
+  {
+    "session_id": "session_fake_u18",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-12T12:20:39.479Z"
+  },
+  {
+    "session_id": "session_fake_u18",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-12T12:20:49.479Z"
+  },
+  {
+    "session_id": "session_fake_u18",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-12T12:20:59.479Z"
+  },
+  {
+    "session_id": "session_fake_u18",
+    "event_name": "ai_face_scan_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-12T12:21:04.479Z"
+  },
+  {
+    "session_id": "session_fake_u18",
+    "event_name": "ai_face_scan_success",
+    "page_path": "/quiz",
+    "metadata": {
+      "detectedType": "oily"
+    },
+    "created_at": "2026-06-12T12:21:09.479Z"
+  },
+  {
+    "session_id": "session_fake_u18",
+    "event_name": "quiz_complete",
+    "page_path": "/results",
+    "metadata": {
+      "skinType": "oily"
+    },
+    "created_at": "2026-06-12T12:21:19.479Z"
+  },
+  {
+    "session_id": "session_fake_u18",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "cleanser"
+    },
+    "created_at": "2026-06-12T12:21:39.479Z"
+  },
+  {
+    "session_id": "session_fake_u18",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "moisturizer"
+    },
+    "created_at": "2026-06-12T12:21:44.479Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {
+      "source": "facebook_ad"
+    },
+    "created_at": "2026-06-12T16:22:49.324Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-12T16:24:49.324Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-12T16:24:59.324Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-12T16:25:09.324Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-12T16:25:19.324Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-12T16:25:29.324Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-12T16:25:39.324Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-12T16:25:49.324Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "ai_face_scan_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-12T16:25:54.324Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "ai_face_scan_success",
+    "page_path": "/quiz",
+    "metadata": {
+      "detectedType": "oily"
+    },
+    "created_at": "2026-06-12T16:25:59.324Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "quiz_complete",
+    "page_path": "/results",
+    "metadata": {
+      "skinType": "oily"
+    },
+    "created_at": "2026-06-12T16:26:09.324Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "cleanser"
+    },
+    "created_at": "2026-06-12T16:26:29.324Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "moisturizer"
+    },
+    "created_at": "2026-06-12T16:26:34.324Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {
+      "source": "facebook_ad"
+    },
+    "created_at": "2026-06-12T21:40:39.254Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-12T21:42:39.254Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-12T21:42:49.254Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-12T21:42:59.254Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-12T21:43:09.254Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-12T21:43:19.254Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-12T21:43:29.254Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-12T21:43:39.254Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "ai_face_scan_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-12T21:43:44.254Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "ai_face_scan_success",
+    "page_path": "/quiz",
+    "metadata": {
+      "detectedType": "oily"
+    },
+    "created_at": "2026-06-12T21:43:49.254Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "quiz_complete",
+    "page_path": "/results",
+    "metadata": {
+      "skinType": "oily"
+    },
+    "created_at": "2026-06-12T21:43:59.254Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "cleanser"
+    },
+    "created_at": "2026-06-12T21:44:19.254Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "moisturizer"
+    },
+    "created_at": "2026-06-12T21:44:24.254Z"
+  },
+  {
+    "session_id": "session_fake_u19",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {
+      "source": "facebook_ad"
+    },
+    "created_at": "2026-06-12T21:51:33.143Z"
+  },
+  {
+    "session_id": "session_fake_u19",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-12T21:53:33.143Z"
+  },
+  {
+    "session_id": "session_fake_u19",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-12T21:53:43.143Z"
+  },
+  {
+    "session_id": "session_fake_u19",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-12T21:53:53.143Z"
+  },
+  {
+    "session_id": "session_fake_u19",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-12T21:54:03.143Z"
+  },
+  {
+    "session_id": "session_fake_u19",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-12T21:54:13.143Z"
+  },
+  {
+    "session_id": "session_fake_u19",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-12T21:54:23.143Z"
+  },
+  {
+    "session_id": "session_fake_u19",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-12T21:54:33.143Z"
+  },
+  {
+    "session_id": "session_fake_u19",
+    "event_name": "ai_face_scan_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-12T21:54:38.143Z"
+  },
+  {
+    "session_id": "session_fake_u19",
+    "event_name": "ai_face_scan_success",
+    "page_path": "/quiz",
+    "metadata": {
+      "detectedType": "oily"
+    },
+    "created_at": "2026-06-12T21:54:43.143Z"
+  },
+  {
+    "session_id": "session_fake_u19",
+    "event_name": "quiz_complete",
+    "page_path": "/results",
+    "metadata": {
+      "skinType": "oily"
+    },
+    "created_at": "2026-06-12T21:54:53.143Z"
+  },
+  {
+    "session_id": "session_fake_u19",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "cleanser"
+    },
+    "created_at": "2026-06-12T21:55:13.143Z"
+  },
+  {
+    "session_id": "session_fake_u19",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "moisturizer"
+    },
+    "created_at": "2026-06-12T21:55:18.143Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {
+      "source": "facebook_group"
+    },
+    "created_at": "2026-06-12T22:02:14.365Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-12T22:04:14.365Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-12T22:04:24.365Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-12T22:04:34.365Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-12T22:04:44.365Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-12T22:04:54.365Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-12T22:05:04.365Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-12T22:05:14.365Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "ai_face_scan_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-12T22:05:19.365Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "ai_face_scan_success",
+    "page_path": "/quiz",
+    "metadata": {
+      "detectedType": "oily"
+    },
+    "created_at": "2026-06-12T22:05:24.365Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "quiz_complete",
+    "page_path": "/results",
+    "metadata": {
+      "skinType": "oily"
+    },
+    "created_at": "2026-06-12T22:05:34.365Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "cleanser"
+    },
+    "created_at": "2026-06-12T22:05:54.365Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "moisturizer"
+    },
+    "created_at": "2026-06-12T22:05:59.365Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {
+      "source": "facebook_ad"
+    },
+    "created_at": "2026-06-12T22:17:16.609Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-12T22:19:16.609Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-12T22:19:26.609Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-12T22:19:36.609Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-12T22:19:46.609Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-12T22:19:56.609Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-12T22:20:06.609Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-12T22:20:16.609Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "ai_face_scan_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-12T22:20:21.609Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "ai_face_scan_success",
+    "page_path": "/quiz",
+    "metadata": {
+      "detectedType": "oily"
+    },
+    "created_at": "2026-06-12T22:20:26.609Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "quiz_complete",
+    "page_path": "/results",
+    "metadata": {
+      "skinType": "oily"
+    },
+    "created_at": "2026-06-12T22:20:36.609Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "cleanser"
+    },
+    "created_at": "2026-06-12T22:20:56.609Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "moisturizer"
+    },
+    "created_at": "2026-06-12T22:21:01.609Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {
+      "source": "facebook_group"
+    },
+    "created_at": "2026-06-13T04:38:27.959Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-13T04:40:27.959Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-13T04:40:37.959Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-13T04:40:47.959Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-13T04:40:57.959Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-13T04:41:07.959Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-13T04:41:17.959Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-13T04:41:27.959Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "ai_face_scan_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-13T04:41:32.959Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "ai_face_scan_success",
+    "page_path": "/quiz",
+    "metadata": {
+      "detectedType": "oily"
+    },
+    "created_at": "2026-06-13T04:41:37.959Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "quiz_complete",
+    "page_path": "/results",
+    "metadata": {
+      "skinType": "oily"
+    },
+    "created_at": "2026-06-13T04:41:47.959Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "cleanser"
+    },
+    "created_at": "2026-06-13T04:42:07.959Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "moisturizer"
+    },
+    "created_at": "2026-06-13T04:42:12.959Z"
+  },
+  {
+    "session_id": "session_fake_u16",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {
+      "source": "facebook_ad"
+    },
+    "created_at": "2026-06-13T11:07:55.582Z"
+  },
+  {
+    "session_id": "session_fake_u16",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-13T11:09:55.582Z"
+  },
+  {
+    "session_id": "session_fake_u16",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-13T11:10:05.582Z"
+  },
+  {
+    "session_id": "session_fake_u16",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-13T11:10:15.582Z"
+  },
+  {
+    "session_id": "session_fake_u16",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-13T11:10:25.582Z"
+  },
+  {
+    "session_id": "session_fake_u16",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-13T11:10:35.582Z"
+  },
+  {
+    "session_id": "session_fake_u16",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-13T11:10:45.582Z"
+  },
+  {
+    "session_id": "session_fake_u16",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-13T11:10:55.582Z"
+  },
+  {
+    "session_id": "session_fake_u16",
+    "event_name": "ai_face_scan_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-13T11:11:00.582Z"
+  },
+  {
+    "session_id": "session_fake_u16",
+    "event_name": "ai_face_scan_success",
+    "page_path": "/quiz",
+    "metadata": {
+      "detectedType": "oily"
+    },
+    "created_at": "2026-06-13T11:11:05.582Z"
+  },
+  {
+    "session_id": "session_fake_u16",
+    "event_name": "quiz_complete",
+    "page_path": "/results",
+    "metadata": {
+      "skinType": "oily"
+    },
+    "created_at": "2026-06-13T11:11:15.582Z"
+  },
+  {
+    "session_id": "session_fake_u16",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "cleanser"
+    },
+    "created_at": "2026-06-13T11:11:35.582Z"
+  },
+  {
+    "session_id": "session_fake_u16",
+    "event_name": "add_to_routine",
+    "page_path": "/results",
+    "metadata": {
+      "category": "moisturizer"
+    },
+    "created_at": "2026-06-13T11:11:40.582Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-17T19:37:08.048Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-17T19:37:18.048Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-17T22:13:23.126Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-17T22:13:33.126Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T01:21:33.492Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-18T01:21:43.492Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T01:46:40.044Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-18T01:46:50.044Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T02:11:15.626Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-18T02:11:25.626Z"
+  },
+  {
+    "session_id": "session_fake_u2",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T02:18:33.630Z"
+  },
+  {
+    "session_id": "session_fake_u2",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-18T02:18:43.630Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T05:37:08.048Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-18T05:37:13.048Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-18T05:37:18.048Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "ai_chat_send",
+    "page_path": "/dashboard",
+    "metadata": {
+      "length": 25
+    },
+    "created_at": "2026-06-18T05:37:28.048Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "ai_chat_receive",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T05:37:31.048Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T06:15:19.856Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-18T06:15:29.856Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T06:42:00.256Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-18T06:42:10.256Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T08:13:23.126Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-18T08:13:28.126Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-18T08:13:33.126Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "ai_chat_send",
+    "page_path": "/dashboard",
+    "metadata": {
+      "length": 25
+    },
+    "created_at": "2026-06-18T08:13:43.126Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "ai_chat_receive",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T08:13:46.126Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T09:22:13.370Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-18T09:22:23.370Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T10:15:51.078Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-18T10:16:01.078Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T11:21:33.492Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-18T11:21:38.492Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-18T11:21:43.492Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "ai_chat_send",
+    "page_path": "/dashboard",
+    "metadata": {
+      "length": 25
+    },
+    "created_at": "2026-06-18T11:21:53.492Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "ai_chat_receive",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T11:21:56.492Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T11:46:40.044Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-18T11:46:45.044Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-18T11:46:50.044Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T11:52:48.474Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-18T11:52:58.474Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T12:11:15.626Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-18T12:11:20.626Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-18T12:11:25.626Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "ai_chat_send",
+    "page_path": "/dashboard",
+    "metadata": {
+      "length": 25
+    },
+    "created_at": "2026-06-18T12:11:35.626Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "ai_chat_receive",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T12:11:38.626Z"
+  },
+  {
+    "session_id": "session_fake_u2",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T12:18:33.630Z"
+  },
+  {
+    "session_id": "session_fake_u2",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-18T12:18:38.630Z"
+  },
+  {
+    "session_id": "session_fake_u2",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-18T12:18:43.630Z"
+  },
+  {
+    "session_id": "session_fake_u2",
+    "event_name": "ai_chat_send",
+    "page_path": "/dashboard",
+    "metadata": {
+      "length": 25
+    },
+    "created_at": "2026-06-18T12:18:53.630Z"
+  },
+  {
+    "session_id": "session_fake_u2",
+    "event_name": "ai_chat_receive",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T12:18:56.630Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T13:31:44.317Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-18T13:31:54.317Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T14:10:22.376Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-18T14:10:32.376Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T14:19:49.726Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-18T14:19:59.726Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T14:34:01.599Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-18T14:34:11.599Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T16:15:19.856Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-18T16:15:24.856Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-18T16:15:29.856Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "ai_chat_send",
+    "page_path": "/dashboard",
+    "metadata": {
+      "length": 25
+    },
+    "created_at": "2026-06-18T16:15:39.856Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "ai_chat_receive",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T16:15:42.856Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T16:42:00.256Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-18T16:42:05.256Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-18T16:42:10.256Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T19:22:13.370Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-18T19:22:18.370Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-18T19:22:23.370Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T20:15:51.078Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-18T20:15:56.078Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-18T20:16:01.078Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T21:52:48.474Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-18T21:52:53.474Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-18T21:52:58.474Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "ai_chat_send",
+    "page_path": "/dashboard",
+    "metadata": {
+      "length": 25
+    },
+    "created_at": "2026-06-18T21:53:08.474Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "ai_chat_receive",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T21:53:11.474Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T23:31:44.317Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-18T23:31:49.317Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-18T23:31:54.317Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "ai_chat_send",
+    "page_path": "/dashboard",
+    "metadata": {
+      "length": 25
+    },
+    "created_at": "2026-06-18T23:32:04.317Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "ai_chat_receive",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-18T23:32:07.317Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-19T00:10:22.376Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-19T00:10:27.376Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-19T00:10:32.376Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "ai_chat_send",
+    "page_path": "/dashboard",
+    "metadata": {
+      "length": 25
+    },
+    "created_at": "2026-06-19T00:10:42.376Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "ai_chat_receive",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-19T00:10:45.376Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-19T00:19:49.726Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-19T00:19:54.726Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-19T00:19:59.726Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "ai_chat_send",
+    "page_path": "/dashboard",
+    "metadata": {
+      "length": 25
+    },
+    "created_at": "2026-06-19T00:20:09.726Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "ai_chat_receive",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-19T00:20:12.726Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-19T00:34:01.599Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-19T00:34:06.599Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-19T00:34:11.599Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "ai_chat_send",
+    "page_path": "/dashboard",
+    "metadata": {
+      "length": 25
+    },
+    "created_at": "2026-06-19T00:34:21.599Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "ai_chat_receive",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-19T00:34:24.599Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-19T15:05:43.227Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-19T15:05:53.227Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-19T16:37:16.661Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-19T16:37:26.661Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-19T17:33:52.555Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-19T17:34:02.555Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-19T18:52:53.869Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-19T18:53:03.869Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-19T20:35:05.697Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-19T20:35:15.697Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-19T23:45:42.252Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-19T23:45:52.252Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-19T23:59:04.269Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-19T23:59:14.269Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T00:15:45.713Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-20T00:15:55.713Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T00:48:26.573Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-20T00:48:36.573Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T01:05:43.227Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-20T01:05:48.227Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-20T01:05:53.227Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "ai_chat_send",
+    "page_path": "/dashboard",
+    "metadata": {
+      "length": 25
+    },
+    "created_at": "2026-06-20T01:06:03.227Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "ai_chat_receive",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T01:06:06.227Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T01:29:50.514Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-20T01:30:00.514Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T02:37:16.661Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-20T02:37:21.661Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-20T02:37:26.661Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "ai_chat_send",
+    "page_path": "/dashboard",
+    "metadata": {
+      "length": 25
+    },
+    "created_at": "2026-06-20T02:37:36.661Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "ai_chat_receive",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T02:37:39.661Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T02:49:18.913Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-20T02:49:28.913Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T03:02:42.930Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-20T03:02:52.930Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T03:33:52.555Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-20T03:33:57.555Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-20T03:34:02.555Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T04:49:27.492Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-20T04:49:37.492Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T04:52:53.869Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-20T04:52:58.869Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-20T04:53:03.869Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "ai_chat_send",
+    "page_path": "/dashboard",
+    "metadata": {
+      "length": 25
+    },
+    "created_at": "2026-06-20T04:53:13.869Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "ai_chat_receive",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T04:53:16.869Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T06:35:05.697Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-20T06:35:10.697Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-20T06:35:15.697Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "ai_chat_send",
+    "page_path": "/dashboard",
+    "metadata": {
+      "length": 25
+    },
+    "created_at": "2026-06-20T06:35:25.697Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "ai_chat_receive",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T06:35:28.697Z"
+  },
+  {
+    "session_id": "session_fake_u2",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T07:11:19.295Z"
+  },
+  {
+    "session_id": "session_fake_u2",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-20T07:11:29.295Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T09:45:36.461Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T09:45:42.252Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-20T09:45:46.461Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-20T09:45:47.252Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-20T09:45:52.252Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T09:59:04.269Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-20T09:59:09.269Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-20T09:59:14.269Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "ai_chat_send",
+    "page_path": "/dashboard",
+    "metadata": {
+      "length": 25
+    },
+    "created_at": "2026-06-20T09:59:24.269Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "ai_chat_receive",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T09:59:27.269Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T10:15:45.713Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-20T10:15:50.713Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-20T10:15:55.713Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T10:48:26.573Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-20T10:48:31.573Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-20T10:48:36.573Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "ai_chat_send",
+    "page_path": "/dashboard",
+    "metadata": {
+      "length": 25
+    },
+    "created_at": "2026-06-20T10:48:46.573Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "ai_chat_receive",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T10:48:49.573Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T11:29:50.514Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-20T11:29:55.514Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-20T11:30:00.514Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T12:49:18.913Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-20T12:49:23.913Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-20T12:49:28.913Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T13:02:42.930Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-20T13:02:47.930Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-20T13:02:52.930Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T14:49:27.492Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-20T14:49:32.492Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-20T14:49:37.492Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "ai_chat_send",
+    "page_path": "/dashboard",
+    "metadata": {
+      "length": 25
+    },
+    "created_at": "2026-06-20T14:49:47.492Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "ai_chat_receive",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T14:49:50.492Z"
+  },
+  {
+    "session_id": "session_fake_u2",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T17:11:19.295Z"
+  },
+  {
+    "session_id": "session_fake_u2",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-20T17:11:24.295Z"
+  },
+  {
+    "session_id": "session_fake_u2",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-20T17:11:29.295Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T19:45:36.461Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-20T19:45:41.461Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-20T19:45:46.461Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "ai_chat_send",
+    "page_path": "/dashboard",
+    "metadata": {
+      "length": 25
+    },
+    "created_at": "2026-06-20T19:45:56.461Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "ai_chat_receive",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-20T19:45:59.461Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-21T20:27:45.543Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-21T20:27:55.543Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-21T21:20:55.581Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-21T21:21:05.581Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-21T22:39:27.194Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-21T22:39:37.194Z"
+  },
+  {
+    "session_id": "session_fake_u2",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-21T23:50:04.740Z"
+  },
+  {
+    "session_id": "session_fake_u2",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-21T23:50:14.740Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T02:03:34.470Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-22T02:03:44.470Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T02:26:36.958Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-22T02:26:46.958Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T03:00:45.973Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-22T03:00:55.973Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T05:07:46.948Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-22T05:07:56.948Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T06:27:45.543Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-22T06:27:50.543Z"
+  },
+  {
+    "session_id": "session_fake_u1",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-22T06:27:55.543Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T06:47:32.611Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-22T06:47:42.611Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T07:20:55.581Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-22T07:21:00.581Z"
+  },
+  {
+    "session_id": "session_fake_u11",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-22T07:21:05.581Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T08:39:27.194Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-22T08:39:32.194Z"
+  },
+  {
+    "session_id": "session_fake_u5",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-22T08:39:37.194Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T09:04:20.075Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-22T09:04:30.075Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T09:31:21.827Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-22T09:31:31.827Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T09:49:49.220Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-22T09:49:59.220Z"
+  },
+  {
+    "session_id": "session_fake_u2",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T09:50:04.740Z"
+  },
+  {
+    "session_id": "session_fake_u2",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-22T09:50:09.740Z"
+  },
+  {
+    "session_id": "session_fake_u2",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-22T09:50:14.740Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T10:42:59.590Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-22T10:43:09.590Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T12:03:34.470Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-22T12:03:39.470Z"
+  },
+  {
+    "session_id": "session_fake_u6",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-22T12:03:44.470Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T12:26:36.958Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-22T12:26:41.958Z"
+  },
+  {
+    "session_id": "session_fake_u3",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-22T12:26:46.958Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T12:34:35.274Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-22T12:34:45.274Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T13:00:45.973Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-22T13:00:50.973Z"
+  },
+  {
+    "session_id": "session_fake_u10",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-22T13:00:55.973Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T13:35:22.410Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "AM"
+    },
+    "created_at": "2026-06-22T13:35:32.410Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T15:07:46.948Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-22T15:07:51.948Z"
+  },
+  {
+    "session_id": "session_fake_u4",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-22T15:07:56.948Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T16:47:32.611Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-22T16:47:37.611Z"
+  },
+  {
+    "session_id": "session_fake_u14",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-22T16:47:42.611Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T19:04:20.075Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-22T19:04:25.075Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-22T19:04:30.075Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "ai_chat_send",
+    "page_path": "/dashboard",
+    "metadata": {
+      "length": 25
+    },
+    "created_at": "2026-06-22T19:04:40.075Z"
+  },
+  {
+    "session_id": "session_fake_u12",
+    "event_name": "ai_chat_receive",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T19:04:43.075Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T19:31:21.827Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-22T19:31:26.827Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-22T19:31:31.827Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "ai_chat_send",
+    "page_path": "/dashboard",
+    "metadata": {
+      "length": 25
+    },
+    "created_at": "2026-06-22T19:31:41.827Z"
+  },
+  {
+    "session_id": "session_fake_u9",
+    "event_name": "ai_chat_receive",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T19:31:44.827Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T19:49:49.220Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-22T19:49:54.220Z"
+  },
+  {
+    "session_id": "session_fake_u8",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-22T19:49:59.220Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T20:42:59.590Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-22T20:43:04.590Z"
+  },
+  {
+    "session_id": "session_fake_u15",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-22T20:43:09.590Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T22:34:35.274Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-22T22:34:40.274Z"
+  },
+  {
+    "session_id": "session_fake_u13",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-22T22:34:45.274Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T23:35:22.410Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "routine_completed_toggle",
+    "page_path": "/dashboard",
+    "metadata": {
+      "period": "PM"
+    },
+    "created_at": "2026-06-22T23:35:27.410Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "page_view",
+    "page_path": "/dashboard",
+    "metadata": {
+      "action": "quick_checkin",
+      "mood": "great"
+    },
+    "created_at": "2026-06-22T23:35:32.410Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "ai_chat_send",
+    "page_path": "/dashboard",
+    "metadata": {
+      "length": 25
+    },
+    "created_at": "2026-06-22T23:35:42.410Z"
+  },
+  {
+    "session_id": "session_fake_u7",
+    "event_name": "ai_chat_receive",
+    "page_path": "/dashboard",
+    "metadata": {},
+    "created_at": "2026-06-22T23:35:45.410Z"
   }
 ]

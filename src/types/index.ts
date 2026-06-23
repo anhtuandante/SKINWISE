@@ -80,6 +80,7 @@ export interface UserProfile {
   avoidedIngredients?: string[];
   cycleStartDate?: string;
   cycleLength?: number;
+  plan?: "free" | "smart" | "premium";
 }
 export interface DiaryLog {
   id: number;

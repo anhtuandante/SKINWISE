@@ -13,8 +13,9 @@ import {
   Tooltip,
   Legend
 } from "recharts";
-import { TrendingUp, TrendingDown, HelpCircle } from "lucide-react";
+import { TrendingUp, TrendingDown, HelpCircle, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useUserStore } from "@/store/user-store";
 
 const METRIC_LABELS: Record<string, string> = {
   acne: "Mụn",
@@ -37,6 +38,8 @@ const METRIC_COLORS: Record<string, string> = {
 };
 
 export default function TrendVisualizer() {
+  const plan = useUserStore((s) => s.plan) || "free";
+  const hasSmart = plan === "smart" || plan === "premium";
   const { diaryLogs, selectedRange, pinnedMetrics, setRange } = useSkinStore();
 
   // Compute trends and deltas
@@ -59,6 +62,34 @@ export default function TrendVisualizer() {
       score: 100 - ((log.metrics.acne + log.metrics.redness + (log.metrics.pores ?? 0) + log.metrics.oiliness) * 2)
     }));
   }, [diaryLogs, selectedRange]);
+
+  if (!hasSmart) {
+    return (
+      <div className="bg-white border border-line rounded-[24px] p-6 shadow-soft space-y-6 relative overflow-hidden">
+        <div>
+          <h3 className="text-body font-bold text-fg">Xu hướng chỉ số da</h3>
+          <p className="text-caption text-muted">Biểu đồ theo dõi các hoạt chất và chỉ số sinh trắc học được ghim.</p>
+        </div>
+        <div className="h-[220px] w-full border border-dashed border-line/60 rounded-2xl bg-line/5 flex flex-col items-center justify-center text-center p-6 space-y-4">
+          <div className="w-12 h-12 rounded-full bg-[#C4A882]/10 text-[#C4A882] flex items-center justify-center">
+            📈
+          </div>
+          <div className="space-y-1">
+            <h4 className="text-caption font-bold text-fg">Theo dõi tiến trình cải thiện làn da</h4>
+            <p className="text-[11px] text-muted max-w-xs leading-relaxed font-medium">
+              Biểu đồ phân tích chuyên sâu và tự động vẽ xu hướng mụn, tiết dầu, bong tróc... theo thời gian. Tính năng yêu cầu gói Smart trở lên.
+            </p>
+          </div>
+          <button
+            onClick={() => window.location.href = "/dashboard?tab=upgrade"}
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-fg text-bg hover:opacity-90 rounded-xl text-caption font-bold transition-all shadow-sm text-xs"
+          >
+            <Lock size={12} /> Nâng cấp gói Smart
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white border border-line rounded-[24px] p-6 shadow-soft space-y-6">

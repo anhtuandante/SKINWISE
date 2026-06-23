@@ -5,7 +5,7 @@ import { Product } from "@/types"
 import { formatPrice } from "@/lib/quiz-logic"
 import { CATEGORY_LABELS } from "@/lib/constants"
 import { useUserStore } from "@/store/user-store"
-import { Sparkles, CheckCircle2, ChevronUp, Edit3 } from "lucide-react"
+import { Sparkles, CheckCircle2, ChevronUp, Edit3, Lock } from "lucide-react"
 import { calculateMatchScore } from "@/lib/recommendation-engine"
 import { useMemo, useState } from "react"
 import ProductAvatar from "@/components/ui/ProductAvatar"
@@ -255,20 +255,46 @@ export default function ProductCard({
             animate={{ opacity: 1, x: 0 }}
             className="p-4 bg-gradient-to-br from-fg/[0.03] to-transparent border-l-2 border-fg rounded-r-xl"
           >
-            <div className="flex items-center gap-2 mb-3 border-b border-line/50 pb-2">
-              <Sparkles size={14} className="text-fg" />
-              <span className="text-[12px] font-extrabold text-fg tracking-tight">AI MATCH {matchResult.score}%</span>
+            <div className="flex items-center justify-between border-b border-line/50 pb-2 mb-3">
+              <div className="flex items-center gap-2">
+                <Sparkles size={14} className="text-fg" />
+                <span className="text-[12px] font-extrabold text-fg tracking-tight">Tương Thích AI</span>
+              </div>
+              {profile.plan !== "premium" && (
+                <span className="text-[9px] font-bold text-accent-dark bg-[#EADFD2] px-2 py-0.5 rounded-full uppercase tracking-wider flex items-center gap-1">
+                  <Lock size={9} /> Premium
+                </span>
+              )}
             </div>
-            <ul className="space-y-2">
-              {matchResult.reasons.map((reason, idx) => (
-                <li key={idx} className="flex items-start gap-2">
-                  <CheckCircle2 size={12} className="text-success shrink-0 mt-0.5" />
-                  <span className="text-[12px] text-muted leading-relaxed font-medium">
-                    {reason}
-                  </span>
-                </li>
-              ))}
-            </ul>
+
+            {profile.plan === "premium" ? (
+              <>
+                <div className="text-[14px] font-black text-fg mb-2">AI MATCH {matchResult.score}%</div>
+                <ul className="space-y-2">
+                  {matchResult.reasons.map((reason, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <CheckCircle2 size={12} className="text-success shrink-0 mt-0.5" />
+                      <span className="text-[12px] text-muted leading-relaxed font-medium">
+                        {reason}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <div className="py-1.5 space-y-3 text-center">
+                <div className="text-[14px] font-bold text-fg blur-[3.5px] select-none">AI MATCH 95%</div>
+                <p className="text-[11px] text-muted leading-relaxed font-medium">
+                  Tính năng kiểm tra độ tương thích giữa sản phẩm và làn da của bạn bằng AI độc quyền.
+                </p>
+                <button
+                  onClick={() => window.location.href = "/dashboard?tab=upgrade"}
+                  className="w-full py-2 bg-fg text-bg hover:opacity-90 rounded-xl text-[10px] font-bold transition-all shadow-sm"
+                >
+                  Nâng cấp Premium để mở khóa
+                </button>
+              </div>
+            )}
           </motion.div>
         </div>
       )}

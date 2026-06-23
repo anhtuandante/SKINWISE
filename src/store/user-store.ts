@@ -34,6 +34,7 @@ interface UserStore extends UserProfile {
   markSnapshotRoutineApplied: (id: string) => void;
   isHydrated: boolean;
   setHydrated: () => void;
+  setPlan: (plan: "free" | "smart" | "premium") => void;
 }
 
 const initialState: UserProfile & { isHydrated: boolean; quizHistory: QuizSnapshot[] } = {
@@ -64,6 +65,7 @@ const initialState: UserProfile & { isHydrated: boolean; quizHistory: QuizSnapsh
   avoidedIngredients: [],
   cycleStartDate: "",
   cycleLength: 28,
+  plan: "free",
 };
 
 export const useUserStore = create<UserStore>()(
@@ -122,6 +124,7 @@ export const useUserStore = create<UserStore>()(
         })),
       setCycleStartDate: (date) => set({ cycleStartDate: date }),
       setCycleLength: (length) => set({ cycleLength: length }),
+      setPlan: (plan) => set({ plan }),
       resetQuiz: () => {
         // Only reset quiz-specific fields, preserve quizHistory
         const currentHistory = get().quizHistory;

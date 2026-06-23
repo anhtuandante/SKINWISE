@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { Smile, Meh, Frown, ChevronLeft, ChevronRight, ArrowUpCircle, Search, Edit3 } from "lucide-react";
+import { Smile, Meh, Frown, ChevronLeft, ChevronRight, ArrowUpCircle, Search, Edit3, Lock } from "lucide-react";
 import { useSkinStore } from "@/store/useSkinStore";
 import { DiaryLog } from "@/types";
 import { useToastStore } from "@/store/toast-store";
+import { useUserStore } from "@/store/user-store";
 import SkinCheckinFlow from "./SkinCheckinFlow";
 
 const MOOD_CONFIG = {
@@ -136,10 +137,35 @@ export default function SkinJournalPanel() {
 
   const isToday = currentWeekDays[selectedDayIdx]?.fullDate === todayStr;
 
+  const plan = useUserStore((s) => s.plan) || "free";
+  const hasSmart = plan === "smart" || plan === "premium";
+
   if (!mounted || !isHydrated) {
     return (
       <div className="flex items-center justify-center p-12 bg-white border border-line rounded-[24px] shadow-soft">
         <span className="text-caption text-muted font-bold animate-pulse">Đang tải nhật ký da...</span>
+      </div>
+    );
+  }
+
+  if (!hasSmart) {
+    return (
+      <div className="bg-white border border-line rounded-[24px] p-8 shadow-soft text-center space-y-6 max-w-lg mx-auto animate-in">
+        <div className="w-16 h-16 bg-[#C4A882]/10 text-[#C4A882] rounded-full flex items-center justify-center mx-auto">
+          <Lock size={28} />
+        </div>
+        <div className="space-y-2">
+          <h3 className="text-title font-bold text-fg">Nhật ký & Theo dõi da bị khóa</h3>
+          <p className="text-caption text-muted leading-relaxed max-w-sm mx-auto font-medium">
+            Ghi nhật ký skincare hàng ngày, theo dõi chỉ số kích ứng, giấc ngủ, thói quen ăn uống và xem lịch sử tiến triển da đòi hỏi tài khoản từ gói Smart trở lên.
+          </p>
+        </div>
+        <button
+          onClick={() => window.location.href = "/dashboard?tab=upgrade"}
+          className="inline-flex items-center gap-2 px-6 py-3.5 bg-fg text-bg rounded-2xl text-caption font-bold hover:opacity-90 active:scale-[0.98] transition-all shadow-md"
+        >
+          Nâng cấp gói Smart ngay
+        </button>
       </div>
     );
   }
