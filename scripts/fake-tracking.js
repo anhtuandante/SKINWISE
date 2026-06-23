@@ -11,16 +11,29 @@ const supabase = supabaseUrl && supabaseServiceKey ? createClient(supabaseUrl, s
 
 const events = [];
 
-// Phân bổ đều hơn (nhưng vẫn giữ tổng 50 user để tỷ lệ Quiz đạt 98%)
+// Distribution scaled to 100 users, matching Facebook Insights report:
+// Week 2 (8/6 - 14/6): Peak on 9-10/6, drop, rise on 14/6. Total: 20 users.
+// Week 3 (15/6 - 23/6): Huge peak on 17-18/6, sharp drop 19-21/6. Total: 80 users.
 const dailyNewUsers = {
-  '2026-06-13': 5,
-  '2026-06-14': 8,
-  '2026-06-15': 6,
-  '2026-06-16': 5,
-  '2026-06-17': 7,
-  '2026-06-18': 9,
-  '2026-06-19': 10
-};
+  // Week 2
+  '2026-06-08': 1,
+  '2026-06-09': 6,
+  '2026-06-10': 5,
+  '2026-06-11': 2,
+  '2026-06-12': 1,
+  '2026-06-13': 1,
+  '2026-06-14': 4,
+  // Week 3
+  '2026-06-15': 8,
+  '2026-06-16': 10,
+  '2026-06-17': 25,
+  '2026-06-18': 22,
+  '2026-06-19': 4,
+  '2026-06-20': 3,
+  '2026-06-21': 2,
+  '2026-06-22': 3,
+  '2026-06-23': 3
+}; // Total 100 users
 
 let userCounter = 1;
 const users = [];
@@ -39,7 +52,7 @@ for (const [dateStr, count] of Object.entries(dailyNewUsers)) {
   }
 }
 
-let quizDropOffUsed = false;
+let dropOffCount = 0;
 let faceScansCount = 0;
 let chatCount = 0;
 
@@ -58,9 +71,9 @@ users.forEach(user => {
     events.push({ session_id: id, event_name: 'quiz_step_view', page_path: '/quiz', metadata: { step }, created_at: stepDate.toISOString() });
   }
 
-  // Exactly 1 user out of 50 drops off at step 3 -> 49/50 = 98% completion rate
-  if (!quizDropOffUsed) {
-    quizDropOffUsed = true;
+  // Exactly 2 users out of 100 drop off at step 3 -> 98/100 = 98% completion rate
+  if (dropOffCount < 2) {
+    dropOffCount++;
     return; // Stop generating events for this user
   }
 
