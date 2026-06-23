@@ -434,7 +434,7 @@ export default function SafetyLabPanel() {
                 
                 {selectedProductA ? (
                   <div className="relative p-4 border border-accent rounded-xl bg-accent-light/10 flex items-start gap-3">
-                    <ProductAvatar brand={selectedProductA.brand} name={selectedProductA.name} className="w-12 h-12 rounded-lg shrink-0" />
+                    <ProductAvatar brand={selectedProductA.brand} name={selectedProductA.name} image={selectedProductA.image} className="w-12 h-12 rounded-lg shrink-0" />
                     <div className="flex-1 min-w-0">
                       <p className="text-[10px] text-accent-dark font-bold uppercase">{selectedProductA.brand}</p>
                       <h4 className="text-caption font-bold text-fg truncate">{selectedProductA.name}</h4>
@@ -478,7 +478,7 @@ export default function SafetyLabPanel() {
                               }}
                               className="w-full text-left p-3 hover:bg-surface flex items-center gap-3 transition-colors"
                             >
-                              <ProductAvatar brand={p.brand} name={p.name} className="w-8 h-8 rounded shrink-0" />
+                              <ProductAvatar brand={p.brand} name={p.name} image={p.image} className="w-8 h-8 rounded shrink-0" />
                               <div className="min-w-0">
                                 <div className="text-caption font-bold text-fg truncate">{p.name}</div>
                                 <div className="text-[10px] text-muted">{p.brand} • {CATEGORY_LABELS[p.category] || p.category}</div>
@@ -498,7 +498,7 @@ export default function SafetyLabPanel() {
                 
                 {selectedProductB ? (
                   <div className="relative p-4 border border-accent rounded-xl bg-accent-light/10 flex items-start gap-3">
-                    <ProductAvatar brand={selectedProductB.brand} name={selectedProductB.name} className="w-12 h-12 rounded-lg shrink-0" />
+                    <ProductAvatar brand={selectedProductB.brand} name={selectedProductB.name} image={selectedProductB.image} className="w-12 h-12 rounded-lg shrink-0" />
                     <div className="flex-1 min-w-0">
                       <p className="text-[10px] text-accent-dark font-bold uppercase">{selectedProductB.brand}</p>
                       <h4 className="text-caption font-bold text-fg truncate">{selectedProductB.name}</h4>
@@ -542,7 +542,7 @@ export default function SafetyLabPanel() {
                               }}
                               className="w-full text-left p-3 hover:bg-surface flex items-center gap-3 transition-colors"
                             >
-                              <ProductAvatar brand={p.brand} name={p.name} className="w-8 h-8 rounded shrink-0" />
+                              <ProductAvatar brand={p.brand} name={p.name} image={p.image} className="w-8 h-8 rounded shrink-0" />
                               <div className="min-w-0">
                                 <div className="text-caption font-bold text-fg truncate">{p.name}</div>
                                 <div className="text-[10px] text-muted">{p.brand} • {CATEGORY_LABELS[p.category] || p.category}</div>
@@ -662,7 +662,7 @@ export default function SafetyLabPanel() {
                 {/* Product A Spec Card */}
                 <div className="border border-line rounded-2xl p-5 bg-white space-y-4">
                   <div className="flex gap-4">
-                    <ProductAvatar brand={selectedProductA.brand} name={selectedProductA.name} className="w-16 h-16 rounded-xl shrink-0" />
+                    <ProductAvatar brand={selectedProductA.brand} name={selectedProductA.name} image={selectedProductA.image} className="w-16 h-16 rounded-xl shrink-0" />
                     <div className="min-w-0">
                       <span className="text-[10px] text-accent-dark font-bold uppercase tracking-wider">{selectedProductA.brand}</span>
                       <h4 className="text-body font-bold text-fg leading-snug">{selectedProductA.name}</h4>
@@ -697,7 +697,7 @@ export default function SafetyLabPanel() {
                 {/* Product B Spec Card */}
                 <div className="border border-line rounded-2xl p-5 bg-white space-y-4">
                   <div className="flex gap-4">
-                    <ProductAvatar brand={selectedProductB.brand} name={selectedProductB.name} className="w-16 h-16 rounded-xl shrink-0" />
+                    <ProductAvatar brand={selectedProductB.brand} name={selectedProductB.name} image={selectedProductB.image} className="w-16 h-16 rounded-xl shrink-0" />
                     <div className="min-w-0">
                       <span className="text-[10px] text-accent-dark font-bold uppercase tracking-wider">{selectedProductB.brand}</span>
                       <h4 className="text-body font-bold text-fg leading-snug">{selectedProductB.name}</h4>

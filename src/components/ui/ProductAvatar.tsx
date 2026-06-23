@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Package } from "lucide-react";
 
 interface ProductAvatarProps {
   brand: string;
   name: string;
+  image?: string | null;
   className?: string;
 }
 
@@ -36,9 +37,25 @@ const getInitials = (brand: string) => {
   return (words[0][0] + words[1][0]).toUpperCase();
 };
 
-export default function ProductAvatar({ brand, className = "" }: ProductAvatarProps) {
+export default function ProductAvatar({ brand, name, image, className = "" }: ProductAvatarProps) {
+  const [hasError, setHasError] = useState(false);
   const gradient = getBrandColor(brand);
   const initials = getInitials(brand);
+
+  if (image && !hasError) {
+    return (
+      <div 
+        className={`relative flex items-center justify-center rounded-2xl overflow-hidden shadow-sm shrink-0 bg-white border border-line ${className}`}
+      >
+        <img 
+          src={image} 
+          alt={name} 
+          onError={() => setHasError(true)}
+          className="w-full h-full object-contain p-1"
+        />
+      </div>
+    );
+  }
 
   return (
     <div 

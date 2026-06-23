@@ -48,7 +48,7 @@ export default function ProductCard({
     return (
       <div className="flex flex-col w-full border-b border-line last:border-0">
         <div className="flex items-center justify-between py-3 gap-3">
-        <ProductAvatar brand={product.brand} name={product.name} className="w-10 h-10" />
+        <ProductAvatar brand={product.brand} name={product.name} image={product.image} className="w-10 h-10" />
         <div className={`flex-1 min-w-0 ${isPaused ? "opacity-50" : ""}`}>
           <div className="text-body font-medium text-fg truncate flex items-center gap-2">
             {product.name}
@@ -221,7 +221,7 @@ export default function ProductCard({
     >
       <div className="flex items-start justify-between gap-4 mb-4" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-start gap-3 flex-1 min-w-0">
-          <ProductAvatar brand={product.brand} name={product.name} className="w-12 h-12" />
+          <ProductAvatar brand={product.brand} name={product.name} image={product.image} className="w-12 h-12" />
           <div className="flex-1 min-w-0">
             <div className="text-body font-bold text-fg group-hover:text-fg transition-colors truncate">{product.name}</div>
             <div className="text-caption text-muted font-medium opacity-80 truncate">{product.brand}</div>

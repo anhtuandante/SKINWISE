@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html dir="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="referrer" content="unsafe-url">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="robots" content="noindex, nofollow, noarchive, noai, noimageai">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:,">
+  <title>14.233.173.1 23.06.2026 18:34:29</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, "Trebuchet MS", Verdana, sans-serif;
+      font-size: 18px;
+      line-height: 1.5;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    .info {
+      width: 100%;
+      max-width: 630px;
+      text-align: center;
+    }
+
+    .antibot-btn-success {
+      border: 2px solid transparent;
+      background: #28a745;
+      color: #ffffff;
+      font-size: 18px;
+      line-height: 15px;
+      padding: 10px 10px;
+      text-decoration: none;
+      text-shadow: none;
+      border-radius: 3px;
+      box-shadow: none;
+      cursor: pointer;
+      transition: background-color 0.25s;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .antibot-btn-success:hover {
+      background-color: #218838;
+    }
+
+    .antibot-btn-success:focus-visible {
+      outline: 2px solid #218838;
+      outline-offset: 2px;
+    }
+
+    .antibot-btn-color {
+      box-sizing: content-box;
+      cursor: pointer;
+      padding: 14px;
+      text-decoration: none;
+      display: inline-block;
+      width: 14px;
+      height: 16px;
+    }
+
+    .antibot-btn-color:hover {
+      border: 2px solid #ccc;
+      width: 10px;
+      height: 10px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .antibot-btn-success {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="info" id="content">
+ <h3 style="color:red;">Sorry, your request has been denied.</h3>
+        
+  </div>
+</body>
+</html>

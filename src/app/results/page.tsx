@@ -765,7 +765,7 @@ function ProductStepCard({
         {/* Product info */}
         <div className="flex items-start justify-between gap-3 mb-3">
           <div className="flex items-start gap-3 flex-1 min-w-0">
-            <ProductAvatar brand={product.brand} name={product.name} className="w-12 h-12" />
+            <ProductAvatar brand={product.brand} name={product.name} image={product.image} className="w-12 h-12" />
             <div className="flex-1 min-w-0">
               <div className="text-body font-bold text-fg leading-tight truncate">{product.name}</div>
               <div className="text-caption text-muted mt-0.5 truncate">{product.brand} · {product.size}</div>
@@ -819,7 +819,7 @@ function ProductStepCard({
                   key={altP.id} 
                   className="flex items-center justify-between p-3 border border-line rounded-xl hover:border-accent/20 transition-all bg-surface/30 group gap-3"
                 >
-                  <ProductAvatar brand={altP.brand} name={altP.name} className="w-10 h-10" />
+                  <ProductAvatar brand={altP.brand} name={altP.name} image={altP.image} className="w-10 h-10" />
                   <div className="min-w-0 flex-1 pr-3">
                     <div className="text-[13px] font-bold text-fg group-hover:text-accent-dark transition-colors leading-snug truncate">{altP.name}</div>
                     <div className="text-[11px] text-muted mt-0.5 truncate">
