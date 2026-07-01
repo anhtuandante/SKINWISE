@@ -317,8 +317,8 @@ export default function TrackingDashboard() {
   const trendData = useMemo(() => {
     const days: Record<string, { date: string; events: number; pageviews: number }> = {};
     
-    // Last 7 days template
-    for (let i = 6; i >= 0; i--) {
+    // Last 14 days template
+    for (let i = 13; i >= 0; i--) {
       const d = new Date();
       d.setDate(d.getDate() - i);
       const dateStr = d.toLocaleDateString("vi-VN", { month: "numeric", day: "numeric" });
@@ -493,7 +493,7 @@ export default function TrackingDashboard() {
           {/* Line Chart: Event Trend */}
           <div className="lg:col-span-2 border border-[#EADFD2] rounded-2xl p-6 bg-white shadow-soft">
             <h3 className="text-caption font-bold uppercase tracking-wider text-muted mb-4">
-              Biểu Đồ Lượt Xem và Hoạt Động (7 Ngày qua)
+              Biểu Đồ Lượt Xem và Hoạt Động (14 Ngày qua)
             </h3>
             <div className="h-[250px] w-full">
               <ResponsiveContainer width="100%" height="100%">
