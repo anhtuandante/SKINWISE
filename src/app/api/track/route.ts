@@ -121,7 +121,7 @@ export async function GET() {
         .from("tracking_events")
         .select("*")
         .order("created_at", { ascending: false })
-        .limit(1000);
+        .limit(5000);
 
       if (error) {
         dbError = error.message;
