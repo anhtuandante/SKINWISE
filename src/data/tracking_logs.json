@@ -1,735 +1,5 @@
 [
   {
-    "session_id": "053e65d2-d7da-4374-af33-302a4363b61d",
-    "event_name": "page_view",
-    "page_path": "/dashboard",
-    "metadata": {},
-    "created_at": "2026-06-16T04:40:04.000Z"
-  },
-  {
-    "session_id": "6aab6873-4fe1-4b0f-992b-df3ba161e776",
-    "event_name": "page_view",
-    "page_path": "/",
-    "metadata": {
-      "source": "facebook_group"
-    },
-    "created_at": "2026-06-16T04:50:48.000Z"
-  },
-  {
-    "session_id": "6aab6873-4fe1-4b0f-992b-df3ba161e776",
-    "event_name": "quiz_start",
-    "page_path": "/quiz",
-    "metadata": {},
-    "created_at": "2026-06-16T04:51:21.000Z"
-  },
-  {
-    "session_id": "6aab6873-4fe1-4b0f-992b-df3ba161e776",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 1
-    },
-    "created_at": "2026-06-16T04:51:28.000Z"
-  },
-  {
-    "session_id": "6aab6873-4fe1-4b0f-992b-df3ba161e776",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 2
-    },
-    "created_at": "2026-06-16T04:51:45.000Z"
-  },
-  {
-    "session_id": "6aab6873-4fe1-4b0f-992b-df3ba161e776",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 3
-    },
-    "created_at": "2026-06-16T04:51:56.000Z"
-  },
-  {
-    "session_id": "6aab6873-4fe1-4b0f-992b-df3ba161e776",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 4
-    },
-    "created_at": "2026-06-16T04:52:05.000Z"
-  },
-  {
-    "session_id": "6aab6873-4fe1-4b0f-992b-df3ba161e776",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 5
-    },
-    "created_at": "2026-06-16T04:52:13.000Z"
-  },
-  {
-    "session_id": "6aab6873-4fe1-4b0f-992b-df3ba161e776",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 6
-    },
-    "created_at": "2026-06-16T04:52:30.000Z"
-  },
-  {
-    "session_id": "6aab6873-4fe1-4b0f-992b-df3ba161e776",
-    "event_name": "quiz_complete",
-    "page_path": "/results",
-    "metadata": {
-      "skinType": "oily"
-    },
-    "created_at": "2026-06-16T04:52:40.000Z"
-  },
-  {
-    "session_id": "6aab6873-4fe1-4b0f-992b-df3ba161e776",
-    "event_name": "add_to_routine",
-    "page_path": "/results",
-    "metadata": {
-      "category": "cleanser"
-    },
-    "created_at": "2026-06-16T04:53:14.000Z"
-  },
-  {
-    "session_id": "0e1e3ee8-44f6-4fca-86e5-8c233480156d",
-    "event_name": "page_view",
-    "page_path": "/dashboard",
-    "metadata": {},
-    "created_at": "2026-06-16T05:24:43.000Z"
-  },
-  {
-    "session_id": "b98a739a-e1c4-4658-8640-2a3629739849",
-    "event_name": "page_view",
-    "page_path": "/",
-    "metadata": {
-      "source": "facebook_ad"
-    },
-    "created_at": "2026-06-16T06:35:41.000Z"
-  },
-  {
-    "session_id": "b98a739a-e1c4-4658-8640-2a3629739849",
-    "event_name": "quiz_start",
-    "page_path": "/quiz",
-    "metadata": {},
-    "created_at": "2026-06-16T06:36:33.000Z"
-  },
-  {
-    "session_id": "b98a739a-e1c4-4658-8640-2a3629739849",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 1
-    },
-    "created_at": "2026-06-16T06:36:40.000Z"
-  },
-  {
-    "session_id": "b98a739a-e1c4-4658-8640-2a3629739849",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 2
-    },
-    "created_at": "2026-06-16T06:36:59.000Z"
-  },
-  {
-    "session_id": "b98a739a-e1c4-4658-8640-2a3629739849",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 3
-    },
-    "created_at": "2026-06-16T06:37:12.000Z"
-  },
-  {
-    "session_id": "b98a739a-e1c4-4658-8640-2a3629739849",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 4
-    },
-    "created_at": "2026-06-16T06:37:21.000Z"
-  },
-  {
-    "session_id": "b98a739a-e1c4-4658-8640-2a3629739849",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 5
-    },
-    "created_at": "2026-06-16T06:37:36.000Z"
-  },
-  {
-    "session_id": "b98a739a-e1c4-4658-8640-2a3629739849",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 6
-    },
-    "created_at": "2026-06-16T06:37:52.000Z"
-  },
-  {
-    "session_id": "b98a739a-e1c4-4658-8640-2a3629739849",
-    "event_name": "quiz_complete",
-    "page_path": "/results",
-    "metadata": {
-      "skinType": "combination"
-    },
-    "created_at": "2026-06-16T06:38:05.000Z"
-  },
-  {
-    "session_id": "b98a739a-e1c4-4658-8640-2a3629739849",
-    "event_name": "add_to_routine",
-    "page_path": "/results",
-    "metadata": {
-      "category": "cleanser"
-    },
-    "created_at": "2026-06-16T06:38:45.000Z"
-  },
-  {
-    "session_id": "71ffdb11-71ab-41b5-b401-4f7d68ddf98a",
-    "event_name": "page_view",
-    "page_path": "/",
-    "metadata": {
-      "source": "facebook_ad"
-    },
-    "created_at": "2026-06-16T06:45:53.000Z"
-  },
-  {
-    "session_id": "71ffdb11-71ab-41b5-b401-4f7d68ddf98a",
-    "event_name": "quiz_start",
-    "page_path": "/quiz",
-    "metadata": {},
-    "created_at": "2026-06-16T06:47:04.000Z"
-  },
-  {
-    "session_id": "71ffdb11-71ab-41b5-b401-4f7d68ddf98a",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 1
-    },
-    "created_at": "2026-06-16T06:47:17.000Z"
-  },
-  {
-    "session_id": "71ffdb11-71ab-41b5-b401-4f7d68ddf98a",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 2
-    },
-    "created_at": "2026-06-16T06:47:30.000Z"
-  },
-  {
-    "session_id": "71ffdb11-71ab-41b5-b401-4f7d68ddf98a",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 3
-    },
-    "created_at": "2026-06-16T06:47:40.000Z"
-  },
-  {
-    "session_id": "71ffdb11-71ab-41b5-b401-4f7d68ddf98a",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 4
-    },
-    "created_at": "2026-06-16T06:47:57.000Z"
-  },
-  {
-    "session_id": "71ffdb11-71ab-41b5-b401-4f7d68ddf98a",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 5
-    },
-    "created_at": "2026-06-16T06:48:09.000Z"
-  },
-  {
-    "session_id": "71ffdb11-71ab-41b5-b401-4f7d68ddf98a",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 6
-    },
-    "created_at": "2026-06-16T06:48:16.000Z"
-  },
-  {
-    "session_id": "71ffdb11-71ab-41b5-b401-4f7d68ddf98a",
-    "event_name": "ai_face_scan_start",
-    "page_path": "/quiz",
-    "metadata": {},
-    "created_at": "2026-06-16T06:48:21.000Z"
-  },
-  {
-    "session_id": "71ffdb11-71ab-41b5-b401-4f7d68ddf98a",
-    "event_name": "ai_face_scan_success",
-    "page_path": "/quiz",
-    "metadata": {
-      "detectedType": "oily"
-    },
-    "created_at": "2026-06-16T06:48:28.220Z"
-  },
-  {
-    "session_id": "71ffdb11-71ab-41b5-b401-4f7d68ddf98a",
-    "event_name": "quiz_complete",
-    "page_path": "/results",
-    "metadata": {
-      "skinType": "oily"
-    },
-    "created_at": "2026-06-16T06:48:42.220Z"
-  },
-  {
-    "session_id": "71ffdb11-71ab-41b5-b401-4f7d68ddf98a",
-    "event_name": "add_to_routine",
-    "page_path": "/results",
-    "metadata": {
-      "category": "sunscreen"
-    },
-    "created_at": "2026-06-16T06:49:15.220Z"
-  },
-  {
-    "session_id": "0b3c48d9-5695-4c52-855c-34bfdc25beb3",
-    "event_name": "page_view",
-    "page_path": "/dashboard",
-    "metadata": {},
-    "created_at": "2026-06-16T07:03:32.000Z"
-  },
-  {
-    "session_id": "c1b94cb9-d52d-4d9d-b91a-b1eea9ec9b74",
-    "event_name": "page_view",
-    "page_path": "/dashboard",
-    "metadata": {},
-    "created_at": "2026-06-16T08:18:18.000Z"
-  },
-  {
-    "session_id": "c1b94cb9-d52d-4d9d-b91a-b1eea9ec9b74",
-    "event_name": "routine_completed_toggle",
-    "page_path": "/dashboard",
-    "metadata": {
-      "period": "PM"
-    },
-    "created_at": "2026-06-16T08:18:36.000Z"
-  },
-  {
-    "session_id": "44f9b770-b999-4853-926b-fb358f2baf68",
-    "event_name": "page_view",
-    "page_path": "/dashboard",
-    "metadata": {},
-    "created_at": "2026-06-16T08:57:41.000Z"
-  },
-  {
-    "session_id": "6e42e512-4400-4e5a-8061-19a4d3f0b3f0",
-    "event_name": "page_view",
-    "page_path": "/",
-    "metadata": {
-      "source": "facebook_ad"
-    },
-    "created_at": "2026-06-16T10:37:25.000Z"
-  },
-  {
-    "session_id": "6e42e512-4400-4e5a-8061-19a4d3f0b3f0",
-    "event_name": "quiz_start",
-    "page_path": "/quiz",
-    "metadata": {},
-    "created_at": "2026-06-16T10:38:09.000Z"
-  },
-  {
-    "session_id": "6e42e512-4400-4e5a-8061-19a4d3f0b3f0",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 1
-    },
-    "created_at": "2026-06-16T10:38:25.000Z"
-  },
-  {
-    "session_id": "6e42e512-4400-4e5a-8061-19a4d3f0b3f0",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 2
-    },
-    "created_at": "2026-06-16T10:38:35.000Z"
-  },
-  {
-    "session_id": "6e42e512-4400-4e5a-8061-19a4d3f0b3f0",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 3
-    },
-    "created_at": "2026-06-16T10:38:47.000Z"
-  },
-  {
-    "session_id": "6e42e512-4400-4e5a-8061-19a4d3f0b3f0",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 4
-    },
-    "created_at": "2026-06-16T10:38:52.000Z"
-  },
-  {
-    "session_id": "6e42e512-4400-4e5a-8061-19a4d3f0b3f0",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 5
-    },
-    "created_at": "2026-06-16T10:39:07.000Z"
-  },
-  {
-    "session_id": "6e42e512-4400-4e5a-8061-19a4d3f0b3f0",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 6
-    },
-    "created_at": "2026-06-16T10:39:12.000Z"
-  },
-  {
-    "session_id": "6e42e512-4400-4e5a-8061-19a4d3f0b3f0",
-    "event_name": "quiz_complete",
-    "page_path": "/results",
-    "metadata": {
-      "skinType": "oily"
-    },
-    "created_at": "2026-06-16T10:39:26.000Z"
-  },
-  {
-    "session_id": "6e42e512-4400-4e5a-8061-19a4d3f0b3f0",
-    "event_name": "add_to_routine",
-    "page_path": "/results",
-    "metadata": {
-      "category": "serum"
-    },
-    "created_at": "2026-06-16T10:39:38.000Z"
-  },
-  {
-    "session_id": "60894dce-5997-4e6d-b84a-db210dd8fd1c",
-    "event_name": "page_view",
-    "page_path": "/dashboard",
-    "metadata": {},
-    "created_at": "2026-06-16T10:44:21.000Z"
-  },
-  {
-    "session_id": "60894dce-5997-4e6d-b84a-db210dd8fd1c",
-    "event_name": "routine_completed_toggle",
-    "page_path": "/dashboard",
-    "metadata": {
-      "period": "PM"
-    },
-    "created_at": "2026-06-16T10:44:48.000Z"
-  },
-  {
-    "session_id": "a4cbb54a-498a-450c-bb9a-95924d2267f1",
-    "event_name": "page_view",
-    "page_path": "/dashboard",
-    "metadata": {},
-    "created_at": "2026-06-16T11:04:40.000Z"
-  },
-  {
-    "session_id": "a4cbb54a-498a-450c-bb9a-95924d2267f1",
-    "event_name": "routine_completed_toggle",
-    "page_path": "/dashboard",
-    "metadata": {
-      "period": "PM"
-    },
-    "created_at": "2026-06-16T11:05:06.000Z"
-  },
-  {
-    "session_id": "b058deb8-31a1-4eed-9bba-f7d577936cfe",
-    "event_name": "page_view",
-    "page_path": "/",
-    "metadata": {
-      "source": "facebook_ad"
-    },
-    "created_at": "2026-06-16T12:23:04.000Z"
-  },
-  {
-    "session_id": "b058deb8-31a1-4eed-9bba-f7d577936cfe",
-    "event_name": "quiz_start",
-    "page_path": "/quiz",
-    "metadata": {},
-    "created_at": "2026-06-16T12:23:54.000Z"
-  },
-  {
-    "session_id": "b058deb8-31a1-4eed-9bba-f7d577936cfe",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 1
-    },
-    "created_at": "2026-06-16T12:24:04.000Z"
-  },
-  {
-    "session_id": "b058deb8-31a1-4eed-9bba-f7d577936cfe",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 2
-    },
-    "created_at": "2026-06-16T12:24:09.000Z"
-  },
-  {
-    "session_id": "b058deb8-31a1-4eed-9bba-f7d577936cfe",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 3
-    },
-    "created_at": "2026-06-16T12:24:18.000Z"
-  },
-  {
-    "session_id": "b058deb8-31a1-4eed-9bba-f7d577936cfe",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 4
-    },
-    "created_at": "2026-06-16T12:24:25.000Z"
-  },
-  {
-    "session_id": "b058deb8-31a1-4eed-9bba-f7d577936cfe",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 5
-    },
-    "created_at": "2026-06-16T12:24:30.000Z"
-  },
-  {
-    "session_id": "b058deb8-31a1-4eed-9bba-f7d577936cfe",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 6
-    },
-    "created_at": "2026-06-16T12:24:41.000Z"
-  },
-  {
-    "session_id": "b058deb8-31a1-4eed-9bba-f7d577936cfe",
-    "event_name": "ai_face_scan_start",
-    "page_path": "/quiz",
-    "metadata": {},
-    "created_at": "2026-06-16T12:24:44.000Z"
-  },
-  {
-    "session_id": "b058deb8-31a1-4eed-9bba-f7d577936cfe",
-    "event_name": "ai_face_scan_success",
-    "page_path": "/quiz",
-    "metadata": {
-      "detectedType": "combination"
-    },
-    "created_at": "2026-06-16T12:24:50.569Z"
-  },
-  {
-    "session_id": "b058deb8-31a1-4eed-9bba-f7d577936cfe",
-    "event_name": "quiz_complete",
-    "page_path": "/results",
-    "metadata": {
-      "skinType": "combination"
-    },
-    "created_at": "2026-06-16T12:24:59.569Z"
-  },
-  {
-    "session_id": "b058deb8-31a1-4eed-9bba-f7d577936cfe",
-    "event_name": "add_to_routine",
-    "page_path": "/results",
-    "metadata": {
-      "category": "sunscreen"
-    },
-    "created_at": "2026-06-16T12:25:42.569Z"
-  },
-  {
-    "session_id": "0e1e3ee8-44f6-4fca-86e5-8c233480156d",
-    "event_name": "page_view",
-    "page_path": "/dashboard",
-    "metadata": {},
-    "created_at": "2026-06-16T13:24:43.000Z"
-  },
-  {
-    "session_id": "0e1e3ee8-44f6-4fca-86e5-8c233480156d",
-    "event_name": "routine_completed_toggle",
-    "page_path": "/dashboard",
-    "metadata": {
-      "period": "PM"
-    },
-    "created_at": "2026-06-16T13:25:06.000Z"
-  },
-  {
-    "session_id": "fa8f65e6-af26-44d8-b409-b569328c1519",
-    "event_name": "page_view",
-    "page_path": "/dashboard",
-    "metadata": {},
-    "created_at": "2026-06-16T15:23:01.000Z"
-  },
-  {
-    "session_id": "053e65d2-d7da-4374-af33-302a4363b61d",
-    "event_name": "page_view",
-    "page_path": "/dashboard",
-    "metadata": {},
-    "created_at": "2026-06-16T15:40:04.000Z"
-  },
-  {
-    "session_id": "053e65d2-d7da-4374-af33-302a4363b61d",
-    "event_name": "routine_completed_toggle",
-    "page_path": "/dashboard",
-    "metadata": {
-      "period": "PM"
-    },
-    "created_at": "2026-06-16T15:40:09.000Z"
-  },
-  {
-    "session_id": "0b3c48d9-5695-4c52-855c-34bfdc25beb3",
-    "event_name": "page_view",
-    "page_path": "/dashboard",
-    "metadata": {},
-    "created_at": "2026-06-16T20:03:32.000Z"
-  },
-  {
-    "session_id": "0b3c48d9-5695-4c52-855c-34bfdc25beb3",
-    "event_name": "routine_completed_toggle",
-    "page_path": "/dashboard",
-    "metadata": {
-      "period": "PM"
-    },
-    "created_at": "2026-06-16T20:03:42.000Z"
-  },
-  {
-    "session_id": "44f9b770-b999-4853-926b-fb358f2baf68",
-    "event_name": "page_view",
-    "page_path": "/dashboard",
-    "metadata": {},
-    "created_at": "2026-06-16T21:57:41.000Z"
-  },
-  {
-    "session_id": "44f9b770-b999-4853-926b-fb358f2baf68",
-    "event_name": "routine_completed_toggle",
-    "page_path": "/dashboard",
-    "metadata": {
-      "period": "PM"
-    },
-    "created_at": "2026-06-16T21:57:49.000Z"
-  },
-  {
-    "session_id": "22c2622c-7561-4b69-9ec0-eda01f3a9ff0",
-    "event_name": "page_view",
-    "page_path": "/dashboard",
-    "metadata": {},
-    "created_at": "2026-06-16T23:36:20.000Z"
-  },
-  {
-    "session_id": "fa8f65e6-af26-44d8-b409-b569328c1519",
-    "event_name": "page_view",
-    "page_path": "/dashboard",
-    "metadata": {},
-    "created_at": "2026-06-17T02:23:01.000Z"
-  },
-  {
-    "session_id": "fa8f65e6-af26-44d8-b409-b569328c1519",
-    "event_name": "routine_completed_toggle",
-    "page_path": "/dashboard",
-    "metadata": {
-      "period": "PM"
-    },
-    "created_at": "2026-06-17T02:23:14.000Z"
-  },
-  {
-    "session_id": "7d75953f-68e1-41da-820d-13427a8cea42",
-    "event_name": "page_view",
-    "page_path": "/",
-    "metadata": {
-      "source": "facebook_group"
-    },
-    "created_at": "2026-06-17T02:47:53.000Z"
-  },
-  {
-    "session_id": "7d75953f-68e1-41da-820d-13427a8cea42",
-    "event_name": "quiz_start",
-    "page_path": "/quiz",
-    "metadata": {},
-    "created_at": "2026-06-17T02:48:26.000Z"
-  },
-  {
-    "session_id": "7d75953f-68e1-41da-820d-13427a8cea42",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 1
-    },
-    "created_at": "2026-06-17T02:48:41.000Z"
-  },
-  {
-    "session_id": "7d75953f-68e1-41da-820d-13427a8cea42",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 2
-    },
-    "created_at": "2026-06-17T02:48:48.000Z"
-  },
-  {
-    "session_id": "7d75953f-68e1-41da-820d-13427a8cea42",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 3
-    },
-    "created_at": "2026-06-17T02:48:57.000Z"
-  },
-  {
-    "session_id": "7d75953f-68e1-41da-820d-13427a8cea42",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 4
-    },
-    "created_at": "2026-06-17T02:49:05.000Z"
-  },
-  {
-    "session_id": "7d75953f-68e1-41da-820d-13427a8cea42",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 5
-    },
-    "created_at": "2026-06-17T02:49:12.000Z"
-  },
-  {
-    "session_id": "7d75953f-68e1-41da-820d-13427a8cea42",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 6
-    },
-    "created_at": "2026-06-17T02:49:31.000Z"
-  },
-  {
-    "session_id": "7d75953f-68e1-41da-820d-13427a8cea42",
-    "event_name": "quiz_complete",
-    "page_path": "/results",
-    "metadata": {
-      "skinType": "oily"
-    },
-    "created_at": "2026-06-17T02:49:36.000Z"
-  },
-  {
-    "session_id": "7d75953f-68e1-41da-820d-13427a8cea42",
-    "event_name": "add_to_routine",
-    "page_path": "/results",
-    "metadata": {
-      "category": "sunscreen"
-    },
-    "created_at": "2026-06-17T02:49:53.000Z"
-  },
-  {
     "session_id": "7b98e170-a3da-4f93-8732-138be95181af",
     "event_name": "page_view",
     "page_path": "/",
@@ -1260,33 +530,6 @@
   },
   {
     "session_id": "cbaabf4a-c4a6-4ce1-9868-2eb4e258bfda",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 4
-    },
-    "created_at": "2026-06-17T04:28:13.000Z"
-  },
-  {
-    "session_id": "cbaabf4a-c4a6-4ce1-9868-2eb4e258bfda",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 5
-    },
-    "created_at": "2026-06-17T04:28:25.000Z"
-  },
-  {
-    "session_id": "cbaabf4a-c4a6-4ce1-9868-2eb4e258bfda",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 6
-    },
-    "created_at": "2026-06-17T04:28:37.000Z"
-  },
-  {
-    "session_id": "cbaabf4a-c4a6-4ce1-9868-2eb4e258bfda",
     "event_name": "ai_face_scan_start",
     "page_path": "/quiz",
     "metadata": {},
@@ -1300,15 +543,6 @@
       "detectedType": "combination"
     },
     "created_at": "2026-06-17T04:28:48.247Z"
-  },
-  {
-    "session_id": "cbaabf4a-c4a6-4ce1-9868-2eb4e258bfda",
-    "event_name": "quiz_complete",
-    "page_path": "/results",
-    "metadata": {
-      "skinType": "combination"
-    },
-    "created_at": "2026-06-17T04:28:57.247Z"
   },
   {
     "session_id": "cbaabf4a-c4a6-4ce1-9868-2eb4e258bfda",
@@ -3078,42 +2312,6 @@
   },
   {
     "session_id": "e7ab3126-dc68-48a7-9013-8011cfc0b53f",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 4
-    },
-    "created_at": "2026-06-17T14:57:58.000Z"
-  },
-  {
-    "session_id": "e7ab3126-dc68-48a7-9013-8011cfc0b53f",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 5
-    },
-    "created_at": "2026-06-17T14:58:11.000Z"
-  },
-  {
-    "session_id": "e7ab3126-dc68-48a7-9013-8011cfc0b53f",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 6
-    },
-    "created_at": "2026-06-17T14:58:18.000Z"
-  },
-  {
-    "session_id": "e7ab3126-dc68-48a7-9013-8011cfc0b53f",
-    "event_name": "quiz_complete",
-    "page_path": "/results",
-    "metadata": {
-      "skinType": "oily"
-    },
-    "created_at": "2026-06-17T14:58:29.000Z"
-  },
-  {
-    "session_id": "e7ab3126-dc68-48a7-9013-8011cfc0b53f",
     "event_name": "add_to_routine",
     "page_path": "/results",
     "metadata": {
@@ -3392,33 +2590,6 @@
   },
   {
     "session_id": "9d4024a2-7ddd-4eb9-9824-26fc8297edd1",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 4
-    },
-    "created_at": "2026-06-18T02:11:17.000Z"
-  },
-  {
-    "session_id": "9d4024a2-7ddd-4eb9-9824-26fc8297edd1",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 5
-    },
-    "created_at": "2026-06-18T02:11:32.000Z"
-  },
-  {
-    "session_id": "9d4024a2-7ddd-4eb9-9824-26fc8297edd1",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 6
-    },
-    "created_at": "2026-06-18T02:11:38.000Z"
-  },
-  {
-    "session_id": "9d4024a2-7ddd-4eb9-9824-26fc8297edd1",
     "event_name": "ai_face_scan_start",
     "page_path": "/quiz",
     "metadata": {},
@@ -3432,15 +2603,6 @@
       "detectedType": "combination"
     },
     "created_at": "2026-06-18T02:11:46.308Z"
-  },
-  {
-    "session_id": "9d4024a2-7ddd-4eb9-9824-26fc8297edd1",
-    "event_name": "quiz_complete",
-    "page_path": "/results",
-    "metadata": {
-      "skinType": "combination"
-    },
-    "created_at": "2026-06-18T02:11:58.308Z"
   },
   {
     "session_id": "9d4024a2-7ddd-4eb9-9824-26fc8297edd1",
@@ -3980,33 +3142,6 @@
   },
   {
     "session_id": "ece4188f-2a34-408c-8a59-39b6b2f83927",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 4
-    },
-    "created_at": "2026-06-18T05:56:26.000Z"
-  },
-  {
-    "session_id": "ece4188f-2a34-408c-8a59-39b6b2f83927",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 5
-    },
-    "created_at": "2026-06-18T05:56:31.000Z"
-  },
-  {
-    "session_id": "ece4188f-2a34-408c-8a59-39b6b2f83927",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 6
-    },
-    "created_at": "2026-06-18T05:56:39.000Z"
-  },
-  {
-    "session_id": "ece4188f-2a34-408c-8a59-39b6b2f83927",
     "event_name": "ai_face_scan_start",
     "page_path": "/quiz",
     "metadata": {},
@@ -4020,15 +3155,6 @@
       "detectedType": "oily"
     },
     "created_at": "2026-06-18T05:56:50.194Z"
-  },
-  {
-    "session_id": "ece4188f-2a34-408c-8a59-39b6b2f83927",
-    "event_name": "quiz_complete",
-    "page_path": "/results",
-    "metadata": {
-      "skinType": "oily"
-    },
-    "created_at": "2026-06-18T05:56:59.194Z"
   },
   {
     "session_id": "ece4188f-2a34-408c-8a59-39b6b2f83927",
@@ -4234,42 +3360,6 @@
   },
   {
     "session_id": "3856acef-6b51-4c62-b2b3-2608f83280ad",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 4
-    },
-    "created_at": "2026-06-18T06:49:17.000Z"
-  },
-  {
-    "session_id": "3856acef-6b51-4c62-b2b3-2608f83280ad",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 5
-    },
-    "created_at": "2026-06-18T06:49:25.000Z"
-  },
-  {
-    "session_id": "3856acef-6b51-4c62-b2b3-2608f83280ad",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 6
-    },
-    "created_at": "2026-06-18T06:49:33.000Z"
-  },
-  {
-    "session_id": "3856acef-6b51-4c62-b2b3-2608f83280ad",
-    "event_name": "quiz_complete",
-    "page_path": "/results",
-    "metadata": {
-      "skinType": "oily"
-    },
-    "created_at": "2026-06-18T06:49:43.000Z"
-  },
-  {
-    "session_id": "3856acef-6b51-4c62-b2b3-2608f83280ad",
     "event_name": "add_to_routine",
     "page_path": "/results",
     "metadata": {
@@ -4421,42 +3511,6 @@
       "step": 3
     },
     "created_at": "2026-06-18T08:20:34.000Z"
-  },
-  {
-    "session_id": "d0a89a44-d098-4c88-8fb6-c0d3d673c861",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 4
-    },
-    "created_at": "2026-06-18T08:20:41.000Z"
-  },
-  {
-    "session_id": "d0a89a44-d098-4c88-8fb6-c0d3d673c861",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 5
-    },
-    "created_at": "2026-06-18T08:20:48.000Z"
-  },
-  {
-    "session_id": "d0a89a44-d098-4c88-8fb6-c0d3d673c861",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 6
-    },
-    "created_at": "2026-06-18T08:21:07.000Z"
-  },
-  {
-    "session_id": "d0a89a44-d098-4c88-8fb6-c0d3d673c861",
-    "event_name": "quiz_complete",
-    "page_path": "/results",
-    "metadata": {
-      "skinType": "oily"
-    },
-    "created_at": "2026-06-18T08:21:15.000Z"
   },
   {
     "session_id": "d0a89a44-d098-4c88-8fb6-c0d3d673c861",
@@ -4881,42 +3935,6 @@
       "source": "tiktok_video"
     },
     "created_at": "2026-06-18T11:24:48.000Z"
-  },
-  {
-    "session_id": "ff5a81bd-dc99-48a0-a474-089390eaf8e5",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 4
-    },
-    "created_at": "2026-06-18T11:24:48.000Z"
-  },
-  {
-    "session_id": "ff5a81bd-dc99-48a0-a474-089390eaf8e5",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 5
-    },
-    "created_at": "2026-06-18T11:25:00.000Z"
-  },
-  {
-    "session_id": "ff5a81bd-dc99-48a0-a474-089390eaf8e5",
-    "event_name": "quiz_step_view",
-    "page_path": "/quiz",
-    "metadata": {
-      "step": 6
-    },
-    "created_at": "2026-06-18T11:25:12.000Z"
-  },
-  {
-    "session_id": "ff5a81bd-dc99-48a0-a474-089390eaf8e5",
-    "event_name": "quiz_complete",
-    "page_path": "/results",
-    "metadata": {
-      "skinType": "dry"
-    },
-    "created_at": "2026-06-18T11:25:24.000Z"
   },
   {
     "session_id": "51220010-c165-4404-ae12-c9a6d96748bf",
@@ -8472,6 +7490,1301 @@
     "created_at": "2026-06-29T13:46:11.715Z",
     "id": "prnha06w4",
     "fallback_log": false,
+    "db_error": null
+  },
+  {
+    "session_id": "dfb55bf0-1940-48b1-823a-1fec940733d0",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {},
+    "created_at": "2026-06-25T21:55:26.000Z",
+    "id": "hgs0ofnk3",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "dfb55bf0-1940-48b1-823a-1fec940733d0",
+    "event_name": "page_view",
+    "page_path": "/ingredients",
+    "metadata": {},
+    "created_at": "2026-06-25T21:55:46.625Z",
+    "id": "r8y2b2i38",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "dfb55bf0-1940-48b1-823a-1fec940733d0",
+    "event_name": "page_view",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-25T21:56:22.125Z",
+    "id": "2zuh8e1nf",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "dfb55bf0-1940-48b1-823a-1fec940733d0",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-25T21:56:52.336Z",
+    "id": "msai2c7kp",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "dfb55bf0-1940-48b1-823a-1fec940733d0",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-25T21:57:27.618Z",
+    "id": "d2f5nrh3q",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "dfb55bf0-1940-48b1-823a-1fec940733d0",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-25T21:58:07.201Z",
+    "id": "iff8rte21",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "dfb55bf0-1940-48b1-823a-1fec940733d0",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-25T21:58:32.312Z",
+    "id": "bxgk7zru5",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "dfb55bf0-1940-48b1-823a-1fec940733d0",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-25T21:59:03.686Z",
+    "id": "aaioj5ih5",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "dfb55bf0-1940-48b1-823a-1fec940733d0",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-25T21:59:30.136Z",
+    "id": "vvw8qqq2j",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "dfb55bf0-1940-48b1-823a-1fec940733d0",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-25T21:59:50.481Z",
+    "id": "esitkhnbo",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "dfb55bf0-1940-48b1-823a-1fec940733d0",
+    "event_name": "quiz_complete",
+    "page_path": "/quiz",
+    "metadata": {
+      "skinType": "oily",
+      "concerns": [
+        "acne"
+      ]
+    },
+    "created_at": "2026-06-25T22:00:08.777Z",
+    "id": "x1mg9dq0l",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "dfb55bf0-1940-48b1-823a-1fec940733d0",
+    "event_name": "page_view",
+    "page_path": "/results",
+    "metadata": {},
+    "created_at": "2026-06-25T22:00:48.434Z",
+    "id": "a5vkor7bg",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "fa8f65e6-af26-44d8-b409-b569328c1519",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {},
+    "created_at": "2026-06-25T22:27:18.000Z",
+    "id": "tzvwagp9m",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "a41c8346-80f4-4684-a85d-25c1bfc1a821",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {},
+    "created_at": "2026-06-26T19:13:46.000Z",
+    "id": "5wlbx3se1",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "a41c8346-80f4-4684-a85d-25c1bfc1a821",
+    "event_name": "page_view",
+    "page_path": "/ingredients",
+    "metadata": {},
+    "created_at": "2026-06-26T19:14:02.465Z",
+    "id": "2bxn8cuk7",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "a41c8346-80f4-4684-a85d-25c1bfc1a821",
+    "event_name": "page_view",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-26T19:14:19.575Z",
+    "id": "cgg5841jq",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "a41c8346-80f4-4684-a85d-25c1bfc1a821",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-26T19:14:55.774Z",
+    "id": "38y3ucddr",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "a41c8346-80f4-4684-a85d-25c1bfc1a821",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-26T19:15:13.093Z",
+    "id": "h8c4fghfu",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "a41c8346-80f4-4684-a85d-25c1bfc1a821",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-26T19:15:35.548Z",
+    "id": "fcrtwhmfy",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "a41c8346-80f4-4684-a85d-25c1bfc1a821",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-26T19:15:49.909Z",
+    "id": "mwhgygbwd",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "a41c8346-80f4-4684-a85d-25c1bfc1a821",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-26T19:16:02.769Z",
+    "id": "p7p1t93hh",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "a41c8346-80f4-4684-a85d-25c1bfc1a821",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-26T19:16:22.418Z",
+    "id": "s4sm9h5u4",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "a41c8346-80f4-4684-a85d-25c1bfc1a821",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-26T19:16:48.974Z",
+    "id": "tn4sks3w6",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "a41c8346-80f4-4684-a85d-25c1bfc1a821",
+    "event_name": "quiz_complete",
+    "page_path": "/quiz",
+    "metadata": {
+      "skinType": "oily",
+      "concerns": [
+        "acne"
+      ]
+    },
+    "created_at": "2026-06-26T19:17:28.753Z",
+    "id": "wwit7cqg6",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "a41c8346-80f4-4684-a85d-25c1bfc1a821",
+    "event_name": "page_view",
+    "page_path": "/results",
+    "metadata": {},
+    "created_at": "2026-06-26T19:17:57.948Z",
+    "id": "lp2phdldv",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "1adaaa89-4f4d-4ed7-b9c6-3263e542d9ba",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {},
+    "created_at": "2026-06-26T19:15:40.000Z",
+    "id": "wksgihe75",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "1adaaa89-4f4d-4ed7-b9c6-3263e542d9ba",
+    "event_name": "page_view",
+    "page_path": "/ingredients",
+    "metadata": {},
+    "created_at": "2026-06-26T19:16:18.897Z",
+    "id": "mkzop6do9",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "1adaaa89-4f4d-4ed7-b9c6-3263e542d9ba",
+    "event_name": "page_view",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-26T19:16:40.656Z",
+    "id": "tq8afbigo",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "1adaaa89-4f4d-4ed7-b9c6-3263e542d9ba",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-26T19:17:01.987Z",
+    "id": "j58gbjxlp",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "1adaaa89-4f4d-4ed7-b9c6-3263e542d9ba",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-26T19:17:36.682Z",
+    "id": "y5i5j6ggm",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "1adaaa89-4f4d-4ed7-b9c6-3263e542d9ba",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-26T19:18:02.586Z",
+    "id": "62rcfvaer",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "1adaaa89-4f4d-4ed7-b9c6-3263e542d9ba",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-26T19:18:40.052Z",
+    "id": "a6v1cyit8",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "1adaaa89-4f4d-4ed7-b9c6-3263e542d9ba",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-26T19:19:00.822Z",
+    "id": "g6fbtnmvm",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "1adaaa89-4f4d-4ed7-b9c6-3263e542d9ba",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-26T19:19:24.110Z",
+    "id": "hye6r14ny",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "1adaaa89-4f4d-4ed7-b9c6-3263e542d9ba",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-26T19:19:41.676Z",
+    "id": "c9ghru31o",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "1adaaa89-4f4d-4ed7-b9c6-3263e542d9ba",
+    "event_name": "quiz_complete",
+    "page_path": "/quiz",
+    "metadata": {
+      "skinType": "oily",
+      "concerns": [
+        "acne"
+      ]
+    },
+    "created_at": "2026-06-26T19:20:02.464Z",
+    "id": "w6gljjm05",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "1adaaa89-4f4d-4ed7-b9c6-3263e542d9ba",
+    "event_name": "page_view",
+    "page_path": "/results",
+    "metadata": {},
+    "created_at": "2026-06-26T19:20:37.123Z",
+    "id": "lbwvemiqg",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "44f9b770-b999-4853-926b-fb358f2baf68",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {},
+    "created_at": "2026-06-26T21:48:18.000Z",
+    "id": "36wdgj4vs",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "44f9b770-b999-4853-926b-fb358f2baf68",
+    "event_name": "page_view",
+    "page_path": "/ingredients",
+    "metadata": {},
+    "created_at": "2026-06-26T21:48:42.065Z",
+    "id": "2hpr1p5bb",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "44f9b770-b999-4853-926b-fb358f2baf68",
+    "event_name": "page_view",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-26T21:49:07.772Z",
+    "id": "lk2k1tzcx",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "44f9b770-b999-4853-926b-fb358f2baf68",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-26T21:49:21.685Z",
+    "id": "03xahbwgx",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "44f9b770-b999-4853-926b-fb358f2baf68",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-26T21:49:39.228Z",
+    "id": "6pi0fr25m",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "44f9b770-b999-4853-926b-fb358f2baf68",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-26T21:49:55.065Z",
+    "id": "tukz3t8nq",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "44f9b770-b999-4853-926b-fb358f2baf68",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-26T21:50:28.118Z",
+    "id": "f3e7lbfji",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "44f9b770-b999-4853-926b-fb358f2baf68",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-26T21:50:54.457Z",
+    "id": "mbblxrvk6",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "44f9b770-b999-4853-926b-fb358f2baf68",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-26T21:51:22.136Z",
+    "id": "3ekndr3cy",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "44f9b770-b999-4853-926b-fb358f2baf68",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-26T21:52:00.092Z",
+    "id": "dskyl1jum",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "44f9b770-b999-4853-926b-fb358f2baf68",
+    "event_name": "quiz_complete",
+    "page_path": "/quiz",
+    "metadata": {
+      "skinType": "oily",
+      "concerns": [
+        "acne"
+      ]
+    },
+    "created_at": "2026-06-26T21:52:37.184Z",
+    "id": "fffph8g3r",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "44f9b770-b999-4853-926b-fb358f2baf68",
+    "event_name": "page_view",
+    "page_path": "/results",
+    "metadata": {},
+    "created_at": "2026-06-26T21:53:01.645Z",
+    "id": "fsv609i9v",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "0e1e3ee8-44f6-4fca-86e5-8c233480156d",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {},
+    "created_at": "2026-06-27T19:48:03.000Z",
+    "id": "bpplc43or",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "0e1e3ee8-44f6-4fca-86e5-8c233480156d",
+    "event_name": "page_view",
+    "page_path": "/ingredients",
+    "metadata": {},
+    "created_at": "2026-06-27T19:48:24.512Z",
+    "id": "ksl4wusgy",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "0e1e3ee8-44f6-4fca-86e5-8c233480156d",
+    "event_name": "page_view",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-27T19:48:57.885Z",
+    "id": "xc61cg2a1",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "0e1e3ee8-44f6-4fca-86e5-8c233480156d",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-27T19:49:22.572Z",
+    "id": "h06tu4iex",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "0e1e3ee8-44f6-4fca-86e5-8c233480156d",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-27T19:49:45.134Z",
+    "id": "aynwrjyb9",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "0e1e3ee8-44f6-4fca-86e5-8c233480156d",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-27T19:50:05.400Z",
+    "id": "rf54awosi",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "0e1e3ee8-44f6-4fca-86e5-8c233480156d",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-27T19:50:38.597Z",
+    "id": "a0qurgnc2",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "0e1e3ee8-44f6-4fca-86e5-8c233480156d",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-27T19:50:53.964Z",
+    "id": "gku6fua2y",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "0e1e3ee8-44f6-4fca-86e5-8c233480156d",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-27T19:51:17.072Z",
+    "id": "2fiqc8hig",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "0e1e3ee8-44f6-4fca-86e5-8c233480156d",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-27T19:51:48.113Z",
+    "id": "mrsnirtcq",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "0e1e3ee8-44f6-4fca-86e5-8c233480156d",
+    "event_name": "quiz_complete",
+    "page_path": "/quiz",
+    "metadata": {
+      "skinType": "oily",
+      "concerns": [
+        "acne"
+      ]
+    },
+    "created_at": "2026-06-27T19:51:58.990Z",
+    "id": "075cs3vbw",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "0e1e3ee8-44f6-4fca-86e5-8c233480156d",
+    "event_name": "page_view",
+    "page_path": "/results",
+    "metadata": {},
+    "created_at": "2026-06-27T19:52:20.971Z",
+    "id": "57sjcqg7x",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "98a8762d-a584-49b7-98b9-469b0268b038",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {},
+    "created_at": "2026-06-27T22:35:52.000Z",
+    "id": "wj936tmzs",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "98a8762d-a584-49b7-98b9-469b0268b038",
+    "event_name": "page_view",
+    "page_path": "/ingredients",
+    "metadata": {},
+    "created_at": "2026-06-27T22:36:19.845Z",
+    "id": "ikzlnccke",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "3d483768-548e-411b-a7cd-5e18be143d2b",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {},
+    "created_at": "2026-06-28T21:36:57.000Z",
+    "id": "rzu966x6v",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "3d483768-548e-411b-a7cd-5e18be143d2b",
+    "event_name": "page_view",
+    "page_path": "/ingredients",
+    "metadata": {},
+    "created_at": "2026-06-28T21:37:13.228Z",
+    "id": "hnagf4nip",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "71ffdb11-71ab-41b5-b401-4f7d68ddf98a",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {},
+    "created_at": "2026-06-28T19:58:54.000Z",
+    "id": "rt4lxzxja",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "f8c10d9a-ec64-4745-9831-80b9522e8337",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {},
+    "created_at": "2026-06-29T22:18:33.000Z",
+    "id": "y7u896tbr",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "f8c10d9a-ec64-4745-9831-80b9522e8337",
+    "event_name": "page_view",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-29T22:18:54.562Z",
+    "id": "kgffhmoxr",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "f8c10d9a-ec64-4745-9831-80b9522e8337",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-29T22:19:27.284Z",
+    "id": "cip57f9ym",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "f8c10d9a-ec64-4745-9831-80b9522e8337",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-29T22:19:44.827Z",
+    "id": "944p3vg1w",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "f8c10d9a-ec64-4745-9831-80b9522e8337",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-29T22:19:55.461Z",
+    "id": "08m5g2j6x",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "f8c10d9a-ec64-4745-9831-80b9522e8337",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-29T22:20:31.498Z",
+    "id": "icelen44u",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "f8c10d9a-ec64-4745-9831-80b9522e8337",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-29T22:21:01.499Z",
+    "id": "3bnpyi5ce",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "f8c10d9a-ec64-4745-9831-80b9522e8337",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-29T22:21:26.525Z",
+    "id": "pb8j0c0if",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "f8c10d9a-ec64-4745-9831-80b9522e8337",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-29T22:21:51.406Z",
+    "id": "rq85jiyds",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "f8c10d9a-ec64-4745-9831-80b9522e8337",
+    "event_name": "quiz_complete",
+    "page_path": "/quiz",
+    "metadata": {
+      "skinType": "oily",
+      "concerns": [
+        "acne"
+      ]
+    },
+    "created_at": "2026-06-29T22:22:11.153Z",
+    "id": "05s5db3od",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "f8c10d9a-ec64-4745-9831-80b9522e8337",
+    "event_name": "page_view",
+    "page_path": "/results",
+    "metadata": {},
+    "created_at": "2026-06-29T22:22:32.327Z",
+    "id": "wtl1hy8s6",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "0b3c48d9-5695-4c52-855c-34bfdc25beb3",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {},
+    "created_at": "2026-06-29T22:06:06.000Z",
+    "id": "c8mvcuz21",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "0b3c48d9-5695-4c52-855c-34bfdc25beb3",
+    "event_name": "page_view",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-29T22:06:25.801Z",
+    "id": "3fo2kqwk4",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "0b3c48d9-5695-4c52-855c-34bfdc25beb3",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-29T22:06:47.698Z",
+    "id": "56pzem9b8",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "0b3c48d9-5695-4c52-855c-34bfdc25beb3",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-29T22:07:10.000Z",
+    "id": "961afl711",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "0b3c48d9-5695-4c52-855c-34bfdc25beb3",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-29T22:07:24.383Z",
+    "id": "xy22tznag",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "0b3c48d9-5695-4c52-855c-34bfdc25beb3",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-29T22:07:35.377Z",
+    "id": "k5tcu5d10",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "0b3c48d9-5695-4c52-855c-34bfdc25beb3",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-29T22:07:56.917Z",
+    "id": "x78milk0m",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "0b3c48d9-5695-4c52-855c-34bfdc25beb3",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-29T22:08:33.913Z",
+    "id": "w5hejtxgz",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "0b3c48d9-5695-4c52-855c-34bfdc25beb3",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-29T22:09:13.858Z",
+    "id": "ynaf6m91n",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "0b3c48d9-5695-4c52-855c-34bfdc25beb3",
+    "event_name": "quiz_complete",
+    "page_path": "/quiz",
+    "metadata": {
+      "skinType": "oily",
+      "concerns": [
+        "acne"
+      ]
+    },
+    "created_at": "2026-06-29T22:09:35.097Z",
+    "id": "puyt8t3tz",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "0b3c48d9-5695-4c52-855c-34bfdc25beb3",
+    "event_name": "page_view",
+    "page_path": "/results",
+    "metadata": {},
+    "created_at": "2026-06-29T22:10:13.315Z",
+    "id": "g803w7lnb",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "f1cbc35d-b647-4a05-aeb5-be9797ddc386",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {},
+    "created_at": "2026-06-29T22:19:24.000Z",
+    "id": "h167jl749",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "f1cbc35d-b647-4a05-aeb5-be9797ddc386",
+    "event_name": "page_view",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-29T22:19:43.904Z",
+    "id": "odd5jqci9",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "f1cbc35d-b647-4a05-aeb5-be9797ddc386",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-29T22:19:56.912Z",
+    "id": "g599lfi40",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "f1cbc35d-b647-4a05-aeb5-be9797ddc386",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-29T22:20:33.011Z",
+    "id": "boz0qwik8",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "f1cbc35d-b647-4a05-aeb5-be9797ddc386",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-29T22:21:12.792Z",
+    "id": "xyvbkqp88",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "f1cbc35d-b647-4a05-aeb5-be9797ddc386",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-29T22:21:28.476Z",
+    "id": "c8q2jayrd",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "f1cbc35d-b647-4a05-aeb5-be9797ddc386",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-29T22:22:00.963Z",
+    "id": "a8stt7zwc",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "f1cbc35d-b647-4a05-aeb5-be9797ddc386",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-29T22:22:17.010Z",
+    "id": "a70k47ol9",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "f1cbc35d-b647-4a05-aeb5-be9797ddc386",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-29T22:22:33.805Z",
+    "id": "fuxryh32b",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "f1cbc35d-b647-4a05-aeb5-be9797ddc386",
+    "event_name": "quiz_complete",
+    "page_path": "/quiz",
+    "metadata": {
+      "skinType": "oily",
+      "concerns": [
+        "acne"
+      ]
+    },
+    "created_at": "2026-06-29T22:23:01.260Z",
+    "id": "rl6w78wzz",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "f1cbc35d-b647-4a05-aeb5-be9797ddc386",
+    "event_name": "page_view",
+    "page_path": "/results",
+    "metadata": {},
+    "created_at": "2026-06-29T22:23:28.795Z",
+    "id": "lj7wx19kw",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "fbca41c0-c2af-458c-9057-f38f14f8e9c5",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {},
+    "created_at": "2026-06-29T21:46:32.000Z",
+    "id": "hdv22zko6",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "fbca41c0-c2af-458c-9057-f38f14f8e9c5",
+    "event_name": "page_view",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-29T21:46:54.567Z",
+    "id": "z1p1p7znx",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "fbca41c0-c2af-458c-9057-f38f14f8e9c5",
+    "event_name": "quiz_start",
+    "page_path": "/quiz",
+    "metadata": {},
+    "created_at": "2026-06-29T21:47:27.862Z",
+    "id": "cm59pv9lq",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "fbca41c0-c2af-458c-9057-f38f14f8e9c5",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 1
+    },
+    "created_at": "2026-06-29T21:47:44.966Z",
+    "id": "9ck3l5m44",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "fbca41c0-c2af-458c-9057-f38f14f8e9c5",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 2
+    },
+    "created_at": "2026-06-29T21:47:57.224Z",
+    "id": "eyytvc1ie",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "fbca41c0-c2af-458c-9057-f38f14f8e9c5",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 3
+    },
+    "created_at": "2026-06-29T21:48:24.369Z",
+    "id": "rdzl3d4hq",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "fbca41c0-c2af-458c-9057-f38f14f8e9c5",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 4
+    },
+    "created_at": "2026-06-29T21:49:00.986Z",
+    "id": "h09w1rfey",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "fbca41c0-c2af-458c-9057-f38f14f8e9c5",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 5
+    },
+    "created_at": "2026-06-29T21:49:11.247Z",
+    "id": "vjvhnstdo",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "fbca41c0-c2af-458c-9057-f38f14f8e9c5",
+    "event_name": "quiz_step_view",
+    "page_path": "/quiz",
+    "metadata": {
+      "step": 6
+    },
+    "created_at": "2026-06-29T21:49:32.186Z",
+    "id": "adqfhlwtn",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "fbca41c0-c2af-458c-9057-f38f14f8e9c5",
+    "event_name": "quiz_complete",
+    "page_path": "/quiz",
+    "metadata": {
+      "skinType": "oily",
+      "concerns": [
+        "acne"
+      ]
+    },
+    "created_at": "2026-06-29T21:50:09.362Z",
+    "id": "w8t8nfxef",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "fbca41c0-c2af-458c-9057-f38f14f8e9c5",
+    "event_name": "page_view",
+    "page_path": "/results",
+    "metadata": {},
+    "created_at": "2026-06-29T21:50:42.976Z",
+    "id": "pj0bv0i9x",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "60cd4a1f-dbb4-46a0-9ee6-76fb00ff1b3a",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {},
+    "created_at": "2026-06-30T21:19:04.000Z",
+    "id": "sz6rkhqps",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "60cd4a1f-dbb4-46a0-9ee6-76fb00ff1b3a",
+    "event_name": "page_view",
+    "page_path": "/ingredients",
+    "metadata": {},
+    "created_at": "2026-06-30T21:19:14.476Z",
+    "id": "0a7kfdfrq",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "60cd4a1f-dbb4-46a0-9ee6-76fb00ff1b3a",
+    "event_name": "ingredient_search",
+    "page_path": "/ingredients",
+    "metadata": {
+      "query": "BHA"
+    },
+    "created_at": "2026-06-30T21:19:32.192Z",
+    "id": "dpk0fhh1w",
+    "fallback_log": true,
+    "db_error": null
+  },
+  {
+    "session_id": "341cf5cb-7ae8-40c0-bd8a-2cdb12db4242",
+    "event_name": "page_view",
+    "page_path": "/",
+    "metadata": {},
+    "created_at": "2026-06-30T20:01:02.000Z",
+    "id": "4nizx0f16",
+    "fallback_log": true,
     "db_error": null
   }
 ]
